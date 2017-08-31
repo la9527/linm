@@ -1,0 +1,42 @@
+default: all
+
+all:
+	cmake -DCMAKE_INSTALL_PREFIX=$(shell pwd)/output -DCMAKE_BUILD_TYPE=Debug -DDEBUG_MODE:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -Wall -G "CodeBlocks - Unix Makefiles" .
+	make
+
+clean:
+	cmake --build . --target clean
+
+old:
+	aclocal -I m4
+	autoheader
+	automake
+	autoconf
+
+missadd:
+	aclocal -l m4
+	autoheader
+	libtoolize -f -c
+	automake --add-missing --copy
+	autoconf
+
+i386:
+	CFLAGS="-march=i386" CXXFLAGS="-march=i386" ./configure --enable-debug
+	make
+
+i686:
+	CFLAGS="-march=i686" CXXFLAGS="-march=i686" ./configure --enable-debug
+	make
+
+i686-sshdebug:
+	CFLAGS="-march=i686" CXXFLAGS="-march=i686" ./configure --enable-debug --enable-debug-all
+	make
+
+nocona:
+	CFLAGS="-march=nocona -pipe -m64 " CXXFLAGS="-march=nocona -pipe -m64" ./configure --enable-debug --enable-debug-all
+	make -j2
+
+athlon64:
+	CFLAGS="-march=nocona -pipe -m64 " CXXFLAGS="-march=athlon64 -pipe -m64" ./configure --enable-debug
+	make -j2
+

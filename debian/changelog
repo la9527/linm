@@ -1,0 +1,131 @@
+linm (0.8.1-1) unstable; urgency=low
+  * transparency console support.
+  * compress cancel bugfix.
+  * linm.sh, linm.csh fix.
+  * quick search reinforcement
+  * shell mode cursor bugfix. 
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Sun, 10 Feb 2008 20:50:43 +0900
+
+linm (0.8-1) unstable; urgency=low
+  * configure menu add.
+  * libssh2-0.18 update.
+  * rar, iso add.
+  * editor text replace menu add.
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 31 Dec 2007 05:00:43 +0900
+
+linm (0.7.12-1) unstable; urgency=low
+  * samba connect supported.
+  * file copy progressbar bugfix.
+  * remote copy overwrite message bugfix.
+  * FreeBSD, GCC 2.9x compile error fix.
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 1 Jan 2007 01:00:43 +0900 
+
+linm (0.7.11-1) unstable; urgency=low
+  * chown command added.
+  * file find added. 
+  * execute option buildup. 
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Fri, 8 Seq 2006 01:00:43 +0900 
+
+linm (0.7.10-1) unstable; urgency=low
+  * bugfix and hint update.
+  * MC style subshell added. (Ctrl+O)
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Wed, 31 May 2006 20:00:43 +0900
+
+linm (0.7.9-1) unstable; urgency=low
+  * link file bugfix.
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Sat, 22 Apr 2006 20:00:43 +0900
+
+linm (0.7.8-1) unstable; urgency=low
+  * connection manager added.
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Sun, 2 Apr 2006 20:00:43 +0900
+
+linm (0.7.7-1) unstable; urgency=low
+  * bugfix. progress and archive compress bugfix.
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 30 Jan 2006 20:00:43 +0900
+
+linm (0.7.6-1) unstable; urgency=low
+  * bugfix. korean added.
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Sun, 15 Jan 2006 15:00:43 +0900
+
+linm (0.7.5-1) unstable; urgency=low
+  * sftp, sftp insert
+  * editor fix
+  
+ -- Byoung-young La <la9527@yahoo.co.kr>  Sun, 25 Dec 2005 20:00:43 +0900
+
+linm (0.6.8-1) unstable; urgency=low
+
+  * Package name change.
+  * bugfix.
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Tue, 30 Aug 2005 11:10:48 +0900
+
+mls (0.6.7-3) unstable; urgency=low
+
+  * Debian version
+  * bugfix & patch
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Sat, 6 Aug 2005 11:10:48 +0900
+
+mls (0.6.7-2) unstable; urgency=low
+
+  * Debian version
+  * bugfix & patch
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Thu, 5 Aug 2005 11:10:48 +0900
+
+mls (0.6.7-1) unstable; urgency=low
+
+  * Debian version
+  * bugfix & patch
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Wed, 27 Jul 2005 11:10:48 +0900
+
+mls (0.6-4) unstable; urgency=low
+
+  * Debian version
+  * bugfix
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 25 Jun 2005 11:10:48 +0900
+
+mls (0.6_static-3) unstable; urgency=low
+
+  * Debian static version
+  * bugfix
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 25 Jun 2005 11:10:48 +0900
+ 
+mls (0.6-3) unstable; urgency=low
+
+  * Debian version
+  * bugfix
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 25 Jun 2005 11:10:48 +0900
+
+mls (0.6-2) unstable; urgency=low
+
+  * Debian version 
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Mon, 25 Jun 2005 11:10:48 +0900
+ 
+mls (0.6-1) unstable; urgency=low
+
+  * Debian Test Relases
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Wed, 3 Jun 2005 19:38:48 +0900
+
+mls (0.5-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Byoung-young La <la9527@yahoo.co.kr>  Wed, 11 May 2005 14:00:43 +0900
+

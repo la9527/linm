@@ -1,0 +1,328 @@
+cmake_minimum_required(VERSION 3.6)
+project (linm)
+
+set(PACKAGE "linm")
+set(VERSION "0.9.0")
+set(CMAKE_CXX_STANDARD 11)
+
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# header or library check.
+
+include(CheckIncludeFiles)
+include(CheckFunctionExists)
+include(CheckLibraryExists)
+include(CheckTypeSize)
+
+CHECK_INCLUDE_FILES(errno.h HAVE_ERRNO_H)
+CHECK_INCLUDE_FILES(fcntl.h HAVE_FCNTL_H)
+
+check_function_exists (alloca HAVE_ALLOCA)
+check_function_exists (asprintf HAVE_ASPRINTF)
+
+CHECK_INCLUDE_FILES(alloca.h HAVE_ALLOCA_H)
+CHECK_INCLUDE_FILES(argz.h HAVE_ARGZ_H)
+
+check_function_exists (CFLocaleCopyCurrent HAVE_CFLOCALECOPYCURRENT)
+check_function_exists (CFPreferencesCopyAppValue HAVE_CFPREFERENCESCOPYAPPVALUE)
+
+CHECK_INCLUDE_FILES (curses.h HAVE_CURSES_H)
+check_function_exists (dcgettext HAVE_DCGETTEXT)
+
+check_function_exists (feof_unlocked HAVE_DECL_FEOF_UNLOCKED)
+
+check_function_exists (fgets_unlocked HAVE_DECL_FGETS_UNLOCKED)
+check_function_exists (getc_unlocked HAVE_DECL_GETC_UNLOCKED)
+
+check_function_exists (getopt getopt_long HAVE_DECL_GETOPT)
+
+check_function_exists (_snprintf HAVE_DECL__SNPRINTF)
+check_function_exists (_snwprintf HAVE_DECL__SNWPRINTF)
+
+CHECK_INCLUDE_FILES(argz.h HAVE_ARGZ_H)
+
+check_function_exists (vprintf HAVE_DOPRNT)
+check_function_exists (fwprintf HAVE_FWPRINTF)
+check_function_exists (getegid HAVE_GETEGID)
+check_function_exists (geteuid HAVE_GETEUID)
+check_function_exists (getgid HAVE_GETGID)
+
+check_function_exists (getopt HAVE_GETOPT)
+check_function_exists (getopt_long HAVE_GETOPT_LONG)
+
+check_function_exists (getpt HAVE_GETPT)
+check_function_exists (gettext HAVE_GETTEXT)
+
+check_function_exists (gettimeofday HAVE_GETTIMEOFDAY)
+check_function_exists (getuid HAVE_GETUID)
+
+check_function_exists (grantpt HAVE_GRANTPT)
+check_function_exists (iconv HAVE_ICONV)
+
+check_function_exists (intmax_t HAVE_INTMAX_T)
+CHECK_INCLUDE_FILES (inttypes.h HAVE_INTTYPES_H)
+CHECK_INCLUDE_FILES (inttypes.h HAVE_INTTYPES_H_WITH_UINTMAX)
+CHECK_INCLUDE_FILES (langinfo.h HAVE_LANGINFO_CODESET)
+
+CHECK_LIBRARY_EXISTS (pt "" "" "HAVE_LIBPT")
+CHECK_INCLUDE_FILES (pthread.h PTHREAD_ENABLE)
+CHECK_INCLUDE_FILES (limits.h HAVE_LIMITS_H)
+
+CHECK_INCLUDE_FILES (locale.h HAVE_LC_MESSAGES)
+CHECK_INCLUDE_FILES (locale.h HAVE_LOCALE_H)
+
+CHECK_TYPE_SIZE("long double" HAVE_LONG_DOUBLE)
+CHECK_TYPE_SIZE("long long" HAVE_LONG_LONG)
+CHECK_TYPE_SIZE("lstat" HAVE_LSTAT_EMPTY_STRING_BUG)
+
+check_function_exists (malloc HAVE_MALLOC)
+CHECK_INCLUDE_FILES (malloc.h HAVE_MALLOC_H)
+CHECK_INCLUDE_FILES (memory.h HAVE_MEMORY_H)
+check_function_exists (mempcpy HAVE_MEMPCPY)
+check_function_exists (memset HAVE_MEMSET)
+check_function_exists (mkdir HAVE_MKDIR)
+check_function_exists (mmap HAVE_MMAP)
+
+check_function_exists (munmap HAVE_MUNMAP)
+CHECK_INCLUDE_FILES (ncurses.h HAVE_NCURSES_H)
+CHECK_INCLUDE_FILES (ndir.h HAVE_NDIR_H)
+CHECK_INCLUDE_FILES (nl_types.h HAVE_NL_TYPES_H)
+
+check_function_exists (poll HAVE_POLL)
+check_function_exists (posix_openpt HAVE_POSIX_OPENPT)
+check_function_exists (printf HAVE_POSIX_PRINTF)
+
+check_function_exists (putenv HAVE_PUTENV)
+check_function_exists (select HAVE_SELECT)
+check_function_exists (setenv HAVE_SETENV)
+check_function_exists (setlocale HAVE_SETLOCALE)
+check_function_exists (snprintf HAVE_SNPRINTF)
+check_function_exists (stat HAVE_STAT_EMPTY_STRING_BUG)
+
+CHECK_INCLUDE_FILES (stdbool.h HAVE_STDBOOL_H)
+CHECK_INCLUDE_FILES (stddef.h HAVE_STDDEF_H)
+CHECK_INCLUDE_FILES (stdint.h HAVE_STDINT_H)
+CHECK_INCLUDE_FILES (stdint.h sys/types.h HAVE_STDINT_H_WITH_UINTMAX)
+
+CHECK_INCLUDE_FILES (stdio.h HAVE_STDIO_H)
+CHECK_INCLUDE_FILES (stdlib.h HAVE_STDLIB_H)
+
+check_function_exists (stpcpy HAVE_STPCPY)
+check_function_exists (strcasecmp HAVE_STRCASECMP)
+check_function_exists (strdup HAVE_STRDUP)
+
+CHECK_INCLUDE_FILES (string.h HAVE_STRING_H)
+CHECK_INCLUDE_FILES (strings.h HAVE_STRINGS_H)
+
+check_function_exists (strtol HAVE_STRTOL)
+check_function_exists (strtoul HAVE_STRTOUL)
+
+CHECK_INCLUDE_FILES (sys/dir.h HAVE_SYS_DIR_H)
+CHECK_INCLUDE_FILES (sys/param.h HAVE_SYS_PARAM_H)
+
+CHECK_INCLUDE_FILES (sys/select.h HAVE_SYS_SELECT_H)
+CHECK_INCLUDE_FILES (sys/socket.h HAVE_SYS_SOCKET_H)
+
+CHECK_INCLUDE_FILES (sys/stat.h HAVE_SYS_STAT_H)
+CHECK_INCLUDE_FILES (sys/types.h HAVE_SYS_TYPES_H)
+
+CHECK_INCLUDE_FILES (sys/uio.h HAVE_SYS_UIO_H)
+CHECK_INCLUDE_FILES (sys/wait.h HAVE_SYS_WAIT_H)
+
+check_function_exists (tsearch HAVE_TSEARCH)
+CHECK_TYPE_SIZE ("uintmax_t" HAVE_UINTMAX_T)
+CHECK_INCLUDE_FILES (unistd.h HAVE_UNISTD_H)
+
+CHECK_TYPE_SIZE("unsigned long long" HAVE_UNSIGNED_LONG_LONG)
+check_function_exists (vprintf HAVE_VPRINTF)
+
+CHECK_TYPE_SIZE("wchar_t" HAVE_WCHAR_T)
+
+check_function_exists (wcslen HAVE_WCSLEN)
+
+CHECK_TYPE_SIZE ("_Bool" HAVE__BOOL)
+check_function_exists (__argz_count HAVE___ARGZ_COUNT)
+check_function_exists (__argz_next HAVE___ARGZ_NEXT)
+
+check_function_exists (__argz_stringify HAVE___ARGZ_STRINGIFY)
+check_function_exists (__fsetlocking HAVE___FSETLOCKING)
+
+check_function_exists (iconv ICONV_CONST)
+
+set(_FILE_OFFSET_BITS 64)
+set(_LARGEFILE_SOURCE TRUE)
+
+# set configure file
+
+option(LINM_CFGPATH "set configure file install path. (default: '${CMAKE_INSTALL_PREFIX}/etc/linm')")
+
+if(LINM_CFGPATH)
+    set(__LINM_CFGPATH__ "${LINM_CFGPATH}")
+else()
+    set(__LINM_CFGPATH__ "${CMAKE_INSTALL_PREFIX}/etc/linm")
+endif(LINM_CFGPATH)
+
+message( "-- Option - configure path : '${__LINM_CFGPATH__}'" )
+
+# set debug mode
+
+option(DEBUG_MODE "Build debugging mode")
+if( DEBUG_MODE )
+    set(DEBUG_MODE __DEBUGMODE__ )
+endif(DEBUG_MODE)
+
+message( "-- Option - debug mode : ${DEBUG_MODE}" )
+
+# setting tar name
+option(TAR_FILE_NAME "set 'tar' filename. (default: 'tar')")
+
+if (TAR_FILE_NAME)
+    set(TARNAME ${TAR_FILE_NAME})
+else()
+    find_program(GTAR gtar)
+    find_program(TAR tar)
+
+    if (GTAR)
+        set(TARGNAME "gtar")
+    else()
+        set(TARGNAME "tar")
+    endif(GTAR)
+endif(TAR_FILE_NAME)
+
+message( "-- Option - tar or gtar program name : '${TARGNAME}'" )
+
+# find ncurses library
+
+find_library(CURSES_LIB curses)
+find_library(NCURSES_LIB ncurses)
+find_library(NCURSESW_LIB ncursesw)
+
+if(NOT NCURSESW_LIB AND NOT NCURSES_LIB AND NOT NCURSESW_LIB)
+    message("")
+    message("ncurses unsupported.")
+    message("")
+    message(" debian or ubuntu : ")
+    message("    apt-get install libncursesw5-dev libncurses5-dev")
+    message(" redhat or fedora : ")
+    message("    yum install ncurses-devel")
+    message(" other  : ")
+    message("    Please refer to http://www.gnu.org/software/ncurses/")
+    message("")
+    message(FATAL_ERROR "'curses' or 'ncurses' library is not found.")
+else()
+    message("-- find library CURSES_LIB: ${CURSES_LIB}")
+    message("-- find library NCURSES_LIB: ${NCURSES_LIB}")
+    message("-- find library NCURSESW_LIB: ${NCURSESW_LIB}")
+endif()
+
+# find openssl library
+option(DISABLE_SFTP "Disable sftp. (default: OFF)")
+if( NOT DISABLE_SFTP )
+
+    if (EXISTS "/usr/local/opt/openssl")
+        set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
+    endif()
+    if (EXISTS "/usr/local/openssl")
+        set(OPENSSL_ROOT_DIR /usr/local/openssl)
+    endif()
+
+    include(FindOpenSSL)
+
+    find_library(SOCKET socket)
+    find_library(MLIB ceil)
+
+    if ( OPENSSL_FOUND )
+        set(__LINM_SFTP_USE__ ON)
+    endif( OPENSSL_FOUND)
+else()
+    message(" - Option - disable sftp: ON")
+endif()
+
+option(DISABLE_SAMBA "Disable samba. (default: OFF)")
+if( NOT DISABLE_SAMBA )
+    find_library(SMBCLIENT_FOUND smbclient)
+    if ( SMBCLIENT_FOUND )
+        set(__LINM_SAMBA_USE__ ON)
+    endif( SMBCLIENT_FOUND )
+endif()
+
+# make config.h
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+# subdirectory
+
+#add_subdirectory(intl)
+#add_subdirectory(po)
+add_subdirectory(lib)
+add_subdirectory(panel)
+add_subdirectory(editor)
+add_subdirectory(src)
+add_subdirectory(sh)
+
+########### install files ###############
+
+install(FILES README.md README.ko_euckr README.ko_utf8 DESTINATION share )
+
+#original Makefile.am contents follow:
+
+## not a GNU package. You can remove this line, if
+## have all needed files, that a GNU package needs
+#AUTOMAKE_OPTIONS = foreign 1.4
+#
+#ACLOCAL_AMFLAGS = -I m4
+#
+#SUBDIRS = intl po lib panel editor src sh
+#
+#noinst_DATA = README.ko_euckr README.ko_utf8 linm.spec debian/*
+#EXTRA_DIST = config.rpath m4/ChangeLog  $(noinst_DATA)
+#
+#install-exec-hook :
+#	if test -d $(DESTDIR)$(sysconfdir)/profile.d ; then \
+#		if test -w $(DESTDIR)$(sysconfdir)/profile.d ; then \
+#			install -c -m 755 $(top_srcdir)/sh/linm_alias.sh $(DESTDIR)$(sysconfdir)/profile.d \
+#		; fi \
+#	; fi
+#	
+#	if ! test -d $(DESTDIR)$(LINM_CFGPATH) ; then \
+#		install -d -m 755 $(DESTDIR)$(LINM_CFGPATH) \
+#	; fi
+#
+#	if test -w $(DESTDIR)$(LINM_CFGPATH) ; then \
+#		install -c -m 644 $(top_srcdir)/sh/default.cfg \
+#					$(top_srcdir)/sh/colorset.cfg \
+#					$(top_srcdir)/sh/keyset.cfg \
+#					$(DESTDIR)$(LINM_CFGPATH) \
+#	; else \
+#		if ! test -d ~/.linm ; then \
+#			install -d -m 755 ~/.linm \
+#		; fi && \
+#		install -c -m 644 $(top_srcdir)/sh/default.cfg \
+#					$(top_srcdir)/sh/colorset.cfg \
+#					$(top_srcdir)/sh/keyset.cfg \
+#					~/.linm \
+#	; fi
+#
+#	if ! test -d $(DESTDIR)$(datadir)/pixmaps ; then \
+#		install -d -m 755 $(DESTDIR)$(datadir)/pixmaps \
+#	; fi
+#
+#	if test -w $(DESTDIR)$(datadir)/pixmaps ; then \
+#		install -c -m 644 $(top_srcdir)/debian/linm.xpm $(DESTDIR)$(datadir)/pixmaps \
+#	; fi
+#	
+#	if ! test -d $(DESTDIR)$(datadir)/applications ; then \
+#		install -d -m 755 $(DESTDIR)$(datadir)/applications \
+#	; fi
+#
+#	if test -w $(DESTDIR)$(datadir)/applications ; then \
+#		install -c -m 644 $(top_srcdir)/debian/LinM.desktop $(DESTDIR)$(datadir)/applications \
+#	; fi
+#
+#uninstall-hook :
+#	-rm -f $(DESTDIR)$(LINM_CFGPATH)/default.cfg $(DESTDIR)$(LINM_CFGPATH)/keyset.cfg $(DESTDIR)$(LINM_CFGPATH)/colorset.cfg
+#	-rm -f $(DESTDIR)$(sysconfdir)/profile.d/linm_alias.sh
+#	-rm -rf ~/.linm

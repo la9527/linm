@@ -1,0 +1,488 @@
+AC_INIT(configure.in)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(linm, 0.8.1)
+
+dnl  **************************************************************
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_LIBTOOL
+AC_PROG_RANLIB
+
+dnl  **************************************************************
+dnl  Checks for header files.
+
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+
+dnl  **************************************************************
+dnl Checks for typedefs, structures, and compiler characteristics.
+
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_MODE_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+
+dnl Checks for library functions.
+
+AC_FUNC_LSTAT
+AC_FUNC_MALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_SETPGRP
+AC_FUNC_STAT
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([getcwd memset mkdir setlocale strtol])
+AC_CHECK_FUNCS([getopt getopt_long], AC_DEFINE(HAVE_DECL_GETOPT, 1, [Have getopt getopt_long function]))
+
+# Checks for header files.
+AC_CHECK_HEADERS([errno.h fcntl.h stdio.h stdlib.h unistd.h sys/uio.h sys/select.h])
+AC_CHECK_FUNCS(poll gettimeofday select)
+
+AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
+
+dnl  **************************************************************
+dnl  ncurese prefix use
+
+AC_ARG_WITH(ncurses-prefix,
+	AC_HELP_STRING([--with-ncurses-prefix],[ ncurses library prefix. ]),
+	[if test x$withval != xyes; then
+		LDFLAGS="$LDFLAGS -L$withval/lib"
+		CPPFLAGS="$CPPFLAGS -I$withval/include"
+	fi], )
+
+AC_CHECK_HEADER(curses.h, [CURSES_HEADER="curses"], )
+AC_CHECK_HEADER(ncurses.h, [CURSES_HEADER="ncurses"], )
+
+if test "x$CURSES_HEADER" = "x"; then
+	AC_MSG_ERROR([ncurses.h not found.])
+fi
+
+if test "x$CURSES_HEADER" = "xncurses"; then
+	AC_DEFINE(HAVE_NCURSES_H, 1, [ncurses.h header file.])
+elif test "x$CURSES_HEADER" = "xcurses"; then
+	AC_DEFINE(HAVE_CURSES_H, 1, [curses.h header file.])
+else
+	AC_MSG_ERROR([ncurses.h not found.])
+fi
+
+AC_CHECK_HEADER(pthread.h, ,[AC_MSG_ERROR([pthread.h not found.])])
+
+AM_ICONV
+AM_GNU_GETTEXT
+AM_GNU_GETTEXT_VERSION([0.14.5])
+
+ALL_LINGUAS="ko"
+
+if test "x$USE_INCLUDED_LIBINTL" = xyes; then
+    CPPFLAGS="$CPPFLAGS -I\$(top_builddir)/intl -I\$(top_srcdir)/intl"
+fi
+
+dnl Checks for programs.
+
+AC_CHECK_PROGS(A_GZIP, gzip, [AC_MSG_WARN([gzip not found...])])
+AC_CHECK_PROGS(A_ZIP, zip, [AC_MSG_WARN([zip not found...])])
+AC_CHECK_PROGS(A_DEB, dpkg-deb, [AC_MSG_WARN([dpkg-deb not found...])])
+AC_CHECK_PROGS(A_RPM, rpm, [AC_MSG_WARN([rpm not found...])])
+AC_CHECK_PROGS(A_ALZ, unalz, [AC_MSG_WARN([unalz not found...])])
+AC_CHECK_PROGS(A_RAR, unrar, [AC_MSG_WARN([unrar not found...])])
+AC_CHECK_PROGS(A_ISO, isoinfo, [AC_MSG_WARN([isoinfo not found...])])
+
+dnl  **************************************************************
+dnl  'tar' file setting
+
+AC_ARG_ENABLE(	tarname,
+		AC_HELP_STRING(	[--enable-tarname=FILE],
+				[tar filename change (default is 'auto')]),
+				[enable_tarname=${enableval}], [enable_tarname=auto])
+
+if test "$enable_tarname" = "auto"; then
+	AC_CHECK_PROG(ac_GTAR, gtar, gtar)
+	AC_CHECK_PROG(ac_TAR, tar, tar)
+	if test "$ac_GTAR"; then
+		AC_DEFINE_UNQUOTED(TARNAME, "$ac_GTAR", [gtar file setting])
+	elif test "$ac_TAR"; then
+		AC_DEFINE_UNQUOTED(TARNAME, "$ac_TAR", [tar file setting])
+	fi
+else
+	AC_CACHE_CHECK([use tar filename], [enable_tarname], [enable_tarname=auto])
+	AC_DEFINE_UNQUOTED(TARNAME, "$enable_tarname", [tar file setting])
+fi
+
+dnl  **************************************************************
+dnl  linm config file install path setting.
+
+AC_ARG_ENABLE(	configpath,
+		AC_HELP_STRING(	[--enable-cfgpath=FILE],
+				[linm cfg file install path. (default is '/etc/linm')]),
+				[enable_cfgpath=${enableval}], [enable_cfgpath=default])
+
+LINM_CFGPATH="/etc/linm"
+
+if test "$enable_cfgpath" = "default"; then
+	AC_DEFINE_UNQUOTED(__LINM_CFGPATH__, "/etc/linm", [cfg file setting])
+else
+	AC_DEFINE_UNQUOTED(__LINM_CFGPATH__, "$enable_cfgpath", [cfg file setting])
+	LINM_CFGPATH="$enable_cfgpath"
+fi
+
+AC_SUBST(LINM_CFGPATH)
+
+dnl  **************************************************************
+dnl  'ncursesw' library check
+
+AC_CHECK_LIB( curses, initscr, [CURSESLIB="-lcurses"], )
+AC_CHECK_LIB( ncurses, initscr, [CURSESLIB="-lncurses"], )
+AC_CHECK_LIB( ncursesw, initscr, [CURSESLIB="-lncursesw"], )
+
+if test "x$CURSESLIB" = "x"; then
+    echo ""
+    echo "ncurses unsupported."
+    echo ""
+    echo " debian or (k)ubuntu : "
+    echo "    apt-get install libncursesw5-dev libncurses5-dev"
+    echo " redhat or fedora : "
+    echo "    yum install ncurses-devel"
+    echo " other  : "
+    echo "    Please refer to http://www.gnu.org/software/ncurses/" 
+    echo "" 
+    AC_MSG_ERROR([ncursesw library not found.])
+else
+	LIBS="$CURSESLIB $LIBS"
+fi
+
+dnl  **************************************************************
+dnl  disable pthread
+
+AC_ARG_ENABLE(	pthread,
+		AC_HELP_STRING(	[--disable-pthread],
+				[pthread disable (default is 'no')]),
+				[disable_pthread=yes], [disable_pthread=yes])
+
+if test "$disable_pthread" = "yes"; then
+	AC_CHECK_LIB(	[pthread], [pthread_create],
+			[LIBS="-lpthread $LIBS"
+			 AC_DEFINE(PTHREAD_ENABLE, 1, [pthread enable])],
+			[AC_MSG_WARN([pthread library not found.])])
+fi
+
+dnl  **************************************************************
+dnl  debug mode check
+
+AC_ARG_ENABLE(	debug,
+				AC_HELP_STRING([--enable-debug], [enable debug mode (default is no)]),
+				[enable_debug=yes], [enable_debug=no])
+AC_CACHE_CHECK([debug mode], [enable_debug], [enable_debug=no])
+
+if test "$enable_debug" = "yes"; then
+	AC_DEFINE(__DEBUGMODE__, 1, [debug mode setting])
+	CFLAGS="$CFLAGS -O0 -g3"
+	CPPFLAGS="$CPPFLAGS -O0 -g3"
+fi
+
+dnl  **************************************************************
+dnl getpt is a GNU Extension (glibc 2.1.x)
+
+AC_CHECK_FUNCS(posix_openpt, , [AC_CHECK_FUNCS(getpt)])
+AC_CHECK_FUNCS(grantpt, , [AC_CHECK_LIB(pt, grantpt)])
+
+dnl  **************************************************************
+dnl  all static library compile
+
+AC_ARG_ENABLE(	allstatic,
+				AC_HELP_STRING([--enable-allstatic], [enable all static mode (default is no)]),
+				[enable_allstatic=yes], [enable_allstatic=no])
+
+AC_CACHE_CHECK([all static compile], [enable_allstatic], [enable_allstatic=no])
+
+if test "$enable_allstatic" = "yes"; then
+	LDFLAGS="$LDFLAGS -static"
+fi
+
+dnl  **************************************************************
+dnl  not linux compile option ( iconv, intl )
+
+if test "x$host_os" != "xlinux-gnu"; then
+	AC_CACHE_CHECK([iconv intl link check], [enable_notlinuxgnu], ["$host_os" != linux-gnu])
+	
+	if test "x$host_os" = "xcygwin"; then
+		AC_DEFINE(__CYGWIN_C__, 1, [cygwin compile.])
+	fi
+fi
+
+dnl  **************************************************************
+dnl  file system 2 GB over define option.
+
+AC_DEFINE(_FILE_OFFSET_BITS, 64, [Get 64-bit file size support])
+
+
+dnl  **************************************************************
+dnl  ftp, libssh2 option
+
+AC_CHECK_LIB(socket, socket, [LIBS="-lsocket $LIBS"])
+AC_CHECK_LIB(m, ceil, [LIBS="-lm $LIBS"])
+
+AC_ARG_ENABLE(	sftp,
+				AC_HELP_STRING([--disable-sftp], [disable sftp (default is no)]),
+				[disable_sftp=${enableval}], [disable_sftp=yes])
+
+if test "$disable_sftp" = "yes"; then
+	AC_DEFINE(__LINM_SFTP_USE__, 1, [sftp use setting])
+else
+	AC_CACHE_CHECK([disable sftp], [disable_sftp], [disable_sftp=yes])
+fi
+
+AM_CONDITIONAL(LINM_UNUSE_SFTP, test "$disable_sftp" = "no")
+
+dnl  **************************************************************
+dnl  samba option
+
+AC_ARG_ENABLE(	samba,
+				AC_HELP_STRING([--disable-samba], [disable samba (default is no)]),
+				[disable_samba=no], [disable_samba=yes])
+
+AC_CHECK_LIB(smbclient, smbc_new_context, 
+			 [LIBS="-lsmbclient $LIBS"], 
+			 [disable_samba=no] )
+
+if test "$disable_samba" = "yes"; then
+	AC_DEFINE(__LINM_SAMBA_USE__, 1, [samba use setting])
+else	
+	AC_CACHE_CHECK([disable samba], [disable_samba], [disable_samba=yes])
+fi
+
+AM_CONDITIONAL(LINM_UNUSE_SAMBA, test "$disable_samba" = "no")
+
+dnl  **************************************************************
+dnl  sftp setting.
+
+if test "$disable_sftp" = "yes"; then
+	if test -z "$PKG_CONFIG"; then
+		AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+	fi
+
+	case "$host" in
+		*-cygwin)
+	       	SHLIB_SUFFIX_NAME="dll"
+#			CFLAGS="$CFLAGS -DLIBSSH2_WIN32"
+			;;
+	    *)
+			SHLIB_SUFFIX_NAME="so"
+			;;
+	esac
+
+	AC_ARG_WITH(openssl,
+	AC_HELP_STRING([--with-openssl=DIR],[Look for OpenSSL in PATH]),
+	[LIBSSH2_OPENSSL_DIR=$withval],[LIBSSH2_OPENSSL_DIR=yes])
+	
+	if test "$LIBSSH2_OPENSSL_DIR" = "no" || test "$LIBSSH2_OPENSSL_DIR" = "yes"; then
+	unset LIBSSH2_OPENSSL_DIR
+	fi
+	
+	found_openssl=no
+	unset OPENSSL_INCDIR
+	unset OPENSSL_LIBDIR
+	
+	AC_MSG_CHECKING([for OpenSSL])
+	
+	# Explicit path given, use it rather than pkg-config
+	if test ! -z "$LIBSSH2_OPENSSL_DIR"; then
+	found_openssl=yes
+	OPENSSL_LIBDIR=`-L$LIBSSH2_OPENSSL_DIR/lib`
+	OPENSSL_INCDIR=`$LIBSSH2_OPENSSL_DIR/include`
+	AC_MSG_RESULT([Using explicit path $LIBSSH2_OPENSSL_DIR])
+	fi
+	
+	# If pkg-config is found try using it
+	if test "$found_openssl" = "no" && test -x "$PKG_CONFIG" && $PKG_CONFIG --exists openssl; then
+		found_openssl=yes
+		OPENSSL_LIBDIR=`$PKG_CONFIG --silence-errors --libs openssl`
+		OPENSSL_INCDIR=`$PKG_CONFIG --silence-errors --variable=includedir openssl`
+		AC_MSG_RESULT([Using paths from pkg-config])
+	fi
+	
+	# Elsewise, search for OpenSSL wherever it might be
+	if test "$found_openssl" = "no" || test -z "$OPENSSL_INCDIR" || test -z "$OPENSSL_LIBDIR"; then
+		OPENSSL_SEARCH_PATH="/usr/local/ssl /usr/local /usr /usr/local/openssl"
+	
+		for i in $OPENSSL_SEARCH_PATH; do
+			if test -r $i/include/openssl/evp.h; then
+				OPENSSL_INCDIR="$i/include"
+			fi
+			if test -r $i/include/openssl/hmac.h; then
+				OPENSSL_INCDIR="$i/include"
+			fi
+			if test -r $i/lib/libcrypto.a -o -r $i/lib/libcrypto.$SHLIB_SUFFIX_NAME;  then
+				OPENSSL_LIBDIR="-L$i/lib"
+			fi
+	
+			test -n "$OPENSSL_INCDIR" && test -n "$OPENSSL_LIBDIR" && break
+		done
+
+		if test -z "$OPENSSL_INCDIR"; then
+			AC_MSG_ERROR([Cannot find OpenSSL's <evp.h> or <hmac.h>])
+		fi
+
+		#
+		# Confirm required OpenSSL libs
+		#
+		if test ! -r $OPENSSL_INCDIR/openssl/bn.h || test ! -r $OPENSSL_INCDIR/openssl/evp.h || \
+		test ! -r $OPENSSL_INCDIR/openssl/hmac.h || test ! -r $OPENSSL_INCDIR/openssl/pem.h || \
+		test ! -r $OPENSSL_INCDIR/openssl/sha.h; then
+			AC_MSG_ERROR([Missing one or more of <openssl/bn.h>, <openssl/evp.h>, <openssl/hmac.h>, <openssl/pem.h>, <openssl/sha.h>])
+		fi
+	
+		if test -z "$OPENSSL_LIBDIR"; then
+			AC_MSG_ERROR([Cannot find OpenSSL's libcrypto])
+		fi
+	
+		AC_MSG_RESULT([$OPENSSL_INCDIR $OPENSSL_LIBDIR])
+	fi
+	
+	CFLAGS="$CFLAGS -I$OPENSSL_INCDIR"
+	
+	if test "x$host_os" = "xcygwin"; then
+		LIBS="-lcrypto $LIBS"
+	else
+		LIBS="$OPENSSL_LIBDIR -lcrypto $LIBS"
+	fi
+	#
+	# zlib
+	#
+	AC_ARG_WITH(libz,
+	AC_HELP_STRING([--with-libz=PATH],[Look for libz in PATH]),
+	[LIBSSH2_LIBZ_DIR=$withval],[LIBSSH2_LIBZ_DIR="/usr/local /usr /usr/local/libz /usr/libz /usr/local/zlib /usr/zlib"])
+	
+	if test "$LIBSSH2_LIBZ_DIR" = "no" || test "$LIBSSH2_LIBZ_DIR" = "yes"; then
+	unset LIBSSH2_LIBZ_DIR
+	fi
+	
+	unset LIBZ_INCDIR
+	unset LIBZ_LIBDIR
+	
+	AC_MSG_CHECKING([for libz])
+	
+	for i in $LIBSSH2_LIBZ_DIR; do
+	if test -r $i/include/zlib.h; then
+		LIBZ_INCDIR=$i/include
+	fi
+	if test -r $i/lib/libz.a -o -r $i/lib/libz.$SHLIB_SUFFIX_NAME; then
+		LIBZ_LIBDIR=$i/lib
+	fi
+	test -n "$LIBZ_INCDIR" && test -n "$LIBZ_LIBDIR" && break
+	done
+	
+	if test -n "$LIBZ_INCDIR" && test -n "$LIBZ_LIBDIR"; then
+		AC_MSG_RESULT([Found in $LIBZ_INCDIR $LIBZ_LIBDIR])
+		CFLAGS="$CFLAGS -I$LIBZ_INCDIR"
+		CPPFLAGS="$CPPFLAGS -I$LIBZ_INCDIR"
+	
+		if test "x$host_os" = "xcygwin"; then
+			LDFLAGS="$LDFLAGS -lz"
+		else
+			LDFLAGS="$LDFLAGS -L$LIBZ_LIBDIR -lz"
+		fi
+		AC_DEFINE(LIBSSH2_HAVE_ZLIB, 1, [Compile in zlib support])
+	else
+		AC_MSG_RESULT([Cannot find libz's <zlib.h>])
+	fi
+	
+	#
+	# Optional Settings
+	#
+	AC_ARG_ENABLE(crypt-none,
+	AC_HELP_STRING([--enable-crypt-none],[Permit "none" cipher -- NOT RECOMMENDED]),
+	[AC_DEFINE(LIBSSH2_CRYPT_NONE, 1, [Enable "none" cipher -- NOT RECOMMENDED])])
+	
+	AC_ARG_ENABLE(mac-none,
+	AC_HELP_STRING([--enable-mac-none],[Permit "none" MAC -- NOT RECOMMENDED]),
+	[AC_DEFINE(LIBSSH2_MAC_NONE, 1, [Enable "none" MAC -- NOT RECOMMENDED])])
+	
+	AC_ARG_ENABLE(gex-new,
+	AC_HELP_STRING([--disable-gex-new],[Disable "new" diffie-hellman-group-exchange-sha1 method]),
+	[GEX_NEW=$enableval])
+	if test "$GEX_NEW" != "no"; then
+	AC_DEFINE(LIBSSH2_DH_GEX_NEW, 1, [Enable newer diffie-hellman-group-exchange-sha1 syntax])
+	fi
+	
+	#
+	# Optional debugging -- Meant for developer maintenance only
+	# When enabled, the relevant debugging information will be written on stderr
+	#
+	AC_ARG_ENABLE(debug-transport,
+		AC_HELP_STRING([--enable-debug-transport],[Output transport layer debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_TRANSPORT, 1, [Output transport layer debugging info to stderr])])
+	AC_ARG_ENABLE(debug-kex,
+		AC_HELP_STRING([--enable-debug-kex],[Output Key Exchange debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_KEX, 1, [Output Key Exchange debugging info to stderr])])
+	AC_ARG_ENABLE(debug-userauth,
+		AC_HELP_STRING([--enable-debug-userauth],[Output userauth debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_USERAUTH, 1, [Output userauth layer debugging info to stderr])])
+	AC_ARG_ENABLE(debug-channel,
+		AC_HELP_STRING([--enable-debug-connection],[Output connection layer debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_CONNECTION, 1, [Output connection layer debugging info to stderr])])
+	AC_ARG_ENABLE(debug-scp,
+		AC_HELP_STRING([--enable-debug-scp],[Output scp subsystem debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_SCP, 1, [Output scp subsystem debugging info to stderr])])
+	AC_ARG_ENABLE(debug-sftp,
+		AC_HELP_STRING([--enable-debug-sftp],[Output sftp subsystem debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_SFTP, 1, [Output sftp subsystem debugging info to stderr])])
+	AC_ARG_ENABLE(debug-publickey,
+		AC_HELP_STRING([--enable-debug-publickey],[Output publickey subsystem debugging info to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_PUBLICKEY, 1, [Output publickey subsystem debugging info to stderr])])
+	AC_ARG_ENABLE(debug-errors,
+		AC_HELP_STRING([--enable-debug-errors],[Output failure events to stderr]),
+		[AC_DEFINE(LIBSSH2_DEBUG_ERRORS, 1, [Output failure events to stderr])])
+	AC_ARG_ENABLE(debug-all,
+		AC_HELP_STRING([--enable-debug-all],[Output debugging info for all layers to stderr]),
+		[
+			AC_DEFINE(LIBSSH2_DEBUG_TRANSPORT, 1, [Output transport layer debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_KEX, 1, [Output Key Exchange debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_USERAUTH, 1, [Output userauth layer debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_CONNECTION, 1, [Output connection layer debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_SCP, 1, [Output scp subsystem debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_SFTP, 1, [Output sftp subsystem debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_PUBLICKEY, 1, [Output publickey subsystem debugging info to stderr])
+			AC_DEFINE(LIBSSH2_DEBUG_ERRORS, 1, [Output failure events to stderr])
+		])
+fi
+
+AC_OUTPUT(Makefile src/Makefile lib/Makefile panel/Makefile editor/Makefile src/ncurses/dialog/Makefile src/ncurses/Makefile panel/vfs/Makefile panel/vfs/ftp/Makefile panel/common/Makefile panel/vfs/archive/Makefile sh/Makefile panel/vfs/libssh2/Makefile intl/Makefile po/Makefile.in panel/vfs/samba/Makefile)
+
+if test "$disable_sftp" = "no"; then
+  echo ""
+  echo "sftp unsupported. configure using --disable-sftp"
+  echo ""
+fi
+
+if test "$disable_samba" = "no"; then
+  echo ""
+  echo "Samba client unsupported."
+  echo ""
+  echo " debian or (k)ubuntu : "
+  echo "    apt-get install libsmbclient-dev libsmbclient "
+  echo " redhat or fedora : "
+  echo "    yum install samba-common"
+  echo " other  : "
+  echo "    Please refer to http://www.samba.org" 
+  echo "" 
+fi
+
+if [ test "w$CURSESLIB" != "w-lncursesw" ]; then  
+  echo ""
+  echo "Warning : "
+  echo " 'ncursesw' library not found. utf-8 locale unsupported."
+  echo ""
+  echo " debian or (k)ubuntu : "
+  echo "   apt-get install libncursesw5-dev"
+  echo " other : "
+  echo "    Please refer to http://www.gnu.org/software/ncurses/" 
+fi
+
+echo ""
+echo "Good - your configure finished. Start make now"
+echo ""
+

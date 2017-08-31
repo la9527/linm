@@ -1,0 +1,14 @@
+setenv MLS_PWD_FILE $HOME/.linm/path
+
+@bindir@/linm $@
+
+if (-r "$MLS_PWD_FILE") then
+	setenv MLS_PWD "`cat $MLS_PWD_FILE`"
+
+	if ( -d "$MLS_PWD" ) then
+		cd "$MLS_PWD"
+	endif
+	unsetenv MLS_PWD
+endif
+
+unsetenv MLS_PWD_FILE

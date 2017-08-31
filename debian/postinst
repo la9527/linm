@@ -1,0 +1,30 @@
+#!/bin/sh
+# postinst script for witt-flash-plugin
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+#DEBHELPER#
+
+if [ -w /etc/bash.bashrc ]; then
+	ALIAS_CHK="`cat /etc/bash.bashrc | grep 'alias linm' | wc -l`"
+	if [ "$ALIAS_CHK" = "0" ]; then
+		echo "alias linm='. linm.sh'" >> /etc/bash.bashrc
+	fi
+fi
+
+exit 0
+

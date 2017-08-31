@@ -1,0 +1,14 @@
+[Desktop Entry]
+Comment=CUI file manager. archive file, ftp, sftp samba support.
+Comment[ko]=Mdir 리눅스 클론. sftp, ftp samba 지원.
+Encoding=UTF-8
+Exec=linm
+GenericName=CUI file manager
+GenericName[ko]=MDir 리눅스 클론  
+Icon=linm.xpm
+Name=LinM
+Name[ko]=LinM
+StartupNotify=true
+Terminal=true
+Type=Application
+Categories=Application;Utility;

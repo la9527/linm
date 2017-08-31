@@ -1,0 +1,552 @@
+
+* LinM
+
+  LinM 은 도스용 파일관리 툴인 Mdir의 리눅스 클론 입니다.
+  기존 Mdir의 단축키와 화면구성 등을 비슷하게 하여 친숙하게 사용할 수 있게 만든 프로그램입니다.
+   
+  프로그램의 기능 버그, 추가될 사항이 있으시면 프로젝트 
+  홈페이지나, 이메일을 통해서 연락주시면 감사하겠습니다.  
+
+* 인스톨
+
+   필요한 라이브러리 
+   
+    * ncurses 라이브러리가 필요합니다. (권장 5.3 버전이상)
+	  (http://www.gnu.org/software/ncurses/ncurses.html)	
+	  
+    * openssl 라이브러리가 필요합니다. (권장 0.9.6 이상)
+      (http://www.openssl.org)
+     
+	* samba client 라이브러리가 필요합니다. 
+	  (http://www.samba.org)	 
+
+   # ./configure 
+   # make
+   # make install
+
+    기본으로 깔리는 곳은 /usr/local로 깔립니다.
+    실행화일은 /usr/local/bin 깔리게 됩니다.
+    다른 곳에 인스톨하시려면
+
+    # ./configure --prefix=PATH
+
+    기본 설정파일은 /etc/mls 에 깔립니다.
+    그리고 linm 종료시 해당 디렉토리로 이동하시려면, 
+    인스톨 후 다시 로그인을 하셔야 정상적으로 실행이 됩니다.	
+
+    # ./configure --help 하시면 관련 컴파일 옵션이 나옵니다.
+    	 
+    관련 컴파일 옵션
+      
+      --enable-tarname=FILE      : tar 명 바꿈. (디폴트는 tar, gtar 두가지 중 자동으로 설정됩니다.)
+      --enable-cfgpath=DIR       : LinM 설정 파일 위치를 설정합니다. (디폴트 : /etc/linm)
+      --enable-kolocalefile=DIR  : 한글 로케일 파일 위치설정 (디폴트 : /usr/share/locale/ko/LC_MESSAGES)
+      --disable-pthread          : pthread 라이브러리 사용하지 않는다.     
+      --enable-debug             : 디버그 모드로 사용                  
+      --enable-allstatic         : static으로 컴파일. 관련 라이브러리가 없어도 실행가능하게 컴파일 
+      --disable-iconv            : iconv 라이브러리를 이용하지 않게 컴파일. 
+                                   static으로 컴파일해서 쓸때 사용.
+      --with-ncurses-prefix      : ncurses 설정
+      --disable-sftp             : sftp 사용하지 않음. openssl 을 이용하지 않음.
+      --disable-samba            : Samba 를 사용하지 않음. libsmbclient 을 이용하지 않음.
+      --with-openssl=DIR         : openssl 설정 (설정하지 않으면 자동으로 설정됩니다.)
+      --with-libz=DIR            : libz 설정 (설정하지 않으면 자동으로 설정됩니다.)
+ 
+* 기본 사항
+
+   1. 현재 프로그램 코딩은 ko_KR.UTF-8 로 되어 있습니다. 
+      따라서 기존의 euc-kr의 인코딩을 사용하시는 분은 utf-8로 
+      편집기 인코딩 설정을 바꿔서 사용하시기 바랍니다.
+
+   2. 파일 구성
+ 	 - 프로그램 인스톨시 자동으로 /etc/linm 밑에 설정화일을 복사 합니다.
+ 	   (User계정일 경우에는 $HOME/.linm 밑에 설정파일들이 복사 됩니다.)
+   	  
+      1) default.cfg, colorset.cfg, keyset.cfg : LinM 설정파일들
+      2) linm.sh, linm_aliase.sh : LinM 종료시 최종 종료된 디렉토리로 이동하기 위한 쉘프로그램
+      3) linm_euckr.mo, linm_utf8.mo : 영문번역내용을 담은 파일
+      
+   3. 단축키
+
+	Mls)
+		/       : 쉘
+		ESC     : Command 화면을 보여줌
+	
+		|       : 홈 디렉토리 이동
+		\       : 루트 디렉토리 이동
+		BS      : 부모 디렉토리 이동
+		
+		Alt+Q   : 이전 디렉토리로
+		Alt+W   : 앞 디렉토리로
+		Alt+C   : 파일 복사 (mcd 이용)
+		Alt+D   : 파일 삭제
+		Alt+K   : 디렉토리 만듦
+		Alt+R   : 이름바꾸기
+		Alt+V   : 파일보기
+		Alt+S   : 소트 변경
+		Alt+Z   : 숨긴 화일 보기
+		Alt+O   : 소유자 보기
+
+		Alt+L   : 박스를 +,-,| 형태 보여줌
+		Alt+H   : 파일모드바꿈(Chmod)
+		Alt+X,
+		Ctrl+Q  : Mls 종료
+		Alt+S   : 파일소트바꿈.
+	
+		Ctrl+A  : 전체선택
+		Ctrl+U  : 반전
+		SPACE   : 선택
+	
+		Alt+E   : 압축메뉴
+		Ctrl+L  : 영문모드 <-> 한글모드
+		Ctrl+W  : 다중뷰
+		Tab     : 다중뷰일 경우 다음화면
+		Ctrl+E  : 다중뷰일 경우 다음화면
+		Ctrl+N  : 새로운 문서
+	
+		Ctrl+C  : 클립 복사 
+		Ctrl+V  : 클립 붙여넣기
+		Ctrl+X  : 클립 잘라내기 (압축파일에서는 불가)
+	
+		F1      : 도움말
+		F2      : 이름수정
+		F3      : 보기
+		F4      : 에디터
+		F5      : 새로고침
+		F6      : 이동
+		F7      : 디렉토리 생성
+		F8      : 삭제
+		F9      : 압축메뉴
+		F10     : MCD
+		F11     : Quick Change Directory
+		F12     : 메뉴
+		
+		Ctrl+P	: sftp, ftp, samba 접속 설정 화면
+		Ctrl+R  : sftp, ftp, samba 빠른 접속
+		Alt+R   : sftp, ftp, samba 접속 종료
+		
+		Ctrl+G  : 마운트된 목록 보여줌.
+		Ctrl+O	: 콘솔모드 (MC 와 비슷한 서브쉘)
+		          콘솔모드에서 Ctrl+O를 누르면 LinM으로 되돌아감.
+		         
+		Ctrl+F  : 파일 찾기
+		Alt+I   : 파일 비교 
+		
+		Ctrl+B  : 설정 변경
+	
+	MCD)
+		F1      : 도움말
+		F2      : 이름수정
+		F3      : 전체 디렉토리 검색
+		F4      : 깊이를 3으로 검색
+		F5      : 새로고침
+		F6      : 이동
+		F7      : 디렉토리 생성
+		F8      : 디렉토리 삭제
+		F9      : 디렉토리 사이즈
+		F10     : 마운트된 목록 보여줌
+		F12     : 메뉴
+		
+		Alt+X, Ctrl+Q
+		        : MCD 종료
+		
+		Ctrl+R  : sftp, ftp, samba 접속
+		Alt+R   : sftp, ftp, samba 접속 종료		
+
+		Ctrl+C  : 클립 복사 
+		Ctrl+V  : 클립 붙여넣기
+		Ctrl+X  : 클립 잘라내기 (압축파일에서는 불가)
+		
+		Ctrl+W  : 다중뷰
+		Tab     : 다중뷰일 경우 다음화면
+		Ctrl+E  : 다중뷰일 경우 다음화면
+
+	Mls Editor)
+		F2      : 선택 모드
+		F3      : 다음 찾기
+		F5      : 찾기 
+		F5      : 새로고침
+		F6      : 라인 번호 보기
+		F8      : Vim 으로 보기
+		F12     : 메뉴
+				
+		Ctrl+N  : 새로운 문서
+		Ctrl+S  : 문서 저장
+		Ctrl+C  : 복사
+		Ctrl+X  : 자르기
+		Ctrl+V  : 붙여넣기
+		Ctrl+Z  : 실행취소
+		Ctrl+G  : 라인이동
+		Ctrl+F  : 찾기
+		Ctrl+R  : 바꾸기
+		
+		Alt+F   : 처음으로
+		Alt+E   : 마지막으로
+		Alt+X,
+		Ctrl+Q  : 에디터 종료
+		
+		Ctrl+W  : 다중뷰
+		F9      : 다중뷰일 경우 다음화면
+		Ctrl+E  : 다중뷰일 경우 다음화면
+		
+		Shift+방향키 : Gnome 콘솔에서만 사용가능(선택기능)
+		               기타 터미널은 F2 를 이용하여 선택
+
+  4. 압축 파일 지원 : tar, tar.gz, gz, bz2, tar.bz2, rpm, zip, deb, alz
+
+* 테스트 OS
+
+   - Redhat 9, Fedora 1~7
+   - Haansoft Linux 2006
+   - Ubuntu 7.10
+   - Gentoo 2007.01
+
+* 알려진 문제점
+
+   - 기본적으로 linm_aliase.sh (LinM 종료시 최종 종료된 디렉토리로 이동하기 위한 쉘프로그램)
+     는 기본적으로 /etc/profile.d 에 들어갑니다.
+     이것이 실행되지 않을 시 밑의 alias 내용을 홈디렉토리의 .bash_profile 에 추가하거나,
+     각자 초기 profile 에 넣어 주면 실행이 됩니다. (보통 데비안 리눅스)
+
+            alias linm='. linm.sh'
+            
+   - 특정 서버 sftp 접속시 이유없이 패스워드가 틀렸다고 나오는 버그(찾는중)
+
+* 홈페이지 (Wiki)
+ 
+   http://wiki.kldp.org/wiki.php/Mls
+   
+* 프로젝트 홈페이지
+
+   http://kldp.net/projects/mls/
+  
+* 개발자
+
+   라병영 la9527@yahoo.co.kr        Project Manager   
+   이승중 leesjung@nownuri.net      Developer
+   배상경 baesg@cntek.co.kr         Developer
+   서영섭 Youngseop, Seo            Developer
+   임채훈 fehead@gmail.net          Tester
+   최은서 eunseo.choi@gmail.com     Translator
+   김기태 bluetux@gmail.com         Designer
+   강우성 kayws426@gmail.com		   Developer
+
+----------------------------------------------------------------------------------
+
+* LinM 0.8.1 에서 바뀐점.
+    추가
+    - 파일 바로찾기 기능 강화 (비슷한 파일 바로 찾기 기능 추가)
+    - 분할 화면이 아닌 한 윈도우에서 다음화면 이동하게 설정 추가
+    - 투명 콘솔 화면 설정 추가(기본 투명콘솔 단 검은색만)
+    
+    버그수정
+    - 한쪽창은 편집화면 한쪽창은 파일창일때 쉘모드시 커서 위치 버그 수정.
+	- linm.sh, linm.csh 버그 수정
+	- Ctrl+O SubShell path 버그 수정	
+	- 압축시 취소(Ctrl+C) 되게 수정
+
+* LinM 0.8 에서 바뀐점.
+	추가
+	* 환경 설정 화면 추가
+	* libssh2-0.18 업데이트
+	* 에디터에서 바꾸기(Replace) 기능 추가
+	* rar 압축풀기, iso 파일 보기 지원
+	
+	버그 수정
+	* 메뉴의 설정파일 수정 후 화면 오류 수정
+	* 마운트된 디렉토리 /dev 로 시작되는 내용만 보여주게 수정
+	* Editor 시 Right, Left 버튼을 계속 누르면 계속 밑으로 위로 가게 수정
+	* Ctrl+R 지원하지 않는 프로토콜 버그 수정
+	* 확장자별 실행연결에서 처음 실행파일이 없을 경우 설정한 다음실행파일로 수정
+	* 설정파일 확장자 리스트 추가
+
+* LinM 0.7.12 에서 바뀐점.
+
+	추가
+	- Samba 접속 지원. (smb:// 로 접근 가능)
+
+	버그 수정
+	- 파일 복사시 ProgressBar 오류 수정.
+	- ko_KR.EUC-KR 로케일 인식 오류 수정.
+	- 리모트 파일 복사시 가끔 OverWrite 메시지 나오는 오류 수정.
+	- FreeBSD, GCC 2.9x 컴파일 오류 수정.
+
+* LinM 0.7.11 에서 바뀐점.
+	
+	추가 
+	- 파일 검색 추가
+	- 파일 비교 추가(diff)
+	- 파일소유자 변경 추가
+	- LinM 설치시 실행 Icon 추가
+	- jar 보기 및 압축 풀기 지원
+	- alt+enter 시 프로그램 선택을 늘림 (default.cfg 수정)
+	- 엔터시 확장자 실행을 선택하는 옵션 추가.(default.cfg 의 Enter_RunSelect)
+	- 터미널 Title에 현재 디렉토리 위치 추가
+
+	버그 수정	
+	- remove 시 커서  위치 버그 수정.
+	- 파일 복사시 같은 파일인 경우 rename 저장시 저장 되지 않는 오류 수정.
+	- 죽은 링크파일인 경우 보이지 않고, 디렉토리 삭제시 삭제 되지 않는 버그 수정.
+	- 파일 복사시 ProgressBar 에서 가끔 죽는 버그 수정.
+	- gz, bz2 파일 보기 버그 수정.
+
+* LinM 0.7.10 에서 바뀐점.
+	
+	추가	
+	- MC 와 비슷한 ConsoleMode (Ctrl+O) 기능을 추가. 	
+	
+	버그 수정
+	- Mac PCC 의 컴파일 관련 버그 수정.
+	- 화면 힌트 내용 보완.
+	- 파일 복사시 같은 파일이 있을때 Rename 시 제대로 되지 않는 오류 수정.
+	- 현재 시스템 locale 이 ko_KR.utf8.eucKR 인 경우 영문으로 나오는 오류 수정.
+	- sftp 복사 관련 오류 수정.
+	- 입력창에서 커서위치 오류 수정. Rename 시 입력창에서 ESC 누를시 창닫게 수정.
+	- gettext 관련 프로그램 개선
+	- 입력 커서 포지션 버그 수정.
+
+* LinM 0.7.9 에서 바뀐점.
+
+	추가
+
+	- 상대편 디렉토리와 같게 추가. (Ctrl+S)
+	- 화면 분할시 파일 복사(Atl+C) 및 이동시(Alt+M) 반대쪽 화면 디렉토리에 파일 복사 및 이동
+	- libssh2 0.14로 버전업.
+
+	버그 수정
+
+	- 화면 오른쪽 한칸 잘림 문제 해결.
+	- 링크 디렉토리 지울시 실제 안의 파일까지 삭제되는 문제 수정.
+	- 링크 복사 및 삭제 관련 버그 수정.
+	- KDE Konsole 에서 SCIM 을 이용한 한글 입력 버그 수정.
+	- 처음 실행시 cfg 파일 바뀌는 메시지 계속 나오는 버그 수정.	
+	- 한컴 리눅스 안녕 리눅스 컴파일 버그 수정.
+	- sftp, ftp 접속후 Timeout 시 죽는 버그 수정.
+	- sftp 복사시 복사 시간이 느린 점 수정.
+	- make -j2 옵션 버그 수정.	
+
+* LinM 0.7.8 버전에서 추가된 점.
+
+	추가 된점.
+
+	- 접속 관리자 메뉴 추가.
+	- ssh 키 파일로 접근 가능하게 추가. 
+	  (인증키에 패스워드 넣는 것은 추후지원)
+	- 터미널 제목을 LinM 으로 바꿈.
+
+	버그 수정
+	  
+	- 환경설정 파일 수정시 특정 OS에서 죽는 버그 수정.
+	- 내부에디터에서 Select All 하고 지울시 가끔 죽는 버그 수정.
+	- QCD에서 한 항목을 delete시 화면 반영이 않된 문제 수정.
+	- TabSize 관련에러 문제점 수정.
+	- 파티션간 파일 이동시 에러 수정.
+	- 2GB 이상 파일 볼수 없는 문제 수정.
+	- AlwaysClearRefresh 환경변수 추가.
+
+* LinM 0.7.7 버전에서 추가된 점.
+	추가 된 점
+	
+	- sftp, ftp 복사시 한글일 경우 EUC-KR, UTF8 복사를 물어보게 수정.
+	- configure 시 설정파일, 한글 로케일 관련 인스톨 위치를 입력하게 추가 
+	  ( --enable-cfgpath, --enable-kolocalefile 옵션 설정추가)
+	- sftp, ftp에서 파일 편집하여 파일 저장시 파일이 자동으로 sftp, ftp로 저장되게 수정.
+	- OS 타입이 linux-gnu 이외에는 iconv, intl 라이브러리를 확인하고 링크해주게 변경. 
+	  (freebsd, cygwin 등을 위한 수정)
+	- F5 새로고침을 화면을 지우고 다시그리는 것으로 바꿈.
+	- Cygwin 컴파일 완료.
+	
+	버그 수정
+	
+	- 압축 파일 읽을때 파일을 읽을 수 없는 경우 에러메시지 처리 해주게 수정.
+	- sftp rename 버그 수정.
+	- 한글 Msg 오타 수정.
+	- gcc 2.95 compile error bugfix.
+	- 파일 복사 관련 2.3G 이상의 파일 복사 하게 수정.
+	- 파일 복사시 취소 버튼 버그 수정. (Progress 관련 버그수정)
+	- tar.gz 복사시 시간이 많이 걸리던 문제 수정.
+	- tmp 디렉토리를 ~/.linm/linmtmp_dir 로 바꾸고 tmp에 파일 지워짖 않은 버그 수정.
+	- cygwin 의 키코드 다른 문제 수정.
+	- default.cfg 파일 설정관련 버그 수정.
+
+* LinM 0.7.6 버전에서 추가된 점.
+	추가.
+	- zip 파일 view시 utf8, euckr 인식하게 수정. (일부 zip 파일은 한글이 깨진채로 들어가 있음)
+	- sftp, ftp 파일 복사시 local복사시에만 한글파일 euckr, utf8 변경 저장하게 수정.(추후 버전 remote도 지원.)
+	- MCD dir list 저장(file, sftp, ftp 따로 저장).
+	- 클립보드 내용보기 추가.	
+	- 한글 locale (linm_euckr.po, linm_utf8.po) 추가.
+	- Chmod 추가 및 checkbox 추가.
+	- Execute 추가(Alt+Enter)
+	- QCD 추가 (F11)
+	- Back, Forward 추가
+	- Extract 추가 (Alt+E)
+	- New File, TouchFile 추가.	
+	- Sehll History 추가 지원.
+	- Help, About 추가.
+	- Editor 에서 마우스 On,Off 추가.
+	- TextBox dialog 추가.
+	
+	버그수정.
+	- 선택박스에서 버튼 4개 이하 인 것은 가로로 나오게 수정.
+	- Path 버그 수정.
+	- ftp 에서 상위 디렉토리로 이동시 .. 으로 이동하는 버그 수정.
+	- tar.gz 빠져나올때 사용한 tar.gz 으로 이동하게 버그 수정.
+	- shell 실행시 에러내용 표시 않되는 것 수정.
+	- 컴파일관련 버그 수정.
+	- 메뉴선택에서 Config 파일 수정변경시 바뀌지 않는 버그 수정.
+	- Editor에서 패널 하나일 경우 전체 화면으로 나오게 수정.
+	- 에디터 전체 화면일 경우 마우스 끄게 수정.
+	- 선택모드일경우 커서 끔. 기타 커서 관련 버그 수정.
+	- 다이얼로그에서 마우스 클릭시 인식 버그 수정.
+	- Mcd Rscan시 자신 디렉토리로 이동되게 수정
+	- 일부 키제대로 되지 않는 문제 수정 (panel에서 home 디렉토리 이동 등)
+	- 압축시 Ctrl+C 인식되게 수정.
+	- MCD Rename 버그 수정.
+	- Mcd Remove 후 커서 / 이동 버그 수정.
+	- Editor 종료후 사용한 파일로 이동하게 버그 수정.
+
+* LinM 0.7.5b 베타 버전에 추가 된점
+	- sftp 지원, sftp 접속 파일 보기, sftp 접속 tar.gz 파일 보기, sftp <-> sftp 접속 지원
+	- Mcd Copy & Paste (Ctrl+C, Ctrl+V) Panel <-> Mcd 지원
+	- linm, mcd 에서 마운트 목록 보여주고 이동 (local 작업시)
+	- 키코드 제대로 되게  (F1~F10, 방향키 pageup, pagedown 등) 수정.	
+	- gcc 2.9 compile error 수정		
+	- Editor 시 filepath표시 없음 수정
+	- Editor 추가
+	- Editor 화면 버그 수정
+	- Editor 쪽 에서 vim editor로 편집 메뉴 추가	
+	- Alt+C, Alt+M 복사, 이동 추가
+	- selectbox title 내용 없는 버그 수정
+	- 메뉴 단축키 버그 수정	
+	
+	* 추가해야 할점. (추후 지원)
+		- MCD 내용 저장 		
+		- Help
+		- QCD
+		- Make TarGZ, BZ, Extract
+		- sftp, ftp 쪽에서 파일 복사할때 utf8 <-> euckr 상관없이 한글깨짐없이 복사 가능하게 변경.
+		- 한글화
+
+* LinM 0.7a 알파 버전 추가 된점 (2005-10-23)
+    - 기존 Mls 에서 LinM으로 실행파일과 패키지이름이 변경되었습니다.
+    - 프로그램 전체에 대한 마우스 인식 강화 (다이얼로그, Mcd, 메뉴 등)
+    - 화면 깜빡꺼림 제거. 화면 스크롤이 예전보다 빨라짐.
+    - ftp 지원, ftp 접속 파일 보기, ftp 접속 tar.gz 파일 보기, ftp <-> ftp 접속 지원
+    - mcd 화면이 전체 화면에서 패널에서도 지원하게 지원.
+    - Mcd, Panel 링크 지원.
+    - 기존의 Editor, QCD 등이 빠져있습니다. 다음 베타버전에는 들어갈 예정입니다.
+
+* 0.6.7 버전에서 달라진 점
+  추 가
+	- Touchfile, 선택된 파일 리스트 저장 메뉴넣음.
+	- Alt+Enter 시 Parameter, Parameter(root) 넣음.
+	- Makefile.am 에 $(DESTDIR)을 넣음.
+	- Clip_Copy, Clip_Cut 일시 C, U 를 각각 화면에 보여줌.
+	- Mcd 에서 Search시 Tab 지원.
+	- 영문 메뉴얼 넣음.
+	- gcc 2.9x 버전 에러 수정	
+	
+  수 정
+	- Makefile.am Uninstall 시 mlseditor.key 파일 빠져있는 것을 수정.
+	- 현재 디렉토리가 없을때 종료할 경우 오류 수정	
+	- InputBox 가로크기 좀 크게 변경
+	- Mcd 디렉토리 정보보기 Ctrl+C 제대로 되지 않는 문제 수정.
+	- --with-ncurses-prefix configure 옵션 수정
+	- --enable-static 옵션 버그 수정
+	- Unalz 0.51 버전에서 날짜부분 수정
+	- 홈디렉토리에 있는 config 파일 버전이 다를시 파일을 
+	  /etc/mls에서 복사하는지 물어보게 수정.
+	- 에디터에서 DOS 모드로 종료하면 계속 DOS 모드로 읽어 들이는 문제 수정.
+	- Ctrl+Q(종료), Delete(삭제), Insert(복사) 의 단축키를 추가하였습니다.
+
+* 0.6.5 버전 달라진 점
+  추가 사항
+    - unalz 추가 - unalz 0.5 이상 버전에서 지원 (http://www.kipple.pe.kr/win/unalz/)
+	- MCD 에서 F9 를 디렉토리 정보 보기(파일 개수 및 사이즈)로 변경 기존 (F9 -> F4)
+	- Mls 파일 정보보기 (F9)넣음. 기존 압축 해제는 Ctrl+E로 변경. 	
+	- DOS 모드 읽기, 쓰기 넣음, 엔터시 들여쓰기 위치 켜기 끄기 넣음. 
+	- 에디터 들여쓰기, 들여쓰기 지움 넣음.
+	
+  수 정
+	- MCD 밑의 Function 메뉴를 한글이 나오게 수정
+	- 화면 버그 수정 및 선택 상태에서 붙여넣기 오류 수정
+	- tar.gz 에러시 이상하게 나오는 버그 수정 (화면 버그수정)
+	- mcd right 버튼시 그위치에 디렉토리가 없으면 밑으로 내려가게 수정.
+	- 쉘에서 cd 일때 탭버튼 누를 경우는 디렉토리만 검색되게 수정	
+	- 에디터에서 붙여넣기 시 라인 10 위치에 고정되는 것을 수정.
+	- Undo시 위치가 이상하게 되는 것을 수정.
+	- bug [300938] 삭제된 디렉토리에서 시작되었을 오류가 발생되는 문제 수정.
+	- FreeBSD, NetBSD 빌드 에러 수정 
+
+* 0.6 버전에서 달라진 점
+  추 가	
+	- mls 전체 한글 입력 버그 수정
+	- mls shell 을 login@host:path$ 로 수정.
+	- 일부 콘솔의 Home, End, F1~F5 버튼 에러 수정
+	- chmod 추가 (alt+h)    
+	- 선택 실행을 추가 (alt+enter)
+	- 화면 밑에 hint 추가
+	- Mls에 Newfile, Root Run 추가    
+	- configure 에 --all-static 추가(리눅스 버전에 상관없이 컴파일 된 파일 사용가능하게)
+	- editor 추가. 
+		- 내부를 wchar_t로 변경 한글 처리 완성.
+		- select(F2), cut(ctrl+x), copy(ctrl+c), paste(ctrl+v), Undo(ctrl+z), Find(ctrl+f) 지원.
+		- Enter시 바로전 탭사이즈 위치로 이동, home 버튼 누를시 가장 앞의 문자 위치로 이동.
+		- utf-8, euc-kr 지원, save시 utf-8, euc-kr 변경 저장 가능
+    
+  수 정
+	- [ #300892 ] 접근권한 없는directory접근후에 tar 파일을 열때 에러 수정
+	- 설정 파일 버전 #!version 으로 내용 바꿈.
+	- 설정 파일에서 ExtEditor 내용이 있으면 에디터 설정된 내용으로 실행되게 변경
+	  없으면 내부 에디터 실행. (F3 : 내부, F4: 외부)
+	- Editor 에 처음으로, 마지막으로 넣음.
+	- User 계정에도 설치할수 있게 수정	
+	- rwSrwsrw- 이렇게 리눅스와 같은 파일 모드로 수정	
+	- shell의 프롬프트를 리눅스기본인 userid@hostname:path$ 로 바꿈.
+	- gz 파일 내용 보기 버그 수정	
+
+* 0.5 버전에서 달라진 점
+	- configure 에 --enable-debug, --enable-tarname, --disable-pthread 가 추가됨.
+	- Debian, RPM 패키지 파일 보기 및 파일 복사 가능
+	- Tar,rpm,deb 파일 내용중 Link File 버그 수정
+	- tar,zip,rpm,deb 파일 Clipboard 지원(copy & paste, remove(tar, zip만 가능)
+	- Console 화면을 움직일때 죽는 버그 최소화
+	- 압축 파일 안에서 엔터하면 바로 파일 보기(버그수정)
+	- Mls File Viewer 추가. Text 화일의 경우 Enter시 Mls Viewer로 보이게 함.
+	- 마우스 지원(아직 미흡함)
+
+* 0.4.5 버전에서 달라진 점.  
+
+	- FreeBSD 에서의 패치 추가
+	- 특정 디렉토리로 들어가면 프로그램이 죽는 현상 제거
+	- 다른 프로그램을 실행시키고 나서 잔상이 남는 현상 제거
+	- 파일 정렬에 문제가 있던 문제 제거
+	- 설정 파일 설치 스크립트 오작동 수정
+	- 펑션리스트, 메뉴리스트에 마우스 인식 작업
+	- 파일리스트에 마우스 대응은 추후에 할 예정임
+	- 설정상태 자동 저장 기능 추가
+	- 가로 상태바 고정 토글 기능 추가
+  
+* 0.4 버전에서 달라진 점.
+
+	- 다국어 지원, 지금은 한국어만 있습니다
+	- 압축파일처리를 커맨드로 처리
+	- 압축파일 처리 부분등에서 쓰레드 지원
+	- 다중창 사용시 작업 디렉토리 바뀌지 않는 버그 수정
+	- 쉘커맨드에서 cd 지원
+  
+* 0.3 버전에서 달라진 점. 
+   
+	- 처음 초기화 실행에 Confiugre 파일을 읽어올 때 상황 보여줌.
+	- tar.gz, rpm, bz2, gz, zip 안에서 mcd 실행가능하게 함.
+	- zip 화일안에 있는 데이터를 실행가능하게 수정.
+	- rpm, tar.gz, bz2, gz, zip 화일을 바로 인스톨.(F9, alt+i)
+	- box를 (+,-,|)로 바꿔는 alt+l 추가 및 메뉴추가
+	- mls 실행 옵션을 추가. (--help, --noline, --mcd 등)
+	- mls, mcd 종료 팝업창을 mls.cfg 에서 조정하게 함.
+	- iconv 함수 추가로 euc-kr, utf-8 을 자동으로 감지.
+	- mcd 에서 디렉토리 체크 하여 체크 되지 않은 곳을 ? 표시
+	- zip 압축 풀리게 설정 따라서 안에 있는 파일을 소스를 볼수있음.
+	- 기타 자잘한 버그 수정.
+

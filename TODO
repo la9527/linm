@@ -1,0 +1,14 @@
+
+ * Known Bug list
+
+    - SSH
+        - Support the ssh private key.
+        - version update openssh.
+
+ * TODO LIST
+
+    - auto detect file change.
+    - Support XZ file
+	- Support ARJ file
+	- Support ISO file
+	- SUDO 가능성 검토 및 지원.

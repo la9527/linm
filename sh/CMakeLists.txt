@@ -12,6 +12,7 @@ add_custom_command(OUTPUT linm_alias.csh
 
 add_custom_target(linmScript DEPENDS linm.sh linm.csh linm_alias.csh linm_alias.sh)
 
+if (UNIX)
 install(FILES colorset.cfg default.cfg keyset.cfg DESTINATION etc )
 
 install(FILES
@@ -19,6 +20,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/linm.csh
         ${CMAKE_CURRENT_BINARY_DIR}/linm_alias.sh
         ${CMAKE_CURRENT_BINARY_DIR}/linm_alias.csh DESTINATION bin )
+endif (UNIX)
 
 add_dependencies(linm linmScript)
 

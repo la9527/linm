@@ -8,86 +8,86 @@
 		<Option virtualFolders="CMake Files\;CMake Files\lib\;CMake Files\panel\;CMake Files\panel\common\;CMake Files\panel\vfs\;CMake Files\panel\vfs\ftp\;CMake Files\panel\vfs\archive\;CMake Files\panel\vfs\libssh2\;CMake Files\panel\vfs\samba\;CMake Files\editor\;CMake Files\src\;CMake Files\src\ncurses\;CMake Files\src\ncurses\dialog\;CMake Files\sh\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/local">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 install/local"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install/strip">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 install/strip"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="install">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 install"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="list_install_components">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 list_install_components"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/la9527/linm"/>
+				<Option working_dir="/Users/la9527/linm_project/linm"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="mlscommon">
-				<Option output="/Users/la9527/linm/lib/libmlscommon.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/lib"/>
+				<Option output="/Users/la9527/linm_project/linm/lib/libmlscommon.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/lib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DHAVE_CONFIG_H"/>
 					<Add option="-DLOCALEDIR=&quot;share/locale&quot;"/>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/intl"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/intl"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -96,23 +96,23 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 mlscommon"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 mlscommon"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="mlscommon/fast">
-				<Option output="/Users/la9527/linm/lib/libmlscommon.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/lib"/>
+				<Option output="/Users/la9527/linm_project/linm/lib/libmlscommon.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/lib"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add option="-DHAVE_CONFIG_H"/>
 					<Add option="-DLOCALEDIR=&quot;share/locale&quot;"/>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/intl"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/intl"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -121,26 +121,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 mlscommon/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 mlscommon/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/lib/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="panelcommon">
-				<Option output="/Users/la9527/linm/panel/common/libpanelcommon.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/common"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/common/libpanelcommon.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/common"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/usr/local/opt/openssl/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -149,26 +150,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 panelcommon"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 panelcommon"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="panelcommon/fast">
-				<Option output="/Users/la9527/linm/panel/common/libpanelcommon.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/common"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/common/libpanelcommon.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/common"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/usr/local/opt/openssl/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -177,27 +179,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 panelcommon/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 panelcommon/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/common/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="vfsplugin">
-				<Option output="/Users/la9527/linm/panel/vfs/libvfsplugin.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/libvfsplugin.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -206,27 +208,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 vfsplugin"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 vfsplugin"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="vfsplugin/fast">
-				<Option output="/Users/la9527/linm/panel/vfs/libvfsplugin.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/libvfsplugin.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -235,27 +237,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 vfsplugin/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 vfsplugin/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmpluginftp">
-				<Option output="/Users/la9527/linm/panel/vfs/ftp/liblinmpluginftp.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs/ftp"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/ftp/liblinmpluginftp.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -264,27 +266,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 linmpluginftp"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 linmpluginftp"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmpluginftp/fast">
-				<Option output="/Users/la9527/linm/panel/vfs/ftp/liblinmpluginftp.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs/ftp"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/ftp/liblinmpluginftp.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -293,27 +295,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 linmpluginftp/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 linmpluginftp/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/ftp/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmpluginarc">
-				<Option output="/Users/la9527/linm/panel/vfs/archive/liblinmpluginarc.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs/archive"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/archive/liblinmpluginarc.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -322,27 +324,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 linmpluginarc"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 linmpluginarc"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmpluginarc/fast">
-				<Option output="/Users/la9527/linm/panel/vfs/archive/liblinmpluginarc.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs/archive"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/archive/liblinmpluginarc.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -351,27 +353,87 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 linmpluginarc/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 linmpluginarc/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/archive/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="linmpluginsftp">
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/libssh2/liblinmpluginsftp.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
+					<Add directory="/usr/local/opt/openssl/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 linmpluginsftp"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="linmpluginsftp/fast">
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/libssh2/liblinmpluginsftp.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
+					<Add directory="/usr/local/opt/openssl/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 linmpluginsftp/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/libssh2/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmpluginsmb">
-				<Option output="/Users/la9527/linm/panel/vfs/samba/liblinmpluginsmb.dylib" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs/samba"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/samba/liblinmpluginsmb.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -380,27 +442,27 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 linmpluginsmb"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 linmpluginsmb"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmpluginsmb/fast">
-				<Option output="/Users/la9527/linm/panel/vfs/samba/liblinmpluginsmb.dylib" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/panel/vfs/samba"/>
+				<Option output="/Users/la9527/linm_project/linm/panel/vfs/samba/liblinmpluginsmb.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 				<Option object_output="./"/>
 				<Option type="3"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/samba"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/samba"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -409,21 +471,21 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 linmpluginsmb/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 linmpluginsmb/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/panel/vfs/samba/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="editor">
-				<Option output="/Users/la9527/linm/editor/libeditor.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/editor"/>
+				<Option output="/Users/la9527/linm_project/linm/editor/libeditor.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/editor"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -432,21 +494,21 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 editor"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 editor"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="editor/fast">
-				<Option output="/Users/la9527/linm/editor/libeditor.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/editor"/>
+				<Option output="/Users/la9527/linm_project/linm/editor/libeditor.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/editor"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -455,30 +517,30 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 editor/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 editor/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/editor/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linm">
-				<Option output="/Users/la9527/linm/src/ncurses/linm" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/src/ncurses"/>
+				<Option output="/Users/la9527/linm_project/linm/src/ncurses/linm" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/src/ncurses"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/editor"/>
-					<Add directory="/Users/la9527/linm/src/ncurses/dialog"/>
-					<Add directory="/Users/la9527/linm/src/ncurses"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/editor"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses/dialog"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -487,30 +549,30 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 linm"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 linm"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linm/fast">
-				<Option output="/Users/la9527/linm/src/ncurses/linm" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/src/ncurses"/>
+				<Option output="/Users/la9527/linm_project/linm/src/ncurses/linm" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/src/ncurses"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm"/>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/panel/vfs"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/archive"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/ftp"/>
-					<Add directory="/Users/la9527/linm/panel/vfs/libssh2"/>
-					<Add directory="/Users/la9527/linm/editor"/>
-					<Add directory="/Users/la9527/linm/src/ncurses/dialog"/>
-					<Add directory="/Users/la9527/linm/src/ncurses"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/archive"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/ftp"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/vfs/libssh2"/>
+					<Add directory="/Users/la9527/linm_project/linm/editor"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses/dialog"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -519,25 +581,25 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 linm/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 linm/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="dialog">
-				<Option output="/Users/la9527/linm/src/ncurses/dialog/libdialog.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/src/ncurses/dialog"/>
+				<Option output="/Users/la9527/linm_project/linm/src/ncurses/dialog/libdialog.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/src/ncurses/dialog"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/src/ncurses"/>
-					<Add directory="/Users/la9527/linm/src/ncurses/dialog"/>
-					<Add directory="/Users/la9527/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses/dialog"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -546,25 +608,25 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 dialog"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 dialog"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="dialog/fast">
-				<Option output="/Users/la9527/linm/src/ncurses/dialog/libdialog.a" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/la9527/linm/src/ncurses/dialog"/>
+				<Option output="/Users/la9527/linm_project/linm/src/ncurses/dialog/libdialog.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/src/ncurses/dialog"/>
 				<Option object_output="./"/>
 				<Option type="2"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/Users/la9527/linm/lib"/>
-					<Add directory="/Users/la9527/linm/panel"/>
-					<Add directory="/Users/la9527/linm/panel/common"/>
-					<Add directory="/Users/la9527/linm/src/ncurses"/>
-					<Add directory="/Users/la9527/linm/src/ncurses/dialog"/>
-					<Add directory="/Users/la9527/linm"/>
+					<Add directory="/Users/la9527/linm_project/linm/lib"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel"/>
+					<Add directory="/Users/la9527/linm_project/linm/panel/common"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses"/>
+					<Add directory="/Users/la9527/linm_project/linm/src/ncurses/dialog"/>
+					<Add directory="/Users/la9527/linm_project/linm"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.1.0/include"/>
@@ -573,396 +635,453 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 dialog/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 dialog/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/src/ncurses/dialog/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="linmScript">
-				<Option working_dir="/Users/la9527/linm/sh"/>
+				<Option working_dir="/Users/la9527/linm_project/linm/sh"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/sh/Makefile&quot;  VERBOSE=1 linmScript"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/sh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/sh/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm/sh/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/sh/Makefile&quot;  VERBOSE=1 linmScript"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/sh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/sh/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/la9527/linm_project/linm/sh/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/la9527/linm/editor/editor.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/editor/editor.cpp">
 			<Option target="editor"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/editor/editor.h">
+		<Unit filename="/Users/la9527/linm_project/linm/editor/editor.h">
 			<Option target="editor"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/editor/editorexecute.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/editor/editorexecute.cpp">
 			<Option target="editor"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/cmdshell.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/cmdshell.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/configure.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/configure.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/configure.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/configure.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/define.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/define.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/exception.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/exception.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/exception.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/exception.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlsdialog.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlsdialog.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlsdialog.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlsdialog.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlslocale.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlslocale.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlslocale.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlslocale.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlslog.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlslog.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlslog.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlslog.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlsmutex.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlsmutex.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlsmutex.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlsmutex.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlsthread.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlsthread.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/mlsthread.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/mlsthread.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/strlinetoken.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/strlinetoken.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/strutil.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/strutil.cpp">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/strutil.h">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/strutil.h">
 			<Option target="mlscommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/colorcfgload.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/colorcfgload.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/colorcfgload.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/colorcfgload.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/history.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/history.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/history.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/history.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/keycfgload.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/keycfgload.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/keycfgload.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/keycfgload.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/mcd.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/mcd.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/mcd.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/mcd.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/mlscfgload.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/mlscfgload.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/mlscfgload.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/mlscfgload.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/panel.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/panel.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/panel.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/panel.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/passencrypt.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/passencrypt.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/passencrypt.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/passencrypt.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/reader.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/reader.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/reader.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/reader.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/remotecfgload.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/remotecfgload.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/remotecfgload.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/remotecfgload.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/selection.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/selection.cpp">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/selection.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/selection.h">
 			<Option target="panelcommon"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/archive/archive.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/archive/archive.cpp">
 			<Option target="linmpluginarc"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/archive/archive.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/archive/archive.h">
 			<Option target="linmpluginarc"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/archive/arcreader.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/archive/arcreader.cpp">
 			<Option target="linmpluginarc"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/archive/arcreader.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/archive/arcreader.h">
 			<Option target="linmpluginarc"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/dirreader.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/dirreader.cpp">
 			<Option target="vfsplugin"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/dirreader.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/dirreader.h">
 			<Option target="vfsplugin"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/ftp/ftplib.c">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/ftp/ftplib.c">
 			<Option target="linmpluginftp"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/ftp/ftplib.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/ftp/ftplib.h">
 			<Option target="linmpluginftp"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/ftp/ftpreader.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/ftp/ftpreader.cpp">
 			<Option target="linmpluginftp"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/ftp/ftpreader.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/ftp/ftpreader.h">
 			<Option target="linmpluginftp"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/samba/SMBReader.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/SFtpReader.cpp">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/SFtpReader.h">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/channel.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/comp.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/crypt.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/hostkey.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/kex.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/mac.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/misc.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/openssl.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/openssl.h">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/packet.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/pem.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/publickey.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/scp.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/session.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/sftp.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/transport.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/userauth.c">
+			<Option target="linmpluginsftp"/>
+		</Unit>
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/samba/SMBReader.cpp">
 			<Option target="linmpluginsmb"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/samba/SMBReader.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/samba/SMBReader.h">
 			<Option target="linmpluginsmb"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/vfsplugin.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/vfsplugin.cpp">
 			<Option target="vfsplugin"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/vfsplugin.h">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/vfsplugin.h">
 			<Option target="vfsplugin"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_common_imp.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_common_imp.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_common_imp.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_common_imp.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_editor_imp.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_editor_imp.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_editor_imp.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_editor_imp.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_mcd_imp.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_mcd_imp.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_mcd_imp.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_mcd_imp.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_panel_chown.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_panel_chown.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_panel_find.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_panel_find.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_panel_imp.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_panel_imp.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_panel_imp.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_panel_imp.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/cmd_settingchg.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/cmd_settingchg.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/command.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/command.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/command.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/command.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_button.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_button.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_chkradio.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_chkradio.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_config.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_config.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_config.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_config.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_form.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_form.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_input.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_input.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_label.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_label.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_menu.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_menu.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_menu.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_menu.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_remoteconnprops.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_remoteconnprops.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_remoteconnprops.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_remoteconnprops.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_replace.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_replace.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_replace.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_replace.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialog_text.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialog_text.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialogbox.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialogbox.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/dialogbox.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/dialogbox.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/drawset.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/drawset.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/drawset.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/drawset.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/keyreader.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/keyreader.cpp">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/keyreader.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/keyreader.h">
 			<Option target="dialog"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/main_ncurces.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/main_ncurces.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/mainframe.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/mainframe.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/mainframe.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/mainframe.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/mainframe_view.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/mainframe_view.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/mainframe_view.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/mainframe_view.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/mlsmenu.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/mlsmenu.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/mlsmenu.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/mlsmenu.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_dialog.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_dialog.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_dialog.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_dialog.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_editor.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_editor.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_editor.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_editor.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_mcd.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_mcd.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_mcd.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_mcd.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_panel.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_panel.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_panel.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_panel.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_qcd.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_qcd.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/ncurses_qcd.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/ncurses_qcd.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/subshell.cpp">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/subshell.cpp">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/subshell.h">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/subshell.h">
 			<Option target="linm"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/config.h.cmake">
+		<Unit filename="/Users/la9527/linm_project/linm/config.h.cmake">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/lib/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/lib/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\lib\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/common/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/common/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\common\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\vfs\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/ftp/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/ftp/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\vfs\ftp\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/archive/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/archive/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\vfs\archive\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/libssh2/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/libssh2/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\vfs\libssh2\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/panel/vfs/samba/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/panel/vfs/samba/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\panel\vfs\samba\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/editor/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/editor/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\editor\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/src/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\src\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\src\ncurses\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/src/ncurses/dialog/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/src/ncurses/dialog/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\src\ncurses\dialog\"/>
 		</Unit>
-		<Unit filename="/Users/la9527/linm/sh/CMakeLists.txt">
+		<Unit filename="/Users/la9527/linm_project/linm/sh/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\sh\"/>
 		</Unit>
 	</Project>

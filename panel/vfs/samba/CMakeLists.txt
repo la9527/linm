@@ -2,17 +2,19 @@ include_directories(${CMAKE_SOURCE_DIR}/lib ${CMAKE_SOURCE_DIR}/panel/common ${C
 
 ########### next target ###############
 
-SET(linmpluginsmb_LIB_SRCS
-   SMBReader.cpp
-)
+if( NOT DISABLE_SAMBA AND SMBCLIENT_FOUND )
+    SET(linmpluginsmb_LIB_SRCS
+       SMBReader.cpp
+    )
 
-add_library(linmpluginsmb SHARED ${linmpluginsmb_LIB_SRCS})
+    add_library(linmpluginsmb STATIC ${linmpluginsmb_LIB_SRCS})
 
-target_link_libraries(linmpluginsmb)
-
-set_target_properties(linmpluginsmb PROPERTIES VERSION 4.2.0 SOVERSION 4)
-install(TARGETS linmpluginsmb DESTINATION lib)
-
+    #target_link_libraries(linmpluginsmb)
+    #set_target_properties(linmpluginsmb PROPERTIES VERSION 4.2.0 SOVERSION 4)
+    #install(TARGETS linmpluginsmb DESTINATION lib)
+else()
+    message( STATUS "Unsupport SAMBA" )
+endif()
 
 ########### install files ###############
 

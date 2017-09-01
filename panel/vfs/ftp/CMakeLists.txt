@@ -13,7 +13,7 @@ add_library(linmpluginftp STATIC ${linmpluginftp_LIB_SRCS})
 #set_target_properties(linmpluginftp PROPERTIES VERSION 4.2.0 SOVERSION 4)
 
 #target_link_libraries(linmpluginftp)
-install(TARGETS linmpluginftp DESTINATION lib)
+#install(TARGETS linmpluginftp DESTINATION lib)
 
 
 ########### install files ###############

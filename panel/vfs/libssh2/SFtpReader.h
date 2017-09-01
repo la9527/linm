@@ -1,5 +1,5 @@
 #ifndef __SFTPREADER_H__
-#define __SFTPREADER_H_
+#define __SFTPREADER_H__
 
 #include "define.h"
 #include "reader.h"

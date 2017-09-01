@@ -8,38 +8,19 @@ include_directories(
 
 ########### next target ###############
 
-if (NOT DISABLE_SFTP)
-    if (OPENSSL_FOUND)
-        message( "openssl include directory : ${OPENSSL_INCLUDE_DIR}" )
-        include_directories(${OPENSSL_INCLUDE_DIR})
-    endif()
+if (NOT DISABLE_SFTP AND OPENSSL_FOUND)
+    message( "openssl include directory : ${OPENSSL_INCLUDE_DIR}" )
+    include_directories(${OPENSSL_INCLUDE_DIR})
 
     SET(linmpluginsftp_LIB_SRCS
-       channel.c
-       comp.c
-       crypt.c
-       hostkey.c
-       kex.c
-       mac.c
-       misc.c
-       packet.c
-       scp.c
-       session.c
-       sftp.c
-       userauth.c
-       openssl.c
-       pem.c
-       publickey.c
-       transport.c
        SFtpReader.cpp
     )
 
-    add_library(linmpluginsftp SHARED ${linmpluginsftp_LIB_SRCS})
+    add_library(linmpluginsftp STATIC ${linmpluginsftp_LIB_SRCS} ${OPENSSL_LIBRARY})
 
-    target_link_libraries(linmpluginsftp)
-
-    set_target_properties(linmpluginsftp PROPERTIES VERSION 4.2.0 SOVERSION 4)
-    install(TARGETS linmpluginsftp DESTINATION lib)
+    #target_link_libraries(linmpluginsftp ${OPENSSL_LIBRARY})
+    #set_target_properties(linmpluginsftp PROPERTIES VERSION 4.2.0 SOVERSION 4)
+    #install(TARGETS linmpluginsftp DESTINATION lib)
 endif()
 
 ########### install files ###############

@@ -8,13 +8,14 @@ include_directories(
         ${CMAKE_SOURCE_DIR}/panel/vfs/libssh2
         ${CMAKE_SOURCE_DIR}/panel/vfs/samba )
 
-
 add_subdirectory(ftp)
 add_subdirectory(archive)
 if (NOT DISABLE_SFTP)
     add_subdirectory(libssh2)
 endif()
-add_subdirectory(samba)
+if (NOT DISABLE_SAMBA)
+    add_subdirectory(samba)
+endif()
 
 ########### next target ###############
 

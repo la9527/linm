@@ -222,7 +222,7 @@ bool SFtpReader::Init(const string &sInitFile) {
 
     if (sUser == "") {
         String sMsg;
-        sMsg.Append("Input sftp username - [%s]", sIP.c_str());
+        sMsg.append("Input sftp username - [%s]", sIP.c_str());
         if (InputBox(sMsg.c_str(), sUser) == ERROR) return false;
     }
 
@@ -248,9 +248,9 @@ bool SFtpReader::Init(const string &sInitFile) {
             if (fingerprint) {
                 String strMsg;
                 for (int i = 0; i < 16; i++) {
-                    strMsg.Append("%02X", (unsigned char) fingerprint[i]);
+                    strMsg.append("%02X", (unsigned char) fingerprint[i]);
                     if (i < 15)
-                        strMsg.Append(":");
+                        strMsg.append(":");
                 }
 
                 MsgBox(_("RSA key Finger info"), strMsg.c_str());
@@ -289,7 +289,7 @@ bool SFtpReader::Init(const string &sInitFile) {
 
             if (sPasswd.size() == 0) {
                 String sMsg;
-                sMsg.Append("Input sftp passwd - [%s@%s]", sUser.c_str(), sIP.c_str());
+                sMsg.append("Input sftp passwd - [%s@%s]", sUser.c_str(), sIP.c_str());
                 if (InputBox(sMsg.c_str(), sPasswd, true) == ERROR) return false;
             }
 
@@ -365,8 +365,8 @@ bool SFtpReader::Init(const string &sInitFile) {
     catch (Exception &ex) {
         String sMsg;
         string sErrMsg = GetLastErrMsg();
-        sMsg.Append("%s", (char *) ex);
-        if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+        sMsg.append("%s", (char *) ex);
+        if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
         MsgWaitEnd(pWait);
         Destroy();
@@ -487,7 +487,7 @@ string SFtpReader::GetPwd() const {
     }
     catch (Exception &ex) {
         String sMsg;
-        sMsg.Append("%s", (char *) ex);
+        sMsg.append("%s", (char *) ex);
         MsgBox(_("Error"), sMsg.c_str());
         return "";
     }
@@ -555,7 +555,7 @@ bool SFtpReader::GetInfo(File &tFile) {
         }
 
         if (pFileAttr->flags & LIBSSH2_SFTP_ATTR_PERMISSIONS) {
-            char cAttr[10];
+            char cAttr[11];
 
             if (bLink)
                 cAttr[0] = 'l';
@@ -617,8 +617,8 @@ bool SFtpReader::GetInfo(File &tFile) {
     catch (Exception &ex) {
         String sMsg;
         string sErrMsg = GetLastErrMsg();
-        sMsg.Append("%s", (char *) ex);
-        if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+        sMsg.append("%s", (char *) ex);
+        if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
         return false;
     }
@@ -641,8 +641,8 @@ bool SFtpReader::Next() {
     if (nRt == -1) {
         String sMsg;
         string sErrMsg = GetLastErrMsg();
-        sMsg.Append(_("sftp file reading failure."));
-        if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+        sMsg.append(_("sftp file reading failure."));
+        if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
     }
     return false;
@@ -677,8 +677,8 @@ bool SFtpReader::Read(const string &sDir) {
         String sMsg;
         string sErrMsg;
         int nRt = GetLastError(&sErrMsg);
-        sMsg.Append(_("sftp file reading failure."));
-        if (!sErrMsg.empty()) sMsg.Append("%s", sErrMsg.c_str());
+        sMsg.append(_("sftp file reading failure."));
+        if (!sErrMsg.empty()) sMsg.append("%s", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
 
         if (nRt == LIBSSH2_ERROR_SOCKET_TIMEOUT) {
@@ -722,8 +722,8 @@ bool SFtpReader::Rename(File *pFile, const string &sRename) {
         String sMsg;
         string sErrMsg;
         int nRt = GetLastError(&sErrMsg);
-        sMsg.Append(_("SFtp rename failure !!! [%s]"), sRename.c_str());
-        if (!sErrMsg.empty()) sMsg.Append("%s", sErrMsg.c_str());
+        sMsg.append(_("SFtp rename failure !!! [%s]"), sRename.c_str());
+        if (!sErrMsg.empty()) sMsg.append("%s", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
 
         if (nRt == LIBSSH2_ERROR_SOCKET_TIMEOUT) {
@@ -751,8 +751,8 @@ bool SFtpReader::Mkdir(const string &sFullPathName) {
         String sMsg;
         string sErrMsg;
         int nRt = GetLastError(&sErrMsg);
-        sMsg.Append(_("SFtp mkdir failure !!! [%s]"), sMkdirName.c_str());
-        if (!sErrMsg.empty()) sMsg.Append("%s", sErrMsg.c_str());
+        sMsg.append(_("SFtp mkdir failure !!! [%s]"), sMkdirName.c_str());
+        if (!sErrMsg.empty()) sMsg.append("%s", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
 
         if (nRt == LIBSSH2_ERROR_SOCKET_TIMEOUT) {
@@ -826,8 +826,8 @@ bool SFtpReader::Copy(Selection &tSelection,        // remote
             // 소스가 없다니.. 참
             String sMsg;
             string sErrMsg = GetLastErrMsg();
-            sMsg.Append(_("File access error (%s), continue? !!! "), pFile->sName.c_str());
-            if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+            sMsg.append(_("File access error (%s), continue? !!! "), pFile->sName.c_str());
+            if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
             _pProgress->hideProgBar();
             if (YNBox(_("Error"), sMsg.c_str(), false) == false) break;
             _pProgress->showProgBar();
@@ -838,7 +838,7 @@ bool SFtpReader::Copy(Selection &tSelection,        // remote
                   sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str(), tAttr.filesize);
 
         String sCount, sCount2;
-        sCount.Printf("%s/%s", toregular(uViewCount).c_str(), sSize.c_str());
+        sCount.printf("%s/%s", toregular(uViewCount).c_str(), sSize.c_str());
 
         _pProgress->setLeftStr(pFile->sName.c_str());
         _pProgress->setRightStr2(sCount.c_str());
@@ -956,8 +956,8 @@ bool SFtpReader::Copy(Selection &tSelection,        // remote
         if (pFtpFileHandle == NULL) {
             String sMsg;
             string sErrMsg = GetLastErrMsg();
-            sMsg.Append(_("File access error (%s), continue? !!! "), pFile->sFullName.c_str());
-            if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+            sMsg.append(_("File access error (%s), continue? !!! "), pFile->sFullName.c_str());
+            if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
             _pProgress->hideProgBar();
             if (YNBox(_("Error"), sMsg.c_str(), false) == false) break;
             _pProgress->showProgBar();
@@ -984,8 +984,8 @@ bool SFtpReader::Copy(Selection &tSelection,        // remote
                 if ((uLastSize = libssh2_sftp_read(pFtpFileHandle, buf, sizeof(buf))) == -1) {
                     String sMsg;
                     string sErrMsg = GetLastErrMsg();
-                    sMsg.Append(_("remote file access error (%s), continue? !!! "), pFile->sFullName.c_str());
-                    if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+                    sMsg.append(_("remote file access error (%s), continue? !!! "), pFile->sFullName.c_str());
+                    if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
                     _pProgress->hideProgBar();
                     if (YNBox(_("Error"), sMsg.c_str(), false) == false) break;
                     fclose(out);
@@ -1000,7 +1000,7 @@ bool SFtpReader::Copy(Selection &tSelection,        // remote
                 uPsize += uLastSize;
 
                 // libssh2_sftp_seek(pFtpFileHandle, uCsize);
-                sCount2.Printf("%s/%s", toregular(uCsize).c_str(),
+                sCount2.printf("%s/%s", toregular(uCsize).c_str(),
                                toregular(pFile->uSize).c_str());
                 _pProgress->setRightStr(sCount2.c_str());
 
@@ -1083,8 +1083,8 @@ bool SFtpReader::Paste(Selection &tSelection) {
             if (libssh2_sftp_mkdir((LIBSSH2_SFTP *) _pSessionSFtp, (char *) sTargetName.c_str(), 0755) == -1) {
                 String sMsg;
                 string sErrMsg = GetLastErrMsg();
-                sMsg.Append(_("SFtp Directory exists, continue !!! [%s]"), sTargetName.c_str());
-                if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+                sMsg.append(_("SFtp Directory exists, continue !!! [%s]"), sTargetName.c_str());
+                if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
                 _pProgress->hideProgBar();
                 if (YNBox(_("Error"), sMsg.c_str(), false) == false) break;
                 _pProgress->showProgBar();
@@ -1110,7 +1110,7 @@ bool SFtpReader::Paste(Selection &tSelection) {
         if (stat(sSourceName.c_str(), &src_stat) == -1) {
             // 소스가 없다니.. 참
             String sStr;
-            sStr.Append(_("Source is not found : %s"), sSourceName.c_str());
+            sStr.append(_("Source is not found : %s"), sSourceName.c_str());
             _pProgress->hideProgBar();
             MsgBox(_("Error"), sStr);
             _pProgress->showProgBar();
@@ -1126,7 +1126,7 @@ bool SFtpReader::Paste(Selection &tSelection) {
         if (pFile->bDir) continue;
 
         String sCount, sCount2;
-        sCount.Printf("%s/%s", toregular(uViewCount).c_str(), sSize.c_str());
+        sCount.printf("%s/%s", toregular(uViewCount).c_str(), sSize.c_str());
 
         _pProgress->setLeftStr(pFile->sName.c_str());
         _pProgress->setRightStr2(sCount.c_str());
@@ -1230,8 +1230,8 @@ bool SFtpReader::Paste(Selection &tSelection) {
         if (pFtpOutFileHandle == NULL) {
             String sMsg;
             string sErrMsg = GetLastErrMsg();
-            sMsg.Append("File write access error (%s), continue? !!! ", sTargetName.c_str());
-            if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+            sMsg.append("File write access error (%s), continue? !!! ", sTargetName.c_str());
+            if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
             _pProgress->hideProgBar();
             if (YNBox(_("Error"), sMsg.c_str(), false) == false) break;
             _pProgress->showProgBar();
@@ -1266,8 +1266,8 @@ bool SFtpReader::Paste(Selection &tSelection) {
                         _pProgress->hideProgBar();
                         String sMsg;
                         string sErrMsg = GetLastErrMsg();
-                        sMsg.Append(_("file writing failure. continue?"));
-                        if (!sErrMsg.empty()) sMsg.Append(" [%s]", sErrMsg.c_str());
+                        sMsg.append(_("file writing failure. continue?"));
+                        if (!sErrMsg.empty()) sMsg.append(" [%s]", sErrMsg.c_str());
                         if (YNBox(_("Error"), sMsg.c_str(), false) == false) {
                             libssh2_sftp_close_handle(pFtpOutFileHandle);
                             fclose(fp);
@@ -1287,7 +1287,7 @@ bool SFtpReader::Paste(Selection &tSelection) {
 
                 //libssh2_sftp_seek(pFtpOutFileHandle, uCsize);
 
-                sCount2.Printf("%s/%s", toregular(uPsize).c_str(),
+                sCount2.printf("%s/%s", toregular(uPsize).c_str(),
                                toregular(uFileSize).c_str());
 
                 _pProgress->setRightStr(sCount2.c_str());
@@ -1350,7 +1350,7 @@ bool SFtpReader::Remove(MLS::Selection &tSelection, bool bMsgShow, bool bIgnore)
     String sStr;
 
     int nCount = 0;
-    sStr.Printf("%s/%s", toregular(nCount).c_str(), toregular(uSize).c_str());
+    sStr.printf("%s/%s", toregular(nCount).c_str(), toregular(uSize).c_str());
 
     if (bMsgShow) {
         _pProgress->setRightStr(sStr.c_str());
@@ -1374,8 +1374,8 @@ bool SFtpReader::Remove(MLS::Selection &tSelection, bool bMsgShow, bool bIgnore)
         if (libssh2_sftp_unlink((LIBSSH2_SFTP *) _pSessionSFtp, (char *) sTargetName.c_str()) == -1) {
             String sMsg;
             string sErrMsg = GetLastErrMsg();
-            sMsg.Append(_("sftp file remove failure : %s : continue ? "), pFile->sName.c_str());
-            if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+            sMsg.append(_("sftp file remove failure : %s : continue ? "), pFile->sName.c_str());
+            if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
             _pProgress->hideProgBar();
             if (YNBox(_("Error"), sMsg.c_str(), false) == true) {
                 _pProgress->showProgBar();
@@ -1386,7 +1386,7 @@ bool SFtpReader::Remove(MLS::Selection &tSelection, bool bMsgShow, bool bIgnore)
         }
         nCount++;
         if (bMsgShow) {
-            sStr.Printf("%s/%s", toregular(nCount).c_str(), toregular(uSize).c_str());
+            sStr.printf("%s/%s", toregular(nCount).c_str(), toregular(uSize).c_str());
             _pProgress->setRightStr(pFile->sName.c_str());
 
             if (nCount && uSize)
@@ -1410,8 +1410,8 @@ bool SFtpReader::Remove(MLS::Selection &tSelection, bool bMsgShow, bool bIgnore)
         if (libssh2_sftp_rmdir((LIBSSH2_SFTP *) _pSessionSFtp, (char *) sTargetName.c_str()) == -1) {
             String sMsg;
             string sErrMsg = GetLastErrMsg();
-            sMsg.Append(_("sftp dir remove failure : %s : %s. continue ? "), pFile->sName.c_str());
-            if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+            sMsg.append(_("sftp dir remove failure : %s : %s. continue ? "), pFile->sName.c_str());
+            if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
             _pProgress->hideProgBar();;
             if (YNBox(_("Error"), sStr.c_str(), false) == true) {
                 _pProgress->showProgBar();;
@@ -1422,7 +1422,7 @@ bool SFtpReader::Remove(MLS::Selection &tSelection, bool bMsgShow, bool bIgnore)
         }
 
         nCount++;
-        sStr.Printf("%s/%s", toregular(nCount).c_str(), toregular(uSize).c_str());
+        sStr.printf("%s/%s", toregular(nCount).c_str(), toregular(uSize).c_str());
 
         if (bMsgShow) {
             _pProgress->setRightStr(sTargetName.c_str());
@@ -1463,8 +1463,8 @@ bool SFtpReader::View(const File *pFileOriginal, File *pFileChange) {
     if (libssh2_sftp_stat((LIBSSH2_SFTP *) _pSessionSFtp, (char *) sSourceName.c_str(), &tAttr) == -1) {
         String sMsg;
         string sErrMsg = GetLastErrMsg();
-        sMsg.Append(_("File access error (%s), continue? !!!"), sSourceName.c_str());
-        if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+        sMsg.append(_("File access error (%s), continue? !!!"), sSourceName.c_str());
+        if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
         return false;
     }
@@ -1491,8 +1491,8 @@ bool SFtpReader::View(const File *pFileOriginal, File *pFileChange) {
     if (pFtpFileHandle == NULL) {
         String sMsg;
         string sErrMsg = GetLastErrMsg();
-        sMsg.Append(_("File access error (%s), continue? !!!"), sSourceName.c_str());
-        if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+        sMsg.append(_("File access error (%s), continue? !!!"), sSourceName.c_str());
+        if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
         _pProgress->hideProgBar();;
         MsgBox(_("Error"), sMsg.c_str());
         return false;
@@ -1525,11 +1525,11 @@ bool SFtpReader::View(const File *pFileOriginal, File *pFileChange) {
 
                 String sMsg;
                 string sErrMsg = GetLastErrMsg();
-                sMsg.Append(_("File access error (%s). !!!"),
+                sMsg.append(_("File access error (%s). !!!"),
                             pFileOriginal->sFullName.c_str());
 
                 if (!sErrMsg.empty())
-                    sMsg.Append("[%s]", sErrMsg.c_str());
+                    sMsg.append("[%s]", sErrMsg.c_str());
                 MsgBox(_("Error"), sMsg.c_str());
                 return false;
             }
@@ -1538,7 +1538,7 @@ bool SFtpReader::View(const File *pFileOriginal, File *pFileChange) {
             uCsize += uLastSize;
 
             //libssh2_sftp_seek(pFtpFileHandle, uCsize);
-            sCount.Printf("%s/%s",
+            sCount.printf("%s/%s",
                           toregular(uCsize).c_str(),
                           toregular(tAttr.filesize).c_str());
 
@@ -1568,8 +1568,8 @@ bool SFtpReader::isChkFile(const File &tFile) {
     if (libssh2_sftp_stat((LIBSSH2_SFTP *) _pSessionSFtp, (char *) tFile.sFullName.c_str(), &tAttr) == -1) {
         String sMsg;
         string sErrMsg = GetLastErrMsg();
-        sMsg.Append(_("File access error (%s), continue? !!!"), tFile.sFullName.c_str());
-        if (!sErrMsg.empty()) sMsg.Append("[%s]", sErrMsg.c_str());
+        sMsg.append(_("File access error (%s), continue? !!!"), tFile.sFullName.c_str());
+        if (!sErrMsg.empty()) sMsg.append("[%s]", sErrMsg.c_str());
         MsgBox(_("Error"), sMsg.c_str());
         return false;
     }

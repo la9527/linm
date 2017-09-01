@@ -1,9 +1,18 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.0)
 project (linm)
 
 set(PACKAGE "linm")
 set(VERSION "0.9.0")
 set(CMAKE_CXX_STANDARD 11)
+
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+set(CMAKE_MODULE_PATH
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules
+        )
+
+# disallow in-source build
+include(MacroEnsureOutOfSourceBuild)
+macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake /path/to/${PROJECT_NAME} [options]' there.")
 
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -212,13 +221,13 @@ if(NOT NCURSESW_LIB AND NOT NCURSES_LIB AND NOT NCURSESW_LIB)
     message("")
     message(FATAL_ERROR "'curses' or 'ncurses' library is not found.")
 else()
-    message("-- find library CURSES_LIB: ${CURSES_LIB}")
-    message("-- find library NCURSES_LIB: ${NCURSES_LIB}")
-    message("-- find library NCURSESW_LIB: ${NCURSESW_LIB}")
+    message(STATUS "find CURSES_LIB: ${CURSES_LIB}")
+    message(STATUS "find NCURSES_LIB: ${NCURSES_LIB}")
+    message(STATUS "find NCURSESW_LIB: ${NCURSESW_LIB}")
 endif()
 
 # find openssl library
-option(DISABLE_SFTP "Disable sftp. (default: OFF)")
+option(DISABLE_SFTP "SFTP Unsupport. (default: OFF)")
 if( NOT DISABLE_SFTP )
 
     if (EXISTS "/usr/local/opt/openssl")
@@ -236,16 +245,28 @@ if( NOT DISABLE_SFTP )
     if ( OPENSSL_FOUND )
         set(__LINM_SFTP_USE__ ON)
     endif( OPENSSL_FOUND)
+
+    include(FindPkgConfig)
+    if ( PKG_CONFIG_EXECUTABLE )
+        pkg_check_modules(LIBSSH_LIBRARY REQUIRED libssh)
+    else ( PKG_CONFIG_EXECUTABLE )
+        find_library(LIBSSH_LIBRARY ssh)
+    endif( PKG_CONFIG_EXECUTABLE )
+
+    message(STATUS "find LIBSSH_LIBRARY: ${LIBSSH_LIBRARY_LIBRARIES}")
 else()
-    message(" - Option - disable sftp: ON")
+    message(STATUS "Option - Disable SFTP: ON")
 endif()
 
-option(DISABLE_SAMBA "Disable samba. (default: OFF)")
+option(DISABLE_SAMBA "SAMBA unsupport. (default: OFF)")
 if( NOT DISABLE_SAMBA )
+    message(STATUS "Option - Disable SAMBA: OFF")
     find_library(SMBCLIENT_FOUND smbclient)
     if ( SMBCLIENT_FOUND )
         set(__LINM_SAMBA_USE__ ON)
     endif( SMBCLIENT_FOUND )
+else()
+    message(STATUS "Option - Disable SAMBA: ON")
 endif()
 
 # make config.h
@@ -265,7 +286,7 @@ add_subdirectory(sh)
 
 ########### install files ###############
 
-install(FILES README.md README.ko_euckr README.ko_utf8 DESTINATION share )
+install(FILES README.md README.ko DESTINATION share )
 
 #original Makefile.am contents follow:
 

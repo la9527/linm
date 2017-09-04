@@ -14,12 +14,49 @@ using namespace MLSUTIL;
 
 namespace MLS {
 
+    class SyntexData {
+    public:
+        bool bold, italic, underline, fixed, not_fixed;
+        int nColor;
+        int nBgColor;
+        int nStart;
+        std::string strString;
+
+        SyntexData() :
+                bold(false), italic(false), underline(false),
+                fixed(false), not_fixed(false), nColor(7), nBgColor(-1), nStart(0) {}
+
+        SyntexData(const std::string &str, int fontColor = 7, int bgColor = -1) :
+                bold(false), italic(false), underline(false),
+                fixed(false), not_fixed(false), nColor(fontColor), nBgColor(bgColor), nStart(0), strString(str) {}
+
+        bool operator==(const SyntexData &a) {
+            if (nColor != a.nColor) return false;
+            if (strString != a.strString) return false;
+            if (nColor != a.nColor) return false;
+            if (nStart != a.nStart) return false;
+            return true;
+        }
+    };
+
+    struct LineSyntex {
+        wstring wLine;
+        vector<SyntexData> vSyntexData;  /// Syntex Info.
+
+        LineSyntex(const wstring &wstr) :
+                wLine(wstr) {}
+
+        LineSyntex(const wstring &wstr, const vector<SyntexData> &vStx) :
+                wLine(wstr), vSyntexData(vStx) {}  /// Syntex Info.
+    };
+
     struct LineInfo {
         int nTextLine;        /// Text Position
         int nViewLine;        /// screen view position
-        int nNextLineNum;    /// 한 라인을 넘어 서는 경우에 라인 위치
-        bool bNext;            /// 한 라인을 넘어섰는가?
+        int nNextLineNum;    /// if over the one line, line number.
+        bool bNext;            /// Is this line over the one line?
         wstring sWString;        /// wstring
+        vector<SyntexData> vSyntexData;    /// Syntex Info.
     };
 
     struct EditSelect {
@@ -54,7 +91,7 @@ namespace MLS {
 
         bool _bLineNumView;    /// Line Number View
         bool _bInsert;        /// Insert mode
-        bool _bIndentMode;    /// Indentation mode (들여쓰기 모드)
+        bool _bIndentMode;    /// Indentation mode
 
         EditMode _EditMode;        /// edit mode
         EditSelect _EditSelect;    /// Select X,Y value
@@ -68,19 +105,19 @@ namespace MLS {
 
         string _title;            /// title
         string _sFile;            /// file
-        bool _bBackup;        /// backup 여부
+        bool _bBackup;        /// backup
         ENCODING _eEncode;        /// current load file encoding code value
-        int _nConvInfo;        /// Save 지점 변경 위치 저장 (_vDoInfo 사이즈 참조)
+        int _nConvInfo;        /// Save position changed position save (ref _vDoInfo)
 
-        File _tFile;            /// File 정보
+        File _tFile;            /// File information
 
-        // find 관련
+        // find section.
         wstring _sFindStr;
         int _nFindPosX;
         int _nFindPosY;
 
         vector<LineInfo> _vViewString;
-        vector<wstring> _vText;            /// wstring vector
+        vector<LineSyntex> _vText;            /// wstring, syntex vector
         vector<DoInfo *> _vDoInfo;        /// vector for Undo
 
         /// Function List
@@ -89,6 +126,10 @@ namespace MLS {
         void Selected_Del();
 
         void ScreenMemSave(int nLine, int nCulumn);
+
+        virtual void PostLoad() = 0;
+
+        virtual void PostUpdateLines(int nLineNum, int nHeight = 1) = 0;
 
     public:
         Editor();
@@ -122,7 +163,7 @@ namespace MLS {
         string GetFileName() const { return _sFile; }
 
         /********************************************/
-        /* 명령어 */
+        /* Commands */
         void LineNumberView() {
             _bLineNumView = !_bLineNumView;
         }

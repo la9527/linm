@@ -1,4 +1,5 @@
 /* Copyright (c) 2004-2007, Sara Golemon <sarag@libssh2.org>
+ * Copyright (c) 2009 by Daniel Stenberg
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms,
@@ -36,41 +37,103 @@
  */
 
 #include "libssh2_priv.h"
+#include "misc.h"
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
-/* {{{ libssh2_ntohu32
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
+
+#include <errno.h>
+
+#ifdef WIN32
+static int wsa2errno(void)
+{
+    switch (WSAGetLastError()) {
+    case WSAEWOULDBLOCK:
+        return EAGAIN;
+
+    case WSAENOTSOCK:
+        return EBADF;
+
+    case WSAEINTR:
+        return EINTR;
+
+    default:
+        /* It is most important to ensure errno does not stay at EAGAIN
+         * when a different error occurs so just set errno to a generic
+         * error */
+        return EIO;
+    }
+}
+#endif
+
+#ifndef _libssh2_recv
+/* _libssh2_recv
+ *
+ * Wrapper around standard recv to allow WIN32 systems
+ * to set errno
  */
-unsigned long
-libssh2_ntohu32(const unsigned char *buf)
+ssize_t
+_libssh2_recv(libssh2_socket_t socket, void *buffer, size_t length, int flags)
+{
+    ssize_t rc = recv(socket, buffer, length, flags);
+#ifdef WIN32
+    if (rc < 0 )
+        errno = wsa2errno();
+#endif
+    return rc;
+}
+#endif /* _libssh2_recv */
+
+#ifndef _libssh2_send
+
+/* _libssh2_send
+ *
+ * Wrapper around standard send to allow WIN32 systems
+ * to set errno
+ */
+ssize_t
+_libssh2_send(libssh2_socket_t socket, const void *buffer, size_t length, int flags)
+{
+    ssize_t rc = send(socket, buffer, length, flags);
+#ifdef WIN32
+    if (rc < 0 )
+        errno = wsa2errno();
+#endif
+    return rc;
+}
+#endif /* _libssh2_recv */
+
+/* libssh2_ntohu32
+ */
+unsigned int
+_libssh2_ntohu32(const unsigned char *buf)
 {
     return (buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | buf[3];
 }
 
-/* }}} */
 
-/* {{{ libssh2_ntohu64
- * Note: Some 32-bit platforms have issues with bitops on long longs
- * Work around this by doing expensive (but safer) arithmetic ops with optimization defying parentheses
+/* _libssh2_ntohu64
  */
 libssh2_uint64_t
-libssh2_ntohu64(const unsigned char *buf)
+_libssh2_ntohu64(const unsigned char *buf)
 {
     unsigned long msl, lsl;
 
     msl = (buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | buf[3];
     lsl = (buf[4] << 24) | (buf[5] << 16) | (buf[6] << 8) | buf[7];
 
-    return ((msl * 65536) * 65536) + lsl;
+    return ((libssh2_uint64_t)msl <<32) | lsl;
 }
 
-/* }}} */
-
-/* {{{ libssh2_htonu32
+/* _libssh2_htonu32
  */
 void
-libssh2_htonu32(unsigned char *buf, unsigned long value)
+_libssh2_htonu32(unsigned char *buf, unsigned int value)
 {
     buf[0] = (value >> 24) & 0xFF;
     buf[1] = (value >> 16) & 0xFF;
@@ -78,42 +141,20 @@ libssh2_htonu32(unsigned char *buf, unsigned long value)
     buf[3] = value & 0xFF;
 }
 
-/* }}} */
-
-/* {{{ libssh2_htonu64
- */
-void
-libssh2_htonu64(unsigned char *buf, libssh2_uint64_t value)
-{
-    unsigned long msl = (value / 65536) / 65536;
-
-    buf[0] = (msl >> 24) & 0xFF;
-    buf[1] = (msl >> 16) & 0xFF;
-    buf[2] = (msl >> 8) & 0xFF;
-    buf[3] = msl & 0xFF;
-
-    buf[4] = (value >> 24) & 0xFF;
-    buf[5] = (value >> 16) & 0xFF;
-    buf[6] = (value >> 8) & 0xFF;
-    buf[7] = value & 0xFF;
-}
-
-/* }}} */
-
 /* Base64 Conversion */
 
-/* {{{ */
-static const char libssh2_base64_table[] =
-    { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+static const char base64_table[] =
+{
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
     'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/', '\0'
 };
 
-static const char libssh2_base64_pad = '=';
+static const char base64_pad = '=';
 
-static const short libssh2_base64_reverse_table[256] = {
+static const short base64_reverse_table[256] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -132,14 +173,12 @@ static const short libssh2_base64_reverse_table[256] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 };
 
-/* }}} */
-
-
-/* {{{ libssh2_base64_decode
+/* libssh2_base64_decode
+ *
  * Decode a base64 chunk and store it into a newly alloc'd buffer
  */
 LIBSSH2_API int
-libssh2_base64_decode(LIBSSH2_SESSION * session, char **data,
+libssh2_base64_decode(LIBSSH2_SESSION *session, char **data,
                       unsigned int *datalen, const char *src,
                       unsigned int src_len)
 {
@@ -154,7 +193,7 @@ libssh2_base64_decode(LIBSSH2_SESSION * session, char **data,
     }
 
     for(s = (unsigned char *) src; ((char *) s) < (src + src_len); s++) {
-        if ((v = libssh2_base64_reverse_table[*s]) < 0)
+        if ((v = base64_reverse_table[*s]) < 0)
             continue;
         switch (i % 4) {
         case 0:
@@ -175,7 +214,8 @@ libssh2_base64_decode(LIBSSH2_SESSION * session, char **data,
         i++;
     }
     if ((i % 4) == 1) {
-        /* Invalid -- We have a byte which belongs exclusively to a partial octet */
+        /* Invalid -- We have a byte which belongs exclusively to a partial
+           octet */
         LIBSSH2_FREE(session, *data);
         return -1;
     }
@@ -184,7 +224,85 @@ libssh2_base64_decode(LIBSSH2_SESSION * session, char **data,
     return 0;
 }
 
-/* }}} */
+/* ---- Base64 Encoding/Decoding Table --- */
+static const char table64[]=
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+/*
+ * _libssh2_base64_encode()
+ *
+ * Returns the length of the newly created base64 string. The third argument
+ * is a pointer to an allocated area holding the base64 data. If something
+ * went wrong, 0 is returned.
+ *
+ */
+size_t _libssh2_base64_encode(LIBSSH2_SESSION *session,
+                              const char *inp, size_t insize, char **outptr)
+{
+  unsigned char ibuf[3];
+  unsigned char obuf[4];
+  int i;
+  int inputparts;
+  char *output;
+  char *base64data;
+  const char *indata = inp;
+
+  *outptr = NULL; /* set to NULL in case of failure before we reach the end */
+
+  if(0 == insize)
+    insize = strlen(indata);
+
+  base64data = output = LIBSSH2_ALLOC(session, insize*4/3+4);
+  if(NULL == output)
+    return 0;
+
+  while(insize > 0) {
+    for (i = inputparts = 0; i < 3; i++) {
+      if(insize > 0) {
+        inputparts++;
+        ibuf[i] = *indata;
+        indata++;
+        insize--;
+      }
+      else
+        ibuf[i] = 0;
+    }
+
+    obuf[0] = (unsigned char)  ((ibuf[0] & 0xFC) >> 2);
+    obuf[1] = (unsigned char) (((ibuf[0] & 0x03) << 4) | \
+                               ((ibuf[1] & 0xF0) >> 4));
+    obuf[2] = (unsigned char) (((ibuf[1] & 0x0F) << 2) | \
+                               ((ibuf[2] & 0xC0) >> 6));
+    obuf[3] = (unsigned char)   (ibuf[2] & 0x3F);
+
+    switch(inputparts) {
+    case 1: /* only one byte read */
+      snprintf(output, 5, "%c%c==",
+               table64[obuf[0]],
+               table64[obuf[1]]);
+      break;
+    case 2: /* two bytes read */
+      snprintf(output, 5, "%c%c%c=",
+               table64[obuf[0]],
+               table64[obuf[1]],
+               table64[obuf[2]]);
+      break;
+    default:
+      snprintf(output, 5, "%c%c%c%c",
+               table64[obuf[0]],
+               table64[obuf[1]],
+               table64[obuf[2]],
+               table64[obuf[3]] );
+      break;
+    }
+    output += 4;
+  }
+  *output=0;
+  *outptr = base64data; /* make it return the actual data memory */
+
+  return strlen(base64data); /* return the length of the new data */
+}
+/* ---- End of Base64 Encoding ---- */
 
 #ifdef LIBSSH2DEBUG
 LIBSSH2_API int
@@ -200,16 +318,18 @@ _libssh2_debug(LIBSSH2_SESSION * session, int context, const char *format, ...)
     char buffer[1536];
     int len;
     va_list vargs;
+    struct timeval now;
+    static int firstsec;
     static const char *const contexts[9] = {
         "Unknown",
         "Transport",
-        "Key Exchange",
+        "Key Ex",
         "Userauth",
-        "Connection",
-        "scp",
-        "SFTP Subsystem",
+        "Conn",
+        "SCP",
+        "SFTP",
         "Failure Event",
-        "Publickey Subsystem",
+        "Publickey",
     };
 
     if (context < 1 || context > 8) {
@@ -219,8 +339,14 @@ _libssh2_debug(LIBSSH2_SESSION * session, int context, const char *format, ...)
         /* no such output asked for */
         return;
     }
+    gettimeofday(&now, NULL);
+    if(!firstsec) {
+        firstsec = now.tv_sec;
+    }
+    now.tv_sec -= firstsec;
 
-    len = snprintf(buffer, 1535, "[libssh2] %s: ", contexts[context]);
+    len = snprintf(buffer, sizeof(buffer), "[libssh2] %d.%06d %s: ",
+                   (int)now.tv_sec, (int)now.tv_usec, contexts[context]);
 
     va_start(vargs, format);
     len += vsnprintf(buffer + len, 1535 - len, format, vargs);
@@ -238,4 +364,143 @@ libssh2_trace(LIBSSH2_SESSION * session, int bitmask)
     (void) bitmask;
     return 0;
 }
+#endif
+
+/* init the list head */
+void _libssh2_list_init(struct list_head *head)
+{
+    head->first = head->last = NULL;
+}
+
+/* add a node to the list */
+void _libssh2_list_add(struct list_head *head,
+                       struct list_node *entry)
+{
+    /* store a pointer to the head */
+    entry->head = head;
+
+    /* we add this entry at the "top" so it has no next */
+    entry->next = NULL;
+
+    /* make our prev point to what the head thinks is last */
+    entry->prev = head->last;
+
+    /* and make head's last be us now */
+    head->last = entry;
+
+    /* make sure our 'prev' node points to us next */
+    if(entry->prev)
+        entry->prev->next = entry;
+    else
+        head->first = entry;
+}
+
+/* return the "first" node in the list this head points to */
+void *_libssh2_list_first(struct list_head *head)
+{
+    return head->first;
+}
+
+/* return the next node in the list */
+void *_libssh2_list_next(struct list_node *node)
+{
+    return node->next;
+}
+
+/* return the prev node in the list */
+void *_libssh2_list_prev(struct list_node *node)
+{
+    return node->prev;
+}
+
+/* remove this node from the list */
+void _libssh2_list_remove(struct list_node *entry)
+{
+    if(entry->prev)
+        entry->prev->next = entry->next;
+    else
+        entry->head->first = entry->next;
+
+    if(entry->next)
+        entry->next->prev = entry->prev;
+    else
+        entry->head->last = entry->prev;
+}
+
+#if 0
+/* insert a node before the given 'after' entry */
+void _libssh2_list_insert(struct list_node *after, /* insert before this */
+                          struct list_node *entry)
+{
+    /* 'after' is next to 'entry' */
+    bentry->next = after;
+
+    /* entry's prev is then made to be the prev after current has */
+    entry->prev = after->prev;
+
+    /* the node that is now before 'entry' was previously before 'after'
+       and must be made to point to 'entry' correctly */
+    if(entry->prev)
+        entry->prev->next = entry;
+
+    /* after's prev entry points back to entry */
+    after->prev = entry;
+
+    /* after's next entry is still the same as before */
+
+    /* entry's head is the same as after's */
+    entry->head = after->head;
+}
+
+#endif
+
+
+
+#ifdef WIN32
+/*
+ * gettimeofday
+ * Implementation according to:
+ * The Open Group Base Specifications Issue 6
+ * IEEE Std 1003.1, 2004 Edition
+ */
+  
+/*
+ *  THIS SOFTWARE IS NOT COPYRIGHTED
+ *
+ *  This source code is offered for use in the public domain. You may
+ *  use, modify or distribute it freely.
+ *
+ *  This code is distributed in the hope that it will be useful but
+ *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
+ *  DISCLAIMED. This includes but is not limited to warranties of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  Contributed by:
+ *  Danny Smith <dannysmith@users.sourceforge.net>
+ */
+
+/* Offset between 1/1/1601 and 1/1/1970 in 100 nanosec units */
+#define _W32_FT_OFFSET (116444736000000000ULL)
+
+
+int __cdecl gettimeofday(struct timeval *tp,
+                         void *tzp)
+ {
+  union {
+    unsigned long long ns100; /*time since 1 Jan 1601 in 100ns units */
+    FILETIME ft;
+  }  _now;
+
+  if(tp)
+    {
+      GetSystemTimeAsFileTime (&_now.ft);
+      tp->tv_usec=(long)((_now.ns100 / 10ULL) % 1000000ULL );
+      tp->tv_sec= (long)((_now.ns100 - _W32_FT_OFFSET) / 10000000ULL);
+    }
+  /* Always return 0 as per Open Group Base Specifications Issue 6.
+     Do not set errno on error.  */
+  return 0;
+}
+
+
 #endif

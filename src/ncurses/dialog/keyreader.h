@@ -22,54 +22,55 @@
 #include "config.h"
 
 #ifdef HAVE_NCURSES_H
-
-#include <ncurses.h>
-
+        #include <ncurses.h>
 #else
-#include <curses.h>
+        #include <curses.h>
 #endif
 
 #include "define.h"
 #include "strutil.h"
 #include "keycfgload.h"
 
-#define    KEY_TAB      9
-#define    KEY_BS       263
-#define    KEY_ESC      1000027
+#define		KEY_TAB		9
+#define 	KEY_BS		263
+#define		KEY_ESC		1000027
 
-#define    KEY_CLEFT    1000001
-#define    KEY_CRIGHT   1000002
-#define    KEY_CUP      1000003
-#define    KEY_CDOWN    1000004
+#define		KEY_CLEFT	1000001
+#define		KEY_CRIGHT	1000002
+#define		KEY_CUP		1000003
+#define		KEY_CDOWN	1000004
 
-#define    KEY_SUP      1000010
-#define    KEY_SDOWN    1000020
+#define		KEY_SUP		1000010
+#define		KEY_SDOWN	1000020
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class KeyReader {
-    public:
-        KeyReader() {
-            KeyInfoReload();
-        }
+class KeyReader
+{
+	public:
+		KeyReader()
+		{
+			KeyInfoReload();
+		}
 
-        ~KeyReader() {}
+		~KeyReader() {}
 
-        void KeyInfoReload() {
-            _vKeyList = g_tKeyCfg.GetKeyInfo();
-        }
+		void	KeyInfoReload()
+		{
+			_vKeyList = g_tKeyCfg.GetKeyInfo();
+		}
 
-        KeyInfo Read(WINDOW *pWin = stdscr, bool bDelay = false);
+		KeyInfo		Read(WINDOW*	pWin = stdscr, bool bDelay = false);
+		int 		NameToDef(KeyInfo& tKeyInfo);
 
-        int NameToDef(KeyInfo &tKeyInfo);
-
-        KeyInfo KeynameToDefine(const string &sKeyName);
-
-    private:
-        vector<KeyInfo> _vKeyList;
-    };
+		KeyInfo KeynameToDefine(const string&	sKeyName);
+		
+	private:
+		vector<KeyInfo>		_vKeyList;
+};
 
 };
 

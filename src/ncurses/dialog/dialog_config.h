@@ -27,62 +27,58 @@ using namespace std;
 
 namespace MLS {
 
-    enum {
-        CHECKBOX = 0,
-        INPUTBOX = 1
-    };
+enum
+{
+	CHECKBOX = 0,
+	INPUTBOX = 1
+};
 
-    class ConfigOBJ {
-    public:
-        string _id;
-        string _text;
-        string _value;
-        int _nViewType;
-        void *_pBox;
+class ConfigOBJ
+{
+public:
+	string		_id;
+	string		_text;
+	string		_value;
+	int			_nViewType;
+	void*		_pBox;
+	
+	ConfigOBJ(	const string& 	id,
+				const string& 	text,
+				const string& 	value,
+				int				nViewType = 0 )
+		: _id( id ), _text( text ), _value( value ), _nViewType( nViewType ), _pBox( 0 )
+	{ }
+};
 
-        ConfigOBJ(const string &id,
-                  const string &text,
-                  const string &value,
-                  int nViewType = 0)
-                : _id(id), _text(text), _value(value), _nViewType(nViewType), _pBox(0) {}
-    };
+class Dialog_Config:public Form
+{
+public:
+	Dialog_Config();
+	~Dialog_Config();
 
-    class Dialog_Config : public Form {
-    public:
-        Dialog_Config();
+	void	SetViewConfig( const vector<ConfigOBJ>& vConfigOBJS );
 
-        ~Dialog_Config();
+	const vector<ConfigOBJ>&	getConfigOBJS();
+	bool	GetOk()				{ return _bOk; }
 
-        void SetViewConfig(const vector<ConfigOBJ> &vConfigOBJS);
+protected:
+	void	ButtonExec( Button* pButton, KeyInfo& tKeyInfo );
+	void	ViewObjExec( int nViewType, Position* pPos, KeyInfo& tKeyInfo );
+	void	SetPosition(Position* pPosition, int y, int x, int width, int nColNum);
+	bool	MouseEventExe(Position* pPosition, int nNum, int Y, int X, mmask_t bstate);
+	bool    MouseEvent(int Y, int X, mmask_t bstate);
+    void    Draw();
+    void    Execute(KeyInfo& tKeyInfo);
 
-        const vector<ConfigOBJ> &getConfigOBJS();
+private:
+	vector<ConfigOBJ>			_vConfigOBJS;
 
-        bool GetOk() { return _bOk; }
+    Button          _tOk;
+    Button          _tCancel;
 
-    protected:
-        void ButtonExec(Button *pButton, KeyInfo &tKeyInfo);
-
-        void ViewObjExec(int nViewType, Position *pPos, KeyInfo &tKeyInfo);
-
-        void SetPosition(Position *pPosition, int y, int x, int width, int nColNum);
-
-        bool MouseEventExe(Position *pPosition, int nNum, int Y, int X, mmask_t bstate);
-
-        bool MouseEvent(int Y, int X, mmask_t bstate);
-
-        void Draw();
-
-        void Execute(KeyInfo &tKeyInfo);
-
-    private:
-        vector<ConfigOBJ> _vConfigOBJS;
-
-        Button _tOk;
-        Button _tCancel;
-
-        bool _bOk;
-        int _nCurNum;
-    };
+    bool            _bOk;
+    int             _nCurNum;
+};
 
 };
 

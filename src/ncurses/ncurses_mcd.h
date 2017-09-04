@@ -29,129 +29,84 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class McdDirButton : public Position {
-    private:
-        Dir *_pNode;
-        bool _bSelect;
-        bool _bShowCheck;
+class McdDirButton:public Position
+{
+private:
+	Dir*	_pNode;
+	bool	_bSelect;
+	bool	_bShowCheck;
 
-    protected:
-        ColorEntry _tMCDColor;
-        ColorEntry _tLineColor;
+protected:
+	ColorEntry	_tMCDColor;
+	ColorEntry	_tLineColor;
 
-    protected:
-        void Draw() {
-            WINDOW *pWin = _pForm->GetWin();
-            if (_pNode == NULL) return;
+protected:
+	void	Draw();	
 
-            setcol(_tMCDColor, pWin);
-            wmove(pWin, y, x);
-            whline(pWin, ' ', width);
+public:
+	McdDirButton()
+	{
+		_pNode = NULL; _bSelect = false; _bShowCheck = false;
+		ColorSet();
+	}
 
-            if (_pNode->tFile.sFullName == "/") {
-                if (_bSelect)
-                    setrcol(_tMCDColor, pWin);
-                else
-                    setcol(_tMCDColor, pWin);
-                wprintw(pWin, "/");
-            } else {
-                if (_bSelect) {
-                    setrcol(_tMCDColor, pWin);
-                    LOG_WRITE("Selected [%s]", _pNode->tFile.sName.c_str());
-                    if (scrstrlen(_pNode->tFile.sName) <= 12)
-                        wprintw(pWin, "%-12s", _pNode->tFile.sName.c_str());
-                    else
-                        wprintw(pWin, "%-11.11s~", _pNode->tFile.sName.c_str());
-                } else {
-                    LOG_WRITE("Mcd Data [%s]", _pNode->tFile.sName.c_str());
+	void	ColorSet()
+	{
+		_tMCDColor 	= g_tColorCfg.GetColorEntry("MCD");
+		_tLineColor = g_tColorCfg.GetColorEntry("MCDLine");
+	}
 
-                    if (scrstrlen(_pNode->tFile.sName) <= 12) {
-                        setcol(_tMCDColor, pWin);
-                        wprintw(pWin, "%s ", _pNode->tFile.sName.c_str());
+	void	SetDir(Dir* pDir, bool bSel = false) { _pNode = pDir; _bSelect = bSel; _bShowCheck = true; }
+	bool	GetShowCheck() { return _bShowCheck; }
+	Dir*	GetNode() { return _pNode; }
+};
 
-                        if (!_pNode->vNode.empty()) {
-                            setcol(_tLineColor, pWin);
-                            whline(pWin, HLINE, 12 - _pNode->tFile.sName.size());
-                        }
-                    } else {
-                        setcol(_tMCDColor, pWin);
-                        wprintw(pWin, "%-11.11s~", _pNode->tFile.sName.c_str());
-                    }
-                }
-            }
+class NCurses_Mcd:public Mcd, public Form
+{
+private:
+	vector<McdDirButton*>		_vDirButtonList;
+	MemoryPool<McdDirButton>		_tMemPoolDirButton;
+	int							_nBefMemSize;
+	int							_nRowSize;
 
-            wnoutrefresh(pWin);
-        }
+protected:
+	ColorEntry	_tMCDColor;
+	ColorEntry	_tMCDLine;
+	ColorEntry	_tMCDHighLight;
 
-    public:
-        McdDirButton() {
-            _pNode = NULL;
-            _bSelect = false;
-            _bShowCheck = false;
-            ColorSet();
-        }
+protected:
+	void	DrawInit();
+	void 	Draw();
 
-        void ColorSet() {
-            _tMCDColor = g_tColorCfg.GetColorEntry("MCD");
-            _tLineColor = g_tColorCfg.GetColorEntry("MCDLine");
-        }
+	void	Refresh()
+	{
+		werase(_pWin);
+		Draw();
+	}
 
-        void SetDir(Dir *pDir, bool bSel = false) {
-            _pNode = pDir;
-            _bSelect = bSel;
-            _bShowCheck = true;
-        }
+public:
+	bool	_bFocus;
 
-        bool GetShowCheck() { return _bShowCheck; }
+	NCurses_Mcd(const string& sDir = ""):Mcd(sDir)
+	{
+		_nRowSize = 0;
+		_nBefMemSize = 0;
+		_bNoOutRefresh = true; // When Refresh funtion, not doupdate() call.
+		_bNoViewUpdate = true; // Does not update.
+		_bNotDrawBox = true; // Does not draw the box.
+		_bFocus = false;
+		Init();
+	}
 
-        Dir *GetNode() { return _pNode; }
-    };
+	void 	Init();
 
-    class NCurses_Mcd : public Mcd, public Form {
-    private:
-        vector<McdDirButton *> _vDirButtonList;
-        MemoryPool<McdDirButton> _tMemPoolDirButton;
-        int _nBefMemSize;
-        int _nRowSize;
-
-    protected:
-        ColorEntry _tMCDColor;
-        ColorEntry _tMCDLine;
-        ColorEntry _tMCDHighLight;
-
-    protected:
-        void DrawInit();
-
-        void Draw();
-
-        void Refresh() {
-            werase(_pWin);
-            Draw();
-        }
-
-    public:
-        bool _bFocus;
-
-        NCurses_Mcd(const string &sDir = "") : Mcd(sDir) {
-            _nRowSize = 0;
-            _nBefMemSize = 0;
-            _bNoOutRefresh = true; // Refresh 할때 doupdate 하지 않는다.
-            _bNoViewUpdate = true; // 업데이트 하지 않는다.
-            _bNotDrawBox = true; // 박스를 그리지 않는다.
-            _bFocus = false;
-            Init();
-        }
-
-        void Init();
-
-        bool MouseEvent(int Y, int X, mmask_t bstate);
-
-        void Key_PageDown();
-
-        void Key_PageUp();
-    };
+	bool	MouseEvent(int Y, int X, mmask_t bstate);
+	void	Key_PageDown();
+	void	Key_PageUp();
+};
 
 };
 

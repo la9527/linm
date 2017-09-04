@@ -10,24 +10,23 @@ using namespace MLSUTIL;
 
 namespace MLS {
 
-    class Qcd : public Curses_SelectBox, public Configurable {
-    public:
-        Qcd();
+class Qcd: public Curses_SelectBox, public Configurable
+{
+public:
+	Qcd();
+	~Qcd();
 
-        ~Qcd();
+	void UpdateConfig();
+	void SaveConfig();
 
-        void UpdateConfig();
+	const string& 	GetData();
+	
+protected:
+	void	Execute(KeyInfo& tKeyInfo);	
 
-        void SaveConfig();
-
-        const string &GetData();
-
-    protected:
-        void Execute(KeyInfo &tKeyInfo);
-
-    private:
-        vector<string> _vItem;
-    };
+private:
+	vector<string>	_vItem;
+};
 
 }
 

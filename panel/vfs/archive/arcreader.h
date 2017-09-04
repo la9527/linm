@@ -29,80 +29,81 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class ArcReader : public Reader {
-    protected:
-        Archive *_pArchive;
-        vector<File *> _vFileList;
-        //vector<string>	_vDeleteFile; ///< 압축된 파일 view 하고 나서 tmp 내용을 지울때 씀.
+class ArcReader:public Reader
+{
+protected:
+	Archive*		_pArchive;
+	vector<File*>	_vFileList;
+	//vector<string>	_vDeleteFile; ///< 압축된 파일 view 하고 나서 tmp 내용을 지울때 씀.
 
-    public:
-        ArcReader() {
-            _pArchive = NULL;
-            _uCur = 0;
-            _sReaderName = "archive";
-            _bConnected = false;
-        }
+public:
+	ArcReader()
+	{
+		_pArchive = NULL;
+		_uCur = 0;
+		_sReaderName = "archive";
+		_bConnected = false;
+	}
 
-        ~ArcReader() {
-            Destroy();
-        }
+	~ArcReader()
+	{
+		Destroy();
+	}
+	
+	bool	Init(const string& sInitFile = "");
+	void	Destroy();
+	
+	string GetViewPath() const ;
+	string GetRealPath(const string& str) const;
+	
+	bool Read(const string &sPath);
+	bool Next();
 
-        bool Init(const string &sInitFile = "");
+	bool GetInfo(File &tFile);
+	bool isRoot();
+	bool isChkFile(const File& tFile) { return true; }
+	
+	bool	Rename(File* pFile, const string& sRename = "")
+	{
+		MsgBox(_("Error"), "Archive file can't rename !!!");
+		return false;
+	}
 
-        void Destroy();
+	bool	Mkdir(const string& sFullPathName = "")
+	{
+		MsgBox(_("Error"), "Archive file can't Mkdir !!!");
+		return false;
+	}
 
-        string GetViewPath() const;
+	bool	Copy(File& tFile, const string& sTargetPath, File* pFile = NULL)
+	{
+		return false;
+	}
+	
+	bool	Move(File& tFile, const string& sTargetPath, File* pFile = NULL)
+	{
+		return false;
+	}
 
-        string GetRealPath(const string &str) const;
+	bool	Remove(File& tFile)
+	{
+		return false;
+	}
 
-        bool Read(const string &sPath);
+	bool 	Paste(File& tFile)
+	{
+		return false;
+	}
 
-        bool Next();
-
-        bool GetInfo(File &tFile);
-
-        bool isRoot();
-
-        bool isChkFile(const File &tFile) { return true; }
-
-        bool Rename(File *pFile, const string &sRename = "") {
-            MsgBox(_("Error"), "Archive file can't rename !!!");
-            return false;
-        }
-
-        bool Mkdir(const string &sFullPathName = "") {
-            MsgBox(_("Error"), "Archive file can't Mkdir !!!");
-            return false;
-        }
-
-        bool Copy(File &tFile, const string &sTargetPath, File *pFile = NULL) {
-            return false;
-        }
-
-        bool Move(File &tFile, const string &sTargetPath, File *pFile = NULL) {
-            return false;
-        }
-
-        bool Remove(File &tFile) {
-            return false;
-        }
-
-        bool Paste(File &tFile) {
-            return false;
-        }
-
-        bool View(const File *tFileOriginal, File *pFileChange);
-
-        bool Copy(Selection &tSelection, const string &sTargetPath = "", Selection *pSelection = NULL);
-
-        bool Move(Selection &tSelection, const string &sTargetPath = "", Selection *pSelection = NULL);
-
-        bool Remove(Selection &tSelection, bool bMsgShow = true);
-
-        bool Paste(Selection &tSelection);
-    };
+	bool	View(const File* tFileOriginal, File* pFileChange);
+	bool	Copy(Selection&	tSelection, const string& sTargetPath = "", Selection* pSelection = NULL);
+	bool	Move(Selection&	tSelection, const string& sTargetPath = "", Selection* pSelection = NULL);
+	bool	Remove(Selection&	tSelection, bool bMsgShow = true);
+	bool	Paste(Selection& tSelection);
+};
 
 };
 

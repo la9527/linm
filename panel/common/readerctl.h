@@ -22,56 +22,68 @@
 #include "define.h"
 #include "reader.h"
 
-namespace MLS {
+namespace MLS
+{
 
-    class ReaderCtl {
-        vector<Reader *> _vReader;
+class	ReaderCtl
+{
+	vector<Reader*>		_vReader;
 
-    public:
-        ReaderCtl() {}
+public:
+	ReaderCtl() {}
+	~ReaderCtl()
+	{
+		for (int n = 0; n < (int)_vReader.size(); n++)
+		{
+			Reader*	pReader = _vReader[n];
+			delete pReader;
+		}
+	}
 
-        ~ReaderCtl() {
-            for (int n = 0; n < (int) _vReader.size(); n++) {
-                Reader *pReader = _vReader[n];
-                delete pReader;
-            }
-        }
+	bool	Insert(Reader* pReader)
+	{
+		for (int n = 0; n < (int)_vReader.size(); n++)
+		{
+			Reader*	pReaderBef = _vReader[n];
+			if (pReaderBef == pReader)	return false;
+		}
 
-        bool Insert(Reader *pReader) {
-            for (int n = 0; n < (int) _vReader.size(); n++) {
-                Reader *pReaderBef = _vReader[n];
-                if (pReaderBef == pReader) return false;
-            }
+		_vReader.push_back(pReader);
+		return true;
+	}
 
-            _vReader.push_back(pReader);
-            return true;
-        }
+	void	Delete(Reader* pReader)
+	{
+		for (int n = 0; n < (int)_vReader.size(); n++)
+		{
+			if(_vReader[n] == pReader)
+			{
+				_vReader.erase(_vReader.begin() + n);
+				break;
+			}
+		}
+	}
 
-        void Delete(Reader *pReader) {
-            for (int n = 0; n < (int) _vReader.size(); n++) {
-                if (_vReader[n] == pReader) {
-                    _vReader.erase(_vReader.begin() + n);
-                    break;
-                }
-            }
-        }
+	Reader*	Get(const string& sType)
+	{
+		for (int n = 0; n < (int)_vReader.size(); n++)
+		{
+			if(_vReader[n]->GetReaderName() == sType)
+			{
+				return _vReader[n];
+			}
+		}
+		return NULL;
+	}
 
-        Reader *Get(const string &sType) {
-            for (int n = 0; n < (int) _vReader.size(); n++) {
-                if (_vReader[n]->GetReaderName() == sType) {
-                    return _vReader[n];
-                }
-            }
-            return NULL;
-        }
+	static ReaderCtl &GetInstance()
+	{
+		static ReaderCtl	_tReaderCtl;
+		return _tReaderCtl;
+	}
+};
 
-        static ReaderCtl &GetInstance() {
-            static ReaderCtl _tReaderCtl;
-            return _tReaderCtl;
-        }
-    };
-
-#define    g_tReaderCtl    ReaderCtl::GetInstance()
+#define	g_tReaderCtl	ReaderCtl::GetInstance()
 
 };
 

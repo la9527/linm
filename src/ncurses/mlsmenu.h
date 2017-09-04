@@ -25,74 +25,65 @@
 
 namespace MLS {
 
-    class MlsMenu : public Menu {
-    protected:
-        void MenuColorSetting();
+class MlsMenu:public Menu
+{
+protected:
+	void MenuColorSetting();
+	void MenuAddCatecory();
 
-        void MenuAddCatecory();
+	// When call Reflash(), another menu screen is need to call reflesh().
+	void MenuRefresh()
+	{
+		g_tMainFrame.Refresh(true);
+	}
 
-        // Reflash 할때 기타 화면을 Reflesh 꼭 넣어야 제대로 화면 나옴.
-        void MenuRefresh() {
-            g_tMainFrame.Refresh(true);
-        }
+protected:
+	NCurses_Panel*		_pPanel;
 
-    protected:
-        NCurses_Panel *_pPanel;
+public:
+	MlsMenu(): Menu() { }
+	NCurses_Panel*	SetPanel(NCurses_Panel* p) { _pPanel = p; return _pPanel; }
+};
 
-    public:
-        MlsMenu() : Menu() {}
+class McdMenu:public Menu
+{
+protected:
+	void MenuColorSetting();
+	void MenuAddCatecory();
 
-        NCurses_Panel *SetPanel(NCurses_Panel *p) {
-            _pPanel = p;
-            return _pPanel;
-        }
-    };
+	// When call Reflash(), another menu screen is need to call reflesh().
+	void MenuRefresh()
+	{
+		g_tMainFrame.Refresh(true);
+	}
 
-    class McdMenu : public Menu {
-    protected:
-        void MenuColorSetting();
+protected:
+	NCurses_Mcd*		_pMcd;
 
-        void MenuAddCatecory();
+public:
+	McdMenu(): Menu() { _pMcd = NULL; }
+	NCurses_Mcd*	SetMcd(NCurses_Mcd* p) { _pMcd = p; return _pMcd; }
+};
 
-        // Reflash 할때 기타 화면을 Reflesh 꼭 넣어야 제대로 화면 나옴.
-        void MenuRefresh() {
-            g_tMainFrame.Refresh(true);
-        }
+class EditorMenu:public Menu
+{
+private:
+	NCurses_Editor*	 _pEditor;
 
-    protected:
-        NCurses_Mcd *_pMcd;
+protected:
+	void MenuColorSetting();
+	void MenuAddCatecory();
 
-    public:
-        McdMenu() : Menu() { _pMcd = NULL; }
+	// When call Reflash(), another menu screen is need to call reflesh().
+	void MenuRefresh()
+	{
+		g_tMainFrame.Refresh(true);
+	}
 
-        NCurses_Mcd *SetMcd(NCurses_Mcd *p) {
-            _pMcd = p;
-            return _pMcd;
-        }
-    };
-
-    class EditorMenu : public Menu {
-    private:
-        NCurses_Editor *_pEditor;
-
-    protected:
-        void MenuColorSetting();
-
-        void MenuAddCatecory();
-
-        // Reflash 할때 기타 화면을 Reflesh 꼭 넣어야 제대로 화면 나옴.
-        void MenuRefresh() {
-            g_tMainFrame.Refresh(true);
-        }
-
-    public:
-        NCurses_Editor *SetEditor(NCurses_Editor *p) {
-            _pEditor = p;
-            return _pEditor;
-        }
-
-        EditorMenu() : Menu() { _pEditor = NULL; }
-    };
+public:
+	NCurses_Editor*	SetEditor(NCurses_Editor* p) { _pEditor = p; return _pEditor; }
+	EditorMenu(): Menu() { _pEditor = NULL; }
+};
 
 };
 

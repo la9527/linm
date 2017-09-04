@@ -27,154 +27,150 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    inline int GetColumnIndex(int width, int n, int i) {
-        // width : 80,  n : 7 일때
-        // 0, 12, 24, 36, 47, 58, 69
-        int a = width / n;
-        int r = width - a * n;
+inline int GetColumnIndex(int width, int n, int i)
+{
+	// width : 80,  n : 7 --> 0, 12, 24, 36, 47, 58, 69
+	int a = width / n;
+	int r = width - a * n;
+		
+	if ( i <= r )
+		return (a + 1) * i;
+	else 
+		return a * i + r;
+}
 
-        if (i <= r)
-            return (a + 1) * i;
-        else
-            return a * i + r;
-    }
+inline int GetIndex(int width, int n, int x)
+{// inverse function..	
+	int a = width / n;
+	int r = width - a * n;
+	
+	if ( x <= (a + 1) * r )
+		return x / (a + 1);
+	else 
+		return (x - r) / a;	
+}
 
-    inline int GetIndex(int width, int n, int x) {// inverse 함수..
-        int a = width / n;
-        int r = width - a * n;
+class DrawTop:public Position
+{
+private:
+	ViewType		_eViewType;
 
-        if (x <= (a + 1) * r)
-            return x / (a + 1);
-        else
-            return (x - r) / a;
-    }
+protected:
+	void	Draw();
 
-    class DrawTop : public Position {
-    private:
-        ViewType _eViewType;
+public:
+	int MouseEvent(int Y, int X, mmask_t bstate);
+	void	SetViewType( ViewType e ) { _eViewType = e; }
+};
 
-    protected:
-        void Draw();
+class DrawPath:public Position
+{
+public:
+	DrawPath()	{ _sStr = ""; }
+	void	SetData(const string& sStr) { _sStr = sStr; }
 
-    public:
-        int MouseEvent(int Y, int X, mmask_t bstate);
+protected:
+	void	Draw();
 
-        void SetViewType(ViewType e) { _eViewType = e; }
-    };
+private:
+	string		_sStr;
+};
 
-    class DrawPath : public Position {
-    public:
-        DrawPath() { _sStr = ""; }
+class	HintData
+{
+public:
+	HintData(const string& s1, const string& s2): 
+		sData( s1 ), sValue( s2 ) { }
 
-        void SetData(const string &sStr) { _sStr = sStr; }
+	std::string		sData;
+	std::string		sValue;
+};
 
-    protected:
-        void Draw();
+class Hint:public Position
+{	
+	ViewType		_eViewType;
+	ClipState		_eClip;
+	McdExeMode		_eMcdExeMode;
 
-    private:
-        string _sStr;
-    };
+protected:
+	void	Draw();
 
-    class HintData {
-    public:
-        HintData(const string &s1, const string &s2) :
-                sData(s1), sValue(s2) {}
+public:
+	Hint()	{ _eClip = CLIP_NONE; }
+	void	SetViewType( ViewType e ) { _eViewType = e; }
+	void	SetClip(ClipState	tClip) { _eClip = tClip; }
+	void	SetHintData(std::vector<HintData>&	vHints);
+	void	SetMcdExeMode(McdExeMode	eMcdExeMode)	{ _eMcdExeMode = eMcdExeMode; }
+};
 
-        std::string sData;
-        std::string sValue;
-    };
+class StatusInfo:public Position
+{
+public:
+	StatusInfo()             { _pPanel = NULL; }
+	void	SetFile(NCurses_Panel* pPanel) { _pPanel = pPanel; }
 
-    class Hint : public Position {
-        ViewType _eViewType;
-        ClipState _eClip;
-        McdExeMode _eMcdExeMode;
+protected:
+	void	Draw();
+private:
+	NCurses_Panel*	_pPanel;
+};
 
-    protected:
-        void Draw();
+class DirInfo:public Position
+{
+public:
+	DirInfo()             { _pPanel = NULL; }
+	void	SetFile(NCurses_Panel* pPanel) { _pPanel = pPanel; }
 
-    public:
-        Hint() { _eClip = CLIP_NONE; }
+protected:
+	void	Draw();
 
-        void SetViewType(ViewType e) { _eViewType = e; }
+private:
+	NCurses_Panel*	_pPanel;
+};
 
-        void SetClip(ClipState tClip) { _eClip = tClip; }
+class	ShellCmd:public Position
+{
+public:
+	ShellCmd()             { _pPanel = NULL; }
+	void	SetPanel(NCurses_Panel* pPanel) { _pPanel = pPanel; }
+	string	GetCmdStr()						{ return wstrtostr(_sWStr); }
 
-        void SetHintData(std::vector<HintData> &vHints);
+	void	DataClear()
+	{
+		_nFirst = 0; _nEnd = 0;
+		_nStart = 0;
+		#ifdef __CYGWIN_C__
+			_sWStr = ""; 
+		#else
+			_sWStr = L""; 
+		#endif
+		_nCur = 0;
+		_nTabIndex = 0;
+	}
 
-        void SetMcdExeMode(McdExeMode eMcdExeMode) { _eMcdExeMode = eMcdExeMode; }
-    };
+	int 			DataInput(KeyInfo& tKeyInfoBef);
+	static 	string	GetPromptFront();
+	
+protected:
+	string	GetPrompt();
+	void	Draw();
 
-    class StatusInfo : public Position {
-    public:
-        StatusInfo() { _pPanel = NULL; }
-
-        void SetFile(NCurses_Panel *pPanel) { _pPanel = pPanel; }
-
-    protected:
-        void Draw();
-
-    private:
-        NCurses_Panel *_pPanel;
-    };
-
-    class DirInfo : public Position {
-    public:
-        DirInfo() { _pPanel = NULL; }
-
-        void SetFile(NCurses_Panel *pPanel) { _pPanel = pPanel; }
-
-    protected:
-        void Draw();
-
-    private:
-        NCurses_Panel *_pPanel;
-    };
-
-    class ShellCmd : public Position {
-    public:
-        ShellCmd() { _pPanel = NULL; }
-
-        void SetPanel(NCurses_Panel *pPanel) { _pPanel = pPanel; }
-
-        string GetCmdStr() { return wstrtostr(_sWStr); }
-
-        void DataClear() {
-            _nFirst = 0;
-            _nEnd = 0;
-            _nStart = 0;
-#ifdef __CYGWIN_C__
-            _sWStr = "";
-#else
-            _sWStr = L"";
-#endif
-            _nCur = 0;
-            _nTabIndex = 0;
-        }
-
-        int DataInput(KeyInfo &tKeyInfoBef);
-
-        static string GetPromptFront();
-
-    protected:
-        string GetPrompt();
-
-        void Draw();
-
-        string Com_entry(vector<string> &vStr, int cur);
-
-        vector<string> PathComplete(const string &path, bool bPathsearch);
-
-    private:
-        NCurses_Panel *_pPanel;
-        int _nFirst, _nEnd;
-        int _nCur;
-        wstring _sWStr;
-        int _nTabIndex, _nStart;
-        int _nCmdWidth;
-        vector<string> _vCom_entry;
-    };
+	string	Com_entry(vector<string>& vStr, int cur);
+	
+	vector<string> PathComplete(const string &path, bool bPathsearch);
+	
+private:
+	NCurses_Panel*	_pPanel;
+	int				_nFirst, _nEnd;
+	int				_nCur;
+	wstring			_sWStr;
+	int				_nTabIndex, _nStart;
+	int				_nCmdWidth;
+	vector<string>	_vCom_entry;
+};
 
 };
 

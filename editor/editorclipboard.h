@@ -44,7 +44,7 @@ namespace MLS {
 
 #define g_tEditorClip    EditorClipboard::GetInstance()
 
-/// Undo, Redo 정보 저장을 위한 클래스
+/// Undo, Redo information save class
     class DoInfo {
     public:
         DoInfo(int y, int x, vector<wstring> Data, int DelSize = 0) :
@@ -67,10 +67,10 @@ namespace MLS {
         }
 
     public:
-        int nLine;        /// 라인 위치
-        int nCulumn;    /// 컬럼 위치 저장
-        vector<wstring> vData;        /// 데이터 저장
-        int nDelSize;    ///	지운다면 사이즈. 0이면 Insert 않는다.
+        int nLine;        /// line position
+        int nCulumn;    /// culumn poistion
+        vector<wstring> vData;        /// line data
+        int nDelSize;    ///	delete size. if nDelSize is 0, not insert lines.
     };
 
 };

@@ -49,7 +49,7 @@ namespace MLSUTIL {
             string::size_type p = line.find('=');
             if (p == string::npos) continue;
 
-            // . var와 값을 찾는다.
+            // . file the variable.
             var = chop(line.substr(0, p));
             val = chop(line.substr(p + 1));
 
@@ -70,7 +70,7 @@ namespace MLSUTIL {
         return true;
     }
 
-    bool Configure::Save(const string &sFilename) {// 바로 그 파일에다 저장한다.
+    bool Configure::Save(const string &sFilename) {// save the current file.
         string bakfile = _sFilename, srcfile;
 
         if (sFilename.size() == 0 || bakfile == sFilename) {
@@ -98,7 +98,7 @@ namespace MLSUTIL {
 
         SaveParcing();
 
-        // Modified 된 것을 정리
+        // Modified
         MapType::iterator i = _EnvMap.begin(), end = _EnvMap.end(), j;
         MapType mod_list, dup_list;
 
@@ -203,7 +203,7 @@ namespace MLSUTIL {
         return true;
     }
 
-    string Configure::getValue(const string &section, const string &var, const string &def) {
+    string Configure::GetValue(const string &section, const string &var, const string &def) {
         MapType::iterator i = _EnvMap.begin(), end = _EnvMap.end();
         MapType::iterator j;
         MapType sectionlist;
@@ -235,11 +235,11 @@ namespace MLSUTIL {
 
         Entry tEntry = j->second;
 
-        //cout << "getValue :: " << tEntry.m_sVal.c_str() << endl;
+        //cout << "GetValue :: " << tEntry.m_sVal.c_str() << endl;
         return tEntry.val;
     }
 
-    void Configure::setValue(const string &section,
+    void Configure::SetValue(const string &section,
                              const string &var,
                              const string &val,
                              bool bSave) {
@@ -251,7 +251,7 @@ namespace MLSUTIL {
 
         MapType::iterator i = _EnvMap.find(v);
 
-        LOG_WRITE("setValue :: [%s] [%s] [%s]", section.c_str(), var.c_str(), val.c_str());
+        LOG_WRITE("SetValue :: [%s] [%s] [%s]", section.c_str(), var.c_str(), val.c_str());
 
         if (i == _EnvMap.end())
             _EnvMap.insert(MapType::value_type(v, Entry(var, val, section, bSave)));
@@ -262,8 +262,8 @@ namespace MLSUTIL {
         }
     }
 
-    bool Configure::getBool(const std::string &section, const std::string &var, bool def) {
-        string sValue = getValue(section, var);
+    bool Configure::GetBool(const std::string &section, const std::string &var, bool def) {
+        string sValue = GetValue(section, var);
         if (sValue.size() == 0)
             return def;
         return (Tolower(sValue) == "on");

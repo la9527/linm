@@ -25,53 +25,54 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class CfgLoader : public Configure {
-    public:
-        static CfgLoader &GetInstance();
+class CfgLoader:public Configure
+{
+public:
+	static CfgLoader &GetInstance();
 
-        map<string, string> _mapExtBind;
-        map<string, string> _mapNameBind;
+	map<string, string>		_mapExtBind;
+	map<string, string>		_mapNameBind;
 
-        void Init();
+	void		Init();
 
-        string GetExtBind(const string &sExt) {
-            map<string, string>::iterator i;
-            if ((i = _mapExtBind.find(Tolower(sExt))) != _mapExtBind.end()) return (*i).second;
-            return "";
-        }
+	string	GetExtBind(const string& sExt)
+	{
+		map<string, string>::iterator i;
+		if ((i = _mapExtBind.find(Tolower(sExt))) != _mapExtBind.end()) return (*i).second;
+		return "";
+	}
 
-        string GetNameBind(const string &sName) {
-            map<string, string>::iterator i;
-            if ((i = _mapNameBind.find(Tolower(sName))) != _mapNameBind.end()) return (*i).second;
-            return "";
-        }
+	string	GetNameBind(const string& sName)
+	{
+		map<string, string>::iterator i;
+		if ((i = _mapNameBind.find(Tolower(sName))) != _mapNameBind.end()) return (*i).second;
+		return "";
+	}
 
-    protected:
-        bool Parsing(const string &section, const string &var, const string &val);
+protected:
+	bool	Parsing(const string& section, const string& var, const string& val);
 
-    private:
-        CfgLoader() : Configure() {}
+private:
+	CfgLoader() : Configure()  {}
+	~CfgLoader() {}
+};
 
-        ~CfgLoader() {}
-    };
+class Configurable
+{
+protected:
+	CfgLoader &_Config;
 
-    class Configurable {
-    protected:
-        CfgLoader &_Config;
+public:
+	Configurable();
+	virtual ~Configurable();
+	virtual void UpdateConfig() = 0;
+	virtual void SaveConfig() = 0;
+};
 
-    public:
-        Configurable();
-
-        virtual ~Configurable();
-
-        virtual void UpdateConfig() = 0;
-
-        virtual void SaveConfig() = 0;
-    };
-
-#define g_tCfg    CfgLoader::GetInstance()
+#define g_tCfg 	CfgLoader::GetInstance()
 
 };
 

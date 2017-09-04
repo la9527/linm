@@ -54,7 +54,8 @@ void TitleChange(const string &sPath, bool bHostNameShow) {
         struct passwd *pw = getpwuid(getuid());
         if (pw)
             sLogin = pw->pw_name;
-    }
+    } else
+        sprintf(cHostName, "localhost");
 
     if (strlen(cHostName) == 0 || sLogin.size() == 0 || !bHostNameShow) {
         printf("%c]0;LinM %s - %s%c", '\033', VERSION, sStr.c_str(), '\007');
@@ -68,19 +69,19 @@ void TitleChange(const string &sPath, bool bHostNameShow) {
 }
 
 void MainFrame::UpdateConfig() {
-    _bSplit = _Config.getBool("User", "SplitWindow", false);
-    _bViewType = _Config.getBool("User", "SplitType", false);
-    _bScrSync = _Config.getBool("User", "ScreenSync", false);
-    _sLastPath = _Config.getValue("User", "LastPath", "~");
-    _bAlwaysRedraw = _Config.getBool("Default", "AlwaysRedraw", false);
-    _sLineCodeChange = Tolower(_Config.getValue("Default", "LineCodeChange", "Auto"));
+    _bSplit = _Config.GetBool("User", "SplitWindow", false);
+    _bViewType = _Config.GetBool("User", "SplitType", false);
+    _bScrSync = _Config.GetBool("User", "ScreenSync", false);
+    _sLastPath = _Config.GetValue("User", "LastPath", "~");
+    _bAlwaysRedraw = _Config.GetBool("Default", "AlwaysRedraw", false);
+    _sLineCodeChange = Tolower(_Config.GetValue("Default", "LineCodeChange", "Auto"));
     {
         int i_sort;
         i_sort = _Config.GetValueNum("Default", "Sort", 5);
         _tPanel[0].SetSortMethod(i_sort);
         _tPanel[1].SetSortMethod(i_sort);
     }
-    _bHintView = _Config.getBool("Default", "HintView", true);
+    _bHintView = _Config.GetBool("Default", "HintView", true);
 
     if (_sLineCodeChange == "auto")
         e_nBoxLineCode = AUTOLINE;
@@ -93,22 +94,22 @@ void MainFrame::UpdateConfig() {
 }
 
 void MainFrame::SaveConfig() {
-    _Config.setBool("User", "SplitWindow", _bSplit, true);
-    _Config.setBool("User", "SplitType", _bViewType, true);
-    _Config.setBool("User", "ScreenSync", _bScrSync, true);
+    _Config.SetBool("User", "SplitWindow", _bSplit, true);
+    _Config.SetBool("User", "SplitType", _bViewType, true);
+    _Config.SetBool("User", "ScreenSync", _bScrSync, true);
 
     if (e_nBoxLineCode == CHARLINE)
-        _Config.setValue("Default", "LineCodeChange", "On", true);
+        _Config.SetValue("Default", "LineCodeChange", "On", true);
     else if (e_nBoxLineCode == ACSLINE)
-        _Config.setValue("Default", "LineCodeChange", "Off", true);
+        _Config.SetValue("Default", "LineCodeChange", "Off", true);
     else
-        _Config.setValue("Default", "LineCodeChange", "Auto", true);
+        _Config.SetValue("Default", "LineCodeChange", "Auto", true);
 
     if (_tCommand.GetPanel()->GetReader()->GetInitType() == "file://") {
         _sLastPath = _tPanel[_nActive].GetPath();
-        _Config.setValue("User", "LastPath", _sLastPath);
+        _Config.SetValue("User", "LastPath", _sLastPath);
     }
-    g_tCfg.Save(); // 종료시 Config 저장
+    g_tCfg.Save(); // when quit, configuration file save.
 }
 
 void MainFrame::Init() {
@@ -178,11 +179,11 @@ void MainFrame::DrawInit() {
         ViewType viewType = _eViewType[_nActive];
 
         if (viewType == PANEL) {
-            TitleChange(pPanel->GetPathView(), bHostShow);
+                TitleChange(pPanel->GetPathView(), bHostShow);
         } else if (viewType == MCD) {
-            TitleChange(_tMcd[_nActive].GetCurName(), bHostShow);
+                TitleChange(_tMcd[_nActive].GetCurName(), bHostShow);
         } else if (viewType == EDITOR) {
-            TitleChange(_tEditor[_nActive].GetViewTitle(), bHostShow);
+                TitleChange(_tEditor[_nActive].GetViewTitle(), bHostShow);
         }
     }
 
@@ -199,7 +200,7 @@ void MainFrame::DrawInit() {
                 funcDrawChange(_nActive, nullptr);
             } else {
                 funcDrawChange(0, [this]() {
-                    SetPosition(&_tDrawPath[0], this, 1, 0, 1, width / 2);
+                SetPosition(&_tDrawPath[0], this, 1, 0, 1, width / 2);
                 });
                 funcDrawChange(1, [this]() {
                     SetPosition(&_tDrawPath[1], this, 1, _tDrawPath[0].width, 1, width - _tDrawPath[0].width);
@@ -207,7 +208,7 @@ void MainFrame::DrawInit() {
             }
         } else if (_bSplit && _bViewType) {
             funcDrawChange(0, [this]() {
-                SetPosition(&_tDrawPath[0], this, 1, 0, 1, width);
+            SetPosition(&_tDrawPath[0], this, 1, 0, 1, width);
             });
         }
     }
@@ -314,7 +315,7 @@ void MainFrame::Draw() {
             default:
                 break;
         }
-    } else if (_bSplit && !_bViewType)    // 세로(왼쪽, 오른쪽)
+    } else if (_bSplit && !_bViewType)    // vertical (left, right)
     {
         SetPosition(&_tPanel[0], 2, 0, height - 5 + nHintHideHeight, width / 2);
         _tPanel[0].SetViewRowFixed(true);
@@ -351,7 +352,7 @@ void MainFrame::Draw() {
             default:
                 break;
         }
-    } else if (_bSplit && _bViewType)    // 가로(왼쪽, 오른쪽)
+    } else if (_bSplit && _bViewType)    // horizontal (left, right)
     {
         SetPosition(&_tPanel[0], 2, 0, (height - 8) / 2, width);
         _tPanel[0].SetViewRowFixed(true);
@@ -394,7 +395,7 @@ void MainFrame::Draw() {
     curs_set(0);
     DrawStatus();
 
-    // 커서 때문에 여기서 그려줘야 한다.
+    // Draw on here, because cursor position.
     if (!_bSplit) {
         if (_eViewType[_nActive] == EDITOR) {
             _tEditor[_nActive]._bFullScreen = true;
@@ -454,6 +455,8 @@ void MainFrame::Execute(KeyInfo &tKeyInfo) {
                 _tCommand.Execute("Cmd_ConsoleMode");
                 curs_set(1);
                 return;
+            default:
+                break;
         }
         _bShell = false;
         curs_set(0);
@@ -524,9 +527,8 @@ void MainFrame::Execute(KeyInfo &tKeyInfo) {
     if (_bShell) curs_set(1);
 
 #ifdef __DEBUGMODE__
-    if (nRt == ERROR)
-    {
-        String sMsg ( _("configure command not found..") );
+    if (nRt == ERROR) {
+        String sMsg(_("configure command not found.."));
         sMsg.Append(_("[%s]"), sCmd.c_str());
         MsgBox(_("Error"), sMsg.c_str());
         return;
@@ -544,7 +546,7 @@ bool MainFrame::MouseEvent(int Y, int X, mmask_t bstate) {
         if (nFunc != -1) {
             LOG_WRITE("Mouse Event FUNC [%d]", nFunc);
             String sKeyStr;
-            sKeyStr.append("F%d", nFunc);
+            sKeyStr.Append("F%d", nFunc);
             _tCommand.Execute(g_tKeyCfg.GetCommand(sKeyStr.c_str(), _eViewType[_nActive]));
         }
         return false;
@@ -664,7 +666,7 @@ void MainFrame::Split() {
 }
 
 void MainFrame::NextWindow() {
-    if (!_bSplit && !g_tCfg.getBool("Default", "NoSplit_NextWindow", false))
+    if (!_bSplit && !g_tCfg.GetBool("Default", "NoSplit_NextWindow", false))
         return;
 
     _nActive = (_nActive + 1) % 2;
@@ -693,7 +695,7 @@ void MainFrame::Refresh(bool bNoOutRefresh) {
     Show();
 }
 
-///	Alt+C 의 역활 Select -> Mcd 파일 선택 복사
+///	Alt+C : Select -> selected file copy on the MCD
 void MainFrame::Copy() {
     if (!_bSplit) {
         _eMcdClipCopy = CLIP_COPY;
@@ -711,7 +713,7 @@ void MainFrame::Copy() {
     }
 }
 
-///	Alt+X 의 역활 Select -> Mcd 파일 선택 이동
+///	Alt+X : Select -> selected file move on the MCD
 void MainFrame::Move() {
     if (!_bSplit) {
         _eMcdClipCopy = CLIP_CUT;

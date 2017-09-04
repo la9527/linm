@@ -28,7 +28,7 @@ Editor::~Editor() {
     Destroy();
 }
 
-void Editor::Destroy() {
+void Editor::Destroy() {/**/
     for (int n = 0; n < (int) _vDoInfo.size(); n++) {
         DoInfo *pDoInfo = _vDoInfo[n];
         delete pDoInfo;
@@ -56,7 +56,7 @@ void Editor::New(const string &sFile) {
     _bInsert = true;
     _nConvInfo = 0;
 
-    // find 초기화
+    // find initialize
 #ifdef __CYGWIN_C__
     _sFindStr = "";
 #else
@@ -72,9 +72,9 @@ void Editor::New(const string &sFile) {
     }
     _vDoInfo.clear();
 #ifdef __CYGWIN_C__
-    _vText.push_back(" ");
+    _vText.push_back(LineSyntex(" "));
 #else
-    _vText.push_back(L" ");
+    _vText.push_back(LineSyntex(L" "));
 #endif
 
 }
@@ -137,7 +137,7 @@ bool Editor::Load(const string &sFile, bool bReadOnly) {
     wstring wConv;
     int nUS = 0, nKO_EUCKR = 0, nKO_UTF8 = 0;
 
-    // 새로운 파일 여는 것과 같다.
+    // similer the new file open.
     New(sFile);
     ENCODING eEncode;
 
@@ -180,27 +180,27 @@ bool Editor::Load(const string &sFile, bool bReadOnly) {
         if (line == "") {
             if (in2.eof()) break;
 #ifdef __CYGWIN_C__
-            _vText.push_back("");
+            _vText.push_back(LineSyntex(""));
 #else
-            _vText.push_back(L"");
+            _vText.push_back(LineSyntex(L""));
 #endif
             continue;
         }
 
         if (e_nCurLang == KO_UTF8) {
             if (_eEncode == KO_EUCKR) {
-                sConvert = CodeConvert(line, "UTF-8", "EUC-KR"); // utf-8 로 바꿈.
+                sConvert = CodeConvert(line, "UTF-8", "EUC-KR"); // // change to utf-8
                 if (sConvert == "") sConvert = line;
             } else sConvert = line;
         } else if (e_nCurLang == KO_EUCKR) {
             if (_eEncode == KO_UTF8) {
-                sConvert = CodeConvert(line, "EUC-KR", "UTF-8"); // euc-kr 로 바꿈.
+                sConvert = CodeConvert(line, "EUC-KR", "UTF-8"); // change to euc-kr
                 if (sConvert == "") sConvert = line;
             } else sConvert = line;
         } else {
-            // US 로 되는데, 이때는 utf-8로 바꾸는 것과 동일하게 한다. (CTYPE : en_US.utf-8)
+            // The locale is US(english), same the locale utf-8. (CTYPE : en_US.utf-8)
             if (_eEncode == KO_EUCKR) {
-                sConvert = CodeConvert(line, "UTF-8", "EUC-KR"); // utf-8 로 바꿈.
+                sConvert = CodeConvert(line, "UTF-8", "EUC-KR"); // change to utf-8
                 if (sConvert == "") sConvert = line;
             } else sConvert = line;
         }
@@ -211,17 +211,19 @@ bool Editor::Load(const string &sFile, bool bReadOnly) {
         if (sConvert2.size() != sConvert.size()) bDosMode = true;
         wConv = strtowstr(sConvert2);
         if (sConvert2.size() != 0 && wConv.size() == 0) bNotSave = true;
-        _vText.push_back(wConv);
+        _vText.push_back(LineSyntex(wConv));
     } while (!in2.eof());
     in2.close();
 
     if (_vText.size() == 0) {
 #ifdef __CYGWIN_C__
-        _vText.push_back("");
+        _vText.push_back(LineSyntex(""));
 #else
-        _vText.push_back(L"");
+        _vText.push_back(LineSyntex(L""));
 #endif
     }
+
+    PostLoad();
 
     if (bDosMode == true) _bDosMode = true;
 
@@ -244,7 +246,7 @@ bool Editor::Save(const string &sFile, ENCODING Encode, bool bDosMode, bool bBac
     ofstream out(sTmpFile.c_str());
     if (!out) {
         String sMsg;
-        sMsg.append("%s : %s", sTmpFile.c_str(), strerror(errno));
+        sMsg.Append("%s : %s", sTmpFile.c_str(), strerror(errno));
         MsgBox(_("Error"), sMsg.c_str());
         return false;
     }
@@ -258,20 +260,20 @@ bool Editor::Save(const string &sFile, ENCODING Encode, bool bDosMode, bool bBac
         eEncode = Encode;
 
     for (uint n = 0; n < _vText.size(); n++) {
-        sSrc = wstrtostr(_vText[n]);
+        sSrc = wstrtostr(_vText[n].wLine);
         sSrc = EditToTab(sSrc, (char) TABCONVCHAR, _nTabSize);
 
         if (bDosMode) sSrc = sSrc + "\r";
 
-        if (sSrc.size() == 0 && _vText[n].size() > 0) {
+        if (sSrc.size() == 0 && _vText[n].wLine.size() > 0) {
             MsgBox(_("Error"), _("Code convert failure."));
             return false;
         }
 
         if (eEncode == KO_EUCKR) {
             sConvert = "";
-            if (e_nCurLang == KO_UTF8) // euckr로 바꿈.
-                sConvert = CodeConvert(sSrc, "EUC-KR", "UTF-8");
+            if (e_nCurLang == KO_UTF8)
+                sConvert = CodeConvert(sSrc, "EUC-KR", "UTF-8"); // change to euckr
             if (e_nCurLang == KO_EUCKR)
                 sConvert = sSrc;
             if (e_nCurLang == US)
@@ -280,8 +282,8 @@ bool Editor::Save(const string &sFile, ENCODING Encode, bool bDosMode, bool bBac
             else out << sConvert << endl;
         } else if (eEncode == KO_UTF8) {
             sConvert = "";
-            if (e_nCurLang == KO_EUCKR) // utf-8 로 바꿈.
-                sConvert = CodeConvert(sSrc, "UTF-8", "EUC-KR");
+            if (e_nCurLang == KO_EUCKR)
+                sConvert = CodeConvert(sSrc, "UTF-8", "EUC-KR"); // change from euc-kr to utf-8.
             if (e_nCurLang == KO_UTF8)
                 sConvert = sSrc;
             if (e_nCurLang == US)
@@ -305,7 +307,7 @@ bool Editor::Save(const string &sFile, ENCODING Encode, bool bDosMode, bool bBac
     if (bBackup == true) {
         string sBackFile = sFile + ".bak";
         if (rename(sFile.c_str(), sBackFile.c_str()) == -1) {
-            if (errno != 2) // 파일이 존재하지 않을 경우 그냥 넘긴다.(새로운 파일일 경우)
+            if (errno != 2) // if not exist the file, run the next line script. (it's only exist the new file)
             {
                 MsgBox(_("Error"), strerror(errno));
                 return false;
@@ -355,12 +357,21 @@ void Editor::ScreenMemSave(int nLine, int nCulumn) {
         LineInfo tLineInfo;
         bool bNext = false;
 
+        vector<SyntexData> vSyntexData;
+        SyntexData tNextSyntexAdd;
+        int nLastSyntexVectorPos = 0;
+        bool bBefSyntexDataExist = false;
+
         for (int t = 0; t < nLine; t++) {
             if (!tStrLineToken.NextChk()) {
                 if (nViewLine >= (int) _vText.size()) break;
-                sLineWStr = _vText[nViewLine];
+                sLineWStr = _vText[nViewLine].wLine;
+                vSyntexData = _vText[nViewLine].vSyntexData;
+                LOG_WRITE("ViewLine Syntex [%d] [%d]", nViewLine, (int) _vText[nViewLine].vSyntexData.size());
                 tStrLineToken.SetWString(sLineWStr, nCulumn);
                 nViewLine++;
+                nLastSyntexVectorPos = 0;
+                bBefSyntexDataExist = false;
             }
 
             if (tStrLineToken.LineSize() - 1 == tStrLineToken.GetCurNum())
@@ -375,6 +386,66 @@ void Editor::ScreenMemSave(int nLine, int nCulumn) {
             tLineInfo.sWString = sViewWStr;
             tLineInfo.bNext = bNext;
             tLineInfo.nNextLineNum = tStrLineToken.GetCurNum();
+            tLineInfo.vSyntexData.clear();
+
+            // Syntex Token.
+            int nCurNum = tLineInfo.nNextLineNum * nCulumn;
+            if (nLastSyntexVectorPos < vSyntexData.size()) {
+                for (int n = nLastSyntexVectorPos; n < vSyntexData.size(); n++) {
+                    SyntexData tSyntexData = vSyntexData[n];
+                    if (nCurNum == 0 || nCurNum >= tSyntexData.nStart) {
+                        if (bBefSyntexDataExist) {
+                            bBefSyntexDataExist = false;
+                            nLastSyntexVectorPos = 0;
+                            LOG_WRITE("tNextSyntexAdd [%d] [%s]", tNextSyntexAdd.nStart,
+                                      (const char *) tNextSyntexAdd.strString.c_str());
+                            tLineInfo.vSyntexData.push_back(tNextSyntexAdd);
+                            continue;
+                        }
+
+                        int nNextCulumn = nCurNum + nCulumn;
+                        int nLastWordPosition = tSyntexData.nStart + scrstrlen(tSyntexData.strString);
+                        LOG_WRITE("nLastSyntexVectorPos [%d] nCurNum [%d] [%d] [%d]", nLastSyntexVectorPos, nCurNum,
+                                  nNextCulumn, nLastWordPosition);
+
+                        if (nLastWordPosition <= nNextCulumn) {
+                            SyntexData tNewSyntexData = tSyntexData;
+                            tNewSyntexData.nStart = tNewSyntexData.nStart - nCurNum;
+                            LOG_WRITE("tSyntexData [%d] [%s]", tNewSyntexData.nStart,
+                                      (const char *) tNewSyntexData.strString.c_str());
+                            tLineInfo.vSyntexData.push_back(tSyntexData);
+                            bBefSyntexDataExist = false;
+                        } else if (nLastWordPosition > nNextCulumn) {
+                            SyntexData tNewSyntexData = tSyntexData;
+                            int nClopWidth = nNextCulumn - tSyntexData.nStart;
+                            int nStrLength = scrstrlen(tSyntexData.strString);
+
+                            tNewSyntexData.nStart = tSyntexData.nStart - nCurNum;
+                            tNewSyntexData.strString = scrstrncpy(tNewSyntexData.strString, 0, nClopWidth);
+                            LOG_WRITE("tSyntexData2 [%d] [%s]", tNewSyntexData.nStart,
+                                      (const char *) tNewSyntexData.strString.c_str());
+                            tLineInfo.vSyntexData.push_back(tSyntexData);
+
+                            tNextSyntexAdd = tSyntexData;
+                            tNextSyntexAdd.nStart = nNextCulumn;
+                            tNextSyntexAdd.strString = scrstrncpy(tSyntexData.strString, nClopWidth,
+                                                                  nStrLength - nClopWidth);
+
+                            nLastSyntexVectorPos = n;
+                            bBefSyntexDataExist = true;
+                            break;
+                        }
+                    }
+
+                    if (n == vSyntexData.size() - 1) {
+                        nLastSyntexVectorPos = 0;
+                        bBefSyntexDataExist = false;
+                    }
+                }
+            } else {
+                nLastSyntexVectorPos = 0;
+                bBefSyntexDataExist = false;
+            }
             _vViewString.push_back(tLineInfo);
             tStrLineToken.Next();
         }
@@ -406,8 +477,8 @@ void Editor::InputData(const string &sKrStr) {
     }
 
     if ((int) _vText.size() > _nCurLine) {
-        sLine = _vText[_nCurLine];
-        // Undo를 위한 데이터 저장
+        sLine = _vText[_nCurLine].wLine;
+        // data save for undo
         _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, sLine));
 
         sChar = strtowstr(sKrStr);
@@ -417,8 +488,9 @@ void Editor::InputData(const string &sKrStr) {
         else
             sLine.replace(_nCurCulumn, sChar.size(), sChar);
 
-        _vText[_nCurLine] = sLine;
+        _vText[_nCurLine].wLine = sLine;
         _nCurCulumn = _nCurCulumn + sChar.size();
+        PostUpdateLines(_nCurLine);
     }
     _nCurCulumn_Max = _nCurCulumn;
 }
@@ -436,11 +508,11 @@ void Editor::Key_Del() {
         return;
     }
 
-    sLine = _vText[_nCurLine];
+    sLine = _vText[_nCurLine].wLine;
     int nStrSize = sLine.size();
 
     if (_nCurCulumn < nStrSize) {
-        // Undo를 위한 데이터 저장
+        // save data for undo function.
         _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, sLine));
 
         sLine2 = sLine.substr(_nCurCulumn, _nTabSize);
@@ -458,25 +530,27 @@ void Editor::Key_Del() {
             sLine2 = sLine2 + sLine.substr(_nCurCulumn + 1, nStrSize - (_nCurCulumn + 1));
         }
 
-        _vText[_nCurLine] = sLine2;
+        _vText[_nCurLine].wLine = sLine2;
+        PostUpdateLines(_nCurLine);
     } else {
         if ((int) _vText.size() > _nCurLine + 1) {
-            sLine2 = _vText[_nCurLine + 1];
-            // Undo를 위한 데이터 저장
+            sLine2 = _vText[_nCurLine + 1].wLine;
+            // data save for undo
             _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, sLine, sLine2));
 
             sLine2 = sLine + sLine2;
-            _vText[_nCurLine] = sLine2;
+            _vText[_nCurLine].wLine = sLine2;
             _vText.erase(_vText.begin() + _nCurLine + 1);
+            PostUpdateLines(_nCurLine);
         }
     }
     _nCurCulumn_Max = _nCurCulumn;
 
     if (_vText.size() == 0) {
 #ifdef __CYGWIN_C__
-        _vText.push_back("");
+        _vText.push_back(LineSyntex(""));
 #else
-        _vText.push_back(L"");
+        _vText.push_back(LineSyntex(L""));
 #endif
     }
 }
@@ -499,37 +573,38 @@ void Editor::Key_BS() {
     if (_nCurLine == 0 && _nCurCulumn == 0) return;
 
     if ((int) _vText.size() > _nCurLine) {
-        sLine = _vText[_nCurLine];
+        sLine = _vText[_nCurLine].wLine;
 
         if (_nCurCulumn == 0 && _vText.size() > 0 && _nCurLine > 0) {
-            sLine2 = _vText[_nCurLine - 1];
-            // Undo를 위한 데이터 저장
+            sLine2 = _vText[_nCurLine - 1].wLine;
+            // data save for undo function
             _vDoInfo.push_back(new DoInfo(_nCurLine - 1, _nCurCulumn, sLine2, sLine));
 
             nStrSize = sLine2.size();
             sLine2 = sLine2 + sLine;
 
-            _vText[_nCurLine - 1] = sLine2;
+            _vText[_nCurLine - 1].wLine = sLine2;
             _vText.erase(_vText.begin() + _nCurLine);
+            PostUpdateLines(_nCurLine);
 
             Key_Up();
             _nCurCulumn = nStrSize;
         } else {
-            nStrSize = _vText[_nCurLine].size();
+            nStrSize = _vText[_nCurLine].wLine.size();
 
             int nTabSize = 0;
 
             if (_nCurCulumn <= nStrSize) {
-                // Undo를 위한 데이터 저장
+                // data save for undo function.
                 _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, sLine));
 
                 wstring sTabCheck;
                 string sTmp;
 
                 if (_nCurCulumn - _nTabSize >= 0)
-                    sTabCheck = _vText[_nCurLine].substr(_nCurCulumn - _nTabSize, _nTabSize);
+                    sTabCheck = _vText[_nCurLine].wLine.substr(_nCurCulumn - _nTabSize, _nTabSize);
                 else
-                    sTabCheck = _vText[_nCurLine].substr(0, _nCurCulumn);
+                    sTabCheck = _vText[_nCurLine].wLine.substr(0, _nCurCulumn);
 
                 sTmp = wstrtostr(sTabCheck);
                 for (int n = sTmp.size() - 1; n >= 0; n--) {
@@ -540,17 +615,18 @@ void Editor::Key_BS() {
                 }
 
                 if (nTabSize > 0) {
-                    sLine2 = _vText[_nCurLine].substr(0, _nCurCulumn - nTabSize);
-                    sLine2 = sLine2 + _vText[_nCurLine].substr(_nCurCulumn, nStrSize - _nCurCulumn);
+                    sLine2 = _vText[_nCurLine].wLine.substr(0, _nCurCulumn - nTabSize);
+                    sLine2 = sLine2 + _vText[_nCurLine].wLine.substr(_nCurCulumn, nStrSize - _nCurCulumn);
                     _nCurCulumn = _nCurCulumn - nTabSize;
                 } else {
-                    sLine2 = _vText[_nCurLine].substr(0, _nCurCulumn - 1);
-                    sLine2 = sLine2 + _vText[_nCurLine].substr(_nCurCulumn, nStrSize - _nCurCulumn);
+                    sLine2 = _vText[_nCurLine].wLine.substr(0, _nCurCulumn - 1);
+                    sLine2 = sLine2 + _vText[_nCurLine].wLine.substr(_nCurCulumn, nStrSize - _nCurCulumn);
                     _nCurCulumn = _nCurCulumn - 1;
                 }
             }
 
             _vText[_nCurLine] = sLine2;
+            PostUpdateLines(_nCurLine);
 
             _EditSelect.x2 = _nCurCulumn;
             _EditSelect.y2 = _nCurLine;
@@ -573,7 +649,7 @@ void Editor::Key_Enter() {
         _EditMode = EDIT;
     }
 
-    string p = wstrtostr(_vText[_nCurLine]);
+    string p = wstrtostr(_vText[_nCurLine].wLine);
     string p1;
 
     if (_bIndentMode) {
@@ -586,8 +662,8 @@ void Editor::Key_Enter() {
     }
 
     if ((int) _vText.size() > _nCurLine) {
-        sLine = _vText[_nCurLine];
-        // Undo를 위한 데이터 저장
+        sLine = _vText[_nCurLine].wLine;
+        // data save for undo
         _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, 2, sLine));
 
         nStrlen = sLine.size();
@@ -595,13 +671,14 @@ void Editor::Key_Enter() {
         sLine2 = sLine2 + sLine.substr(0, _nCurCulumn);
         sLine3 = strtowstr(p1) + sLine3 + sLine.substr(_nCurCulumn, nStrlen - _nCurCulumn);
 
-        _vText[_nCurLine] = sLine2;
+        _vText[_nCurLine].wLine = sLine2;
         _vText.insert(_vText.begin() + _nCurLine + 1, sLine3);
+        PostUpdateLines(_nCurLine);
     } else {
-        // Undo를 위한 데이터 저장
+        // data save for undo
         _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, 2, sLine));
 
-        _vText.push_back(strtowstr(p1));
+        _vText.push_back(LineSyntex(strtowstr(p1)));
         ScreenMemSave(_nLine, _nCulumn);
     }
     _nCurCulumn = p1.size();
@@ -625,18 +702,20 @@ void Editor::Key_Tab() {
         SelectSort(&_EditSelect);
 
         for (int y = _EditSelect.y1; y <= _EditSelect.y2; y++) {
-            WStr = _vText[y];
+            WStr = _vText[y].wLine;
             vSave.push_back(WStr);
         }
 
-        // Undo를 위한 데이터 저장
+        // data save for undo
         _vDoInfo.push_back(new DoInfo(_EditSelect.y1, 0, vSave, -1));
 
         for (int y = _EditSelect.y1; y <= _EditSelect.y2; y++) {
-            WStr = _vText[y];
+            WStr = _vText[y].wLine;
             WStr = strtowstr(sTab) + WStr;
-            _vText[y] = WStr;
+            _vText[y].wLine = WStr;
         }
+
+        PostUpdateLines(_EditSelect.y1, _EditSelect.y2 - _EditSelect.y1 + 1);
         ScreenMemSave(_nLine, _nCulumn);
         return;
     }
@@ -661,15 +740,15 @@ void Editor::Key_Untab() {
         SelectSort(&_EditSelect);
 
         for (int y = _EditSelect.y1; y <= _EditSelect.y2; y++) {
-            WStr = _vText[y];
+            WStr = _vText[y].wLine;
             vSave.push_back(WStr);
         }
 
-        // Undo를 위한 데이터 저장
+        // data save for undo
         _vDoInfo.push_back(new DoInfo(_EditSelect.y1, 0, vSave, -1));
 
         for (int y = _EditSelect.y1; y <= _EditSelect.y2; y++) {
-            WStr = _vText[y];
+            WStr = _vText[y].wLine;
             string sTmp = wstrtostr(WStr.substr(0, _nTabSize));
             int nTabSize = 0;
 
@@ -678,7 +757,7 @@ void Editor::Key_Untab() {
                     nTabSize++;
 
             if (nTabSize > 0)
-                _vText[y] = WStr.substr(nTabSize);
+                _vText[y].wLine = WStr.substr(nTabSize);
         }
         ScreenMemSave(_nLine, _nCulumn);
     }
@@ -693,7 +772,7 @@ void Editor::GotoLine() {
     for (int n = 0; n < (int) sNumber.size(); n++) {
         if (isdigit((char) sNumber[n]) == 0) {
             String sMsg;
-            sMsg.append(_("not digit [%s"), sNumber.c_str());
+            sMsg.Append(_("not digit [%s"), sNumber.c_str());
             MsgBox(_("Error"), sMsg.c_str());
             return;
         }
@@ -736,11 +815,11 @@ bool Editor::Quit() {
         return true;
     }
 
-    // 변동이 있으면 현재 파일을 저장할지 물어본다.
+    // if exist the change action, ask the file save.
     if (_nConvInfo != (int) _vDoInfo.size()) {
         vStr.push_back(_("Cancel"));
 
-        int nCho = SelectBox(_("Editor exit. Do you want to save changes?"), vStr, 2);
+        int nCho = SelectBox(_("Editor exit. Do you want to save ?"), vStr, 2);
 
         switch (nCho) {
             case 0:

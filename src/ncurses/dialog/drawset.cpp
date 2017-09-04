@@ -22,206 +22,239 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    chtype HLINE = ACS_HLINE;        ///< 가로 그래픽 문자 '-'
-    chtype VLINE = ACS_VLINE;        ///< 세로 그래픽 문자 '|'
-    chtype ULCORNER = ACS_ULCORNER;    ///< 왼쪽 위 사각 귀뚱이 그래픽 문자
-    chtype LLCORNER = ACS_LLCORNER;    ///< 왼쪽 아래 사각 귀뚱이 그래픽 문자
-    chtype URCORNER = ACS_URCORNER;    ///< 오른쪽 위 사각 귀뚱이 그래픽 문자
-    chtype LRCORNER = ACS_LRCORNER;    ///< 오른쪽 아래 사각 귀뚱이 그래픽 문자
-    chtype LTEE = ACS_LTEE;            ///< ?????
-    chtype RTEE = ACS_RTEE;            ///< ?????
-    chtype BTEE = ACS_BTEE;            ///< 'ㅗ'그래픽 문자
-    chtype TTEE = ACS_TTEE;            ///< 'ㅜ'그래픽 문자
+chtype HLINE=ACS_HLINE;		///< horizone char. '-'
+chtype VLINE=ACS_VLINE;		///< vertical char. '|'
+chtype ULCORNER=ACS_ULCORNER;	///< left up corner char.
+chtype LLCORNER=ACS_LLCORNER;	///< left bottom corner char.
+chtype URCORNER=ACS_URCORNER;	///< right up corner char.
+chtype LRCORNER=ACS_LRCORNER;	///< right down corner char.
+chtype LTEE=ACS_LTEE;			///< left tree char.
+chtype RTEE=ACS_RTEE;			///< right tree char.
+chtype BTEE=ACS_BTEE;			///< Botton tree char.
+chtype TTEE=ACS_TTEE;			///< Bottom tree char.
 
-    LINECODE e_nBoxLineCode = AUTOLINE;    ///< BOX LINE MODE
+LINECODE	e_nBoxLineCode = AUTOLINE;	///< BOX LINE MODE
 
-/// @brief	그래픽모드 라인이나 ASCII모드 라인을 설정한다.
-    void Set_BoxLine(
-            LINECODE nCode            ///< 그래픽모드, ASCII모드
-    ) {
-        if (nCode == AUTOLINE) {
-            string sTerm = getenv("TERM");
-            if (sTerm == "cygwin")
-                nCode = CHARLINE;
-            else
-                nCode = ACSLINE;
-        }
+static Curses_Dialog*		s_pDialog = NULL;
+static Curses_Progress*		s_pProgressBox = NULL;
 
-        if (nCode == CHARLINE) {
-            HLINE = '-';
-            VLINE = '|';
-            ULCORNER = '+';
-            LLCORNER = '+';
-            URCORNER = '+';
-            LRCORNER = '+';
-            LTEE = '+';
-            RTEE = '+';
-            BTEE = '+';
-            TTEE = '+';
-            e_nBoxLineCode = CHARLINE;
-        }
+/// @brief	set the graphic mode or ascii box line.
+void Set_BoxLine(
+		LINECODE nCode			///< graphic char mode, ascii mode
+	)
+{
+	if (nCode == AUTOLINE)
+	{
+		string	sTerm = getenv("TERM");	
+		if (sTerm == "cygwin")
+			nCode = CHARLINE;
+		else
+			nCode = ACSLINE;	
+	}	
 
-        if (nCode == ACSLINE) {
-            HLINE = ACS_HLINE;
-            VLINE = ACS_VLINE;
-            ULCORNER = ACS_ULCORNER;
-            LLCORNER = ACS_LLCORNER;
-            URCORNER = ACS_URCORNER;
-            LRCORNER = ACS_LRCORNER;
-            LTEE = ACS_LTEE;
-            RTEE = ACS_RTEE;
-            BTEE = ACS_BTEE;
-            TTEE = ACS_TTEE;
-            e_nBoxLineCode = ACSLINE;
-        }
-    }
+	switch(nCode)
+	{
+		case CHARLINE:
+			HLINE='-';
+			VLINE='|';
+			ULCORNER='+';
+			LLCORNER='+';
+			URCORNER='+';
+			LRCORNER='+';
+			LTEE='+';
+			RTEE='+';
+			BTEE='+';
+			TTEE='+';
+			e_nBoxLineCode = CHARLINE;
+			break;
 
-    static bool s_bnCursesInit = false;
+		case ACSLINE:
+			HLINE=ACS_HLINE;
+			VLINE=ACS_VLINE;
+			ULCORNER=ACS_ULCORNER;
+			LLCORNER=ACS_LLCORNER;
+			URCORNER=ACS_URCORNER;
+			LRCORNER=ACS_LRCORNER;
+			LTEE=ACS_LTEE;
+			RTEE=ACS_RTEE;
+			BTEE=ACS_BTEE;
+			TTEE=ACS_TTEE;
+			e_nBoxLineCode = ACSLINE;
 
-    void setcol(int font, int back, WINDOW *win) {
-        wattroff(win, A_BOLD | A_BLINK);
+		default:
+			break;
+	}
+}
 
-        if (font >= 8) wattron(win, A_BOLD);
-        //if ( back >= 8 ) wattron(win, A_BLINK);
+static	bool	s_bnCursesInit = false;
 
-        wattron(win, COLOR_PAIR(((font % 8) << 3) + (back % 8)));
-    }
+void setcol(int font, int back, WINDOW *win)
+{
+	wattroff(win, A_BOLD | A_BLINK);
 
-/// @brief		consol 초기화 작업.
-    void CursesInit(bool bTransparency) {
-        initscr();     // nCurses 시작
-        start_color(); // 컬러 가능하게
+	if ( font >= 8 ) wattron(win, A_BOLD);
+	//if ( back >= 8 ) wattron(win, A_BLINK);
 
-        nonl();        // 엔터 처리?
-        raw();           // Ctrl+C : Signal무시 가능하게
-        //cbreak();      // nCurses : 즉시 입력이 가능하도록 설정
+	wattron( win, COLOR_PAIR( ((font%8) << 3) + (back%8)) );
+}
 
-        noecho();       // nCurses : echo모드 해제
-        keypad(stdscr, TRUE);  // keypad 활성화
+/// @brief		consol initialize.
+void CursesInit( bool  bTransparency )
+{
+	initscr();     // start NCurses.
+	start_color(); // use color
 
-        curs_set(0); // 커서를 보이지 않게 한다.
+	//nonl();        // enter
+	raw();		   // use for copy, paste(Ctrl+C). set ignore signal.
+	//cbreak();      // nCurses : incontinently input.
 
-        use_default_colors();
-        assume_default_colors(-1, -1);
+	noecho();	   // nCurses : noecho
+	keypad(stdscr, TRUE);  // use keypad
 
-        // 색깔 쌍을 초기화 한다. 디폴트 포함 0 ~ 64개 까지
-        for (int t = 0; t < 8; t++)
-            for (int t2 = 0; t2 < 8; t2++) {
-                if (t2 == 0 && bTransparency) // Transparency console support
-                    init_pair(t * 8 + t2, t, -1);
-                else
-                    init_pair(t * 8 + t2, t, t2);
-            }
+	curs_set(0); // unview cursor.
 
-        // line 설정
-        Set_BoxLine(e_nBoxLineCode);
+	use_default_colors();
+	assume_default_colors(-1, -1);
+	
+	// colors initialize. 0 ~ 64 values.
+	for (int t=0; t<8; t++)
+		for (int t2=0; t2<8; t2++)
+	{
+		if ( t2 == 0 && bTransparency ) // Transparency console support
+			init_pair( t*8+t2, t, -1 );
+		else
+			init_pair( t*8+t2, t, t2 );
+	}
 
-        // 처음 시작할 경우 clear, refresh 해줘야 한다.
-        clear();
-        refresh();
+	// line setting.
+	Set_BoxLine(e_nBoxLineCode);
 
-        ESCDELAY = 10;  // ESC 딜레이 줄이기.
+	// The first time, need the clear(), refresh().
+	clear();
+	refresh();
 
-        s_bnCursesInit = true;
-    }
+	ESCDELAY = 10;  // reduce ESC delay.
 
-    void CursesDestroy() {
-        clear();
-        refresh();
+	if ( !s_pDialog )
+		s_pDialog = new Curses_Dialog;
 
-        // . keypad 비활성화
-        keypad(stdscr, FALSE);  // . 라인단위로 입력이 이루어지도록 설정
-        //nocbreak();
-        noraw();
-        curs_set(1); // 커서를 다시 보이게 한다.
-        echo();
-        nl();
-        endwin();   // . nCurses 해제
+	if ( !s_pProgressBox )
+		s_pProgressBox = new Curses_Progress;
 
-        s_bnCursesInit = false;
-    }
+	// Dialog, Progress class are change to ncurses.
+	MLSUTIL::SetDialogProgress( (MlsDialog*)s_pDialog , (MlsProgress*)s_pProgressBox );
+	s_bnCursesInit = true;
+}
 
-    void CursesRestart(bool bTransparency) {
-        CursesDestroy();
-        CursesInit(bTransparency);
-    }
+void CursesDestroy()
+{
+	clear();
+	refresh();
+	
+	// unuse keypad 
+	keypad(stdscr, TRUE);  // set input the line unit.
+	
+	nocbreak();
+	echo();
+	nl();
+	curs_set(1); // cursor view.
+	noraw();
+	while( endwin() != OK ) // end NCurses
+		sleep(1);
+	
+	echo();
+	s_bnCursesInit = false;
+}
 
-    void MouseInit() {
-        // curses 마우스 설정
+void	CursesRestart( bool bTransparency )
+{
+	CursesDestroy();
+	CursesInit( bTransparency );
+}
 
-        mousemask(BUTTON1_CLICKED |
-                  BUTTON2_CLICKED |
-                  BUTTON3_CLICKED |
-                  #if NCURSES_MOUSE_VERSION > 1
-                  BUTTON4_TRIPLE_CLICKED |
+void	MouseInit()
+{
+	// curses mouse setting.
+	
+	mousemask( 	BUTTON1_CLICKED |
+				BUTTON2_CLICKED |
+				BUTTON3_CLICKED |
+				#if NCURSES_MOUSE_VERSION > 1
+					BUTTON4_TRIPLE_CLICKED |
 					BUTTON5_TRIPLE_CLICKED |
-                  #endif
-                  BUTTON_SHIFT |
-                  BUTTON_CTRL, NULL);
+				#endif
+				BUTTON_SHIFT |
+				BUTTON_CTRL, NULL);
+	
+	//mousemask(ALL_MOUSE_EVENTS, NULL);
+	mouseinterval(10);
+}
 
-        //mousemask(ALL_MOUSE_EVENTS, NULL);
-        mouseinterval(10);
-    }
+void	MouseDestroy()
+{
+	// curses mouse setting.
+	mousemask(0, NULL);
+}
 
-    void MouseDestroy() {
-        // curses 마우스 설정
-        mousemask(0, NULL);
-    }
+void	ScreenClear()
+{
+	clear();
+	refresh();
+}
 
-    void ScreenClear() {
-        clear();
-        refresh();
-    }
-
-/// @brief 시그널 처리를 하는 함수
-/// @param sig 시그널 번호
-    void signal_action(int sig) {
-        switch (sig) {
-            case SIGINT:
-                // Copy & paste를 위해서 Ctrl-C를 사용합니다.
-                ungetch(3);
-                return;
-            case SIGPIPE:
-                return;
-            case SIGCHLD:
-                g_SubShell.SigchldHandler();
-                return;
-            case SIGWINCH:
-                if (!s_bnCursesInit)
-                    g_SubShell.LowLevel_Resize();
-                return;
-        }
-        CursesDestroy();
+/// @brief signal action function.
+/// @param sig signal number
+void signal_action(int sig)
+{
+	switch(sig)
+	{
+		case SIGINT:
+			// use ctrl+c for copy and paste.
+			ungetch(3);
+			return;
+		case SIGPIPE:
+			return;
+		case SIGCHLD:
+			g_SubShell.SigchldHandler();
+			return;
+		case SIGWINCH:
+			if ( !s_bnCursesInit )
+				g_SubShell.LowLevel_Resize();
+			return;
+	}
+	CursesDestroy();
 
 # if (__GNUC__ * 1000 + __GNUC_MINOR__) >= 3000
-        LOG_WRITE("Signal [%d] [%s]", sig, strsignal(sig));
-        printf("Signal [%d] [%s]\n", sig, strsignal(sig));
+	LOG_WRITE( "Signal [%d] [%s]", sig, strsignal(sig));
+	printf("Signal [%d] [%s]\n", sig, strsignal(sig));
 # else
-        printf("Signal [%d]\n", sig);
+	printf("Signal [%d]\n", sig);
 # endif
-        exit(0);
-    }
+	exit(0);
+}
 
-/// @brief 시그널블럭 처리를 한다.
-/// @return 성공할 경우 SUCCESS
-    int Signal_Blocking() {
-        struct sigaction act;
+/// @brief signal blocking function
+/// @return if succcess, SUCCESS is return.
+int Signal_Blocking()
+{
+	struct sigaction act;
 
-        // 다음은 시그널이 들어왔을 때 실행 함수
-        act.sa_handler = signal_action;
+	// if recieved signal, signal_action() call.
+	act.sa_handler = signal_action;
 
-        // 다음 주석을 해제 하면 시그널 무시
-        //act.sa_handler = SIG_IGN;
-        sigemptyset(&act.sa_mask);
-        act.sa_flags = 0;
+	// if not use under line comment, ignore signal.
+	//act.sa_handler = SIG_IGN;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
 
-        sigaction(SIGHUP, &act, 0);     /* 1 Hangup (POSIX).  */
-        sigaction(SIGINT, &act, 0);     /* 2 Interrupt (ANSI).  */
-        sigaction(SIGQUIT, &act, 0);    /* 3 Quit (POSIX).  */
-        sigaction(SIGPIPE, &act, 0);    /* 13 Broken pipe (POSIX).  */
-        sigaction(SIGCHLD, &act, 0);    /* 17 Child status has changed (POSIX).  */
+	sigaction(SIGHUP, &act, 0);     /* 1 Hangup (POSIX).  */
+	sigaction(SIGINT, &act, 0);     /* 2 Interrupt (ANSI).  */
+	sigaction(SIGQUIT, &act, 0);    /* 3 Quit (POSIX).  */	
+	sigaction(SIGPIPE, &act, 0);    /* 13 Broken pipe (POSIX).  */
+  	sigaction(SIGCHLD, &act, 0);    /* 17 Child status has changed (POSIX).  */	
 //	sigaction(SIGWINCH, &act, 0);   /* 28 Window size change (4.3 BSD, Sun).  */
 
 //#ifdef __DEBUGMODE__
@@ -249,7 +282,7 @@ namespace MLS {
 //	sigaction(SIGPROF, &act, 0);    /* 27 Profiling alarm clock (4.2 BSD).  */
 //	sigaction(SIGWINCH, &act, 0);   /* 28 Window size change (4.3 BSD, Sun).  */
 //	sigaction(SIGIO, &act, 0);      /* 29 I/O now possible (4.2 BSD). Pollable event occurred (System V).*/
-
+	
 //	sigaction(SIGSYS, &act, 0);     /* 31 Bad system call. (Unused) */
 
 //	#ifdef LINUX
@@ -257,30 +290,32 @@ namespace MLS {
 //	sigaction(SIGPWR, &act, 0);      /* 30 Power failure restart (System V).  */
 //	#endif
 //#endif
-        return 0;
-    }
+	return 0;
+}
 
 // SubShell, Teminal Size Signal setting.
 // gcc 2.9 compile failure fix.
-    static void *s_OldAct = NULL;
+static 	void*	s_OldAct = NULL;
 
-    void Signal_ResizeBlocking() {
-        struct sigaction act;
+void	Signal_ResizeBlocking()
+{
+	struct sigaction act;
 
-        if (!s_OldAct)
-            s_OldAct = new (struct sigaction);
+	if ( !s_OldAct )
+		s_OldAct = new (struct sigaction);
 
-        act.sa_handler = signal_action;
-        sigemptyset(&act.sa_mask);
-        act.sa_flags = 0;
+	act.sa_handler = signal_action;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
 
-        /* 28 Window size change (4.3 BSD, Sun).  */
-        sigaction(SIGWINCH, &act, (struct sigaction *) s_OldAct);
-    }
+	/* 28 Window size change (4.3 BSD, Sun).  */
+	sigaction(SIGWINCH, &act, (struct sigaction*)s_OldAct);
+}
 
-    void Signal_ResizeUnblocking() {
-        // ncurses SIGWINCH 의 이전 설정으로 돌린다.
-        sigaction(SIGWINCH, (struct sigaction *) s_OldAct, 0);
-    }
+void	Signal_ResizeUnblocking()
+{
+	// Go to previous setting of SIGWINCH.
+	sigaction(SIGWINCH, (struct sigaction*)s_OldAct, 0);
+}
 
 };

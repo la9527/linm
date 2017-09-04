@@ -1,5 +1,6 @@
-/* Copyright (C) 2006, 2007 The Written Word, Inc.  All rights reserved.
- * Author: Simon Josefsson
+/* Copyright (C) 2008, 2009, Simon Josefsson
+ * Copyright (C) 2006, 2007, The Written Word, Inc.
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms,
  * with or without modification, are permitted provided
@@ -36,6 +37,9 @@
  */
 
 #include "libssh2_priv.h"
+
+#ifdef LIBSSH2_LIBGCRYPT /* compile only if we build with libgcrypt */
+
 #include <string.h>
 
 int
@@ -148,20 +152,27 @@ _libssh2_dsa_new(libssh2_dsa_ctx ** dsactx,
 int
 _libssh2_rsa_new_private(libssh2_rsa_ctx ** rsa,
                          LIBSSH2_SESSION * session,
-                         FILE * fp, unsigned const char *passphrase)
+                         const char *filename, unsigned const char *passphrase)
 {
-    char *data, *save_data;
+    FILE *fp;
+    unsigned char *data, *save_data;
     unsigned int datalen;
     int ret;
-    char *n, *e, *d, *p, *q, *e1, *e2, *coeff;
+    unsigned char *n, *e, *d, *p, *q, *e1, *e2, *coeff;
     unsigned int nlen, elen, dlen, plen, qlen, e1len, e2len, coefflen;
 
     (void) passphrase;
+
+    fp = fopen(filename, "r");
+    if (!fp) {
+        return -1;
+    }
 
     ret = _libssh2_pem_parse(session,
                              "-----BEGIN RSA PRIVATE KEY-----",
                              "-----END RSA PRIVATE KEY-----",
                              fp, &data, &datalen);
+    fclose(fp);
     if (ret) {
         return -1;
     }
@@ -243,20 +254,27 @@ _libssh2_rsa_new_private(libssh2_rsa_ctx ** rsa,
 int
 _libssh2_dsa_new_private(libssh2_dsa_ctx ** dsa,
                          LIBSSH2_SESSION * session,
-                         FILE * fp, unsigned const char *passphrase)
+                         const char *filename, unsigned const char *passphrase)
 {
-    char *data, *save_data;
+    FILE *fp;
+    unsigned char *data, *save_data;
     unsigned int datalen;
     int ret;
-    char *p, *q, *g, *y, *x;
+    unsigned char *p, *q, *g, *y, *x;
     unsigned int plen, qlen, glen, ylen, xlen;
 
     (void) passphrase;
+
+    fp = fopen(filename, "r");
+    if (!fp) {
+        return -1;
+    }
 
     ret = _libssh2_pem_parse(session,
                              "-----BEGIN DSA PRIVATE KEY-----",
                              "-----END DSA PRIVATE KEY-----",
                              fp, &data, &datalen);
+    fclose(fp);
     if (ret) {
         return -1;
     }
@@ -557,3 +575,5 @@ _libssh2_cipher_crypt(_libssh2_cipher_ctx * ctx,
     }
     return ret;
 }
+
+#endif /* LIBSSH2_LIBGCRYPT */

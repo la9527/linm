@@ -60,5 +60,5 @@ LIBS = -L/usr/local/lib \
 -lssl \
 -lcrypt \
 -lz \
-/usr/lib/kde4/lib/libkdeui.so \
-/usr/lib/kde4/lib/libkdecore.so 
+-lkdeui \
+-lkdecore 

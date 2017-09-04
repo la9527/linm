@@ -37,6 +37,7 @@
 
 #include "libssh2_priv.h"
 #include "libssh2_publickey.h"
+#include "channel.h"
 
 #define LIBSSH2_PUBLICKEY_VERSION               2
 
@@ -52,13 +53,12 @@ typedef struct _LIBSSH2_PUBLICKEY_CODE_LIST
     int name_len;
 } LIBSSH2_PUBLICKEY_CODE_LIST;
 
-static const LIBSSH2_PUBLICKEY_CODE_LIST libssh2_publickey_response_codes[] = {
-    {LIBSSH2_PUBLICKEY_RESPONSE_STATUS, "status", sizeof("status") - 1}
-    ,
-    {LIBSSH2_PUBLICKEY_RESPONSE_VERSION, "version", sizeof("version") - 1}
-    ,
-    {LIBSSH2_PUBLICKEY_RESPONSE_PUBLICKEY, "publickey", sizeof("publickey") - 1}
-    ,
+static const LIBSSH2_PUBLICKEY_CODE_LIST publickey_response_codes[] =
+{
+    {LIBSSH2_PUBLICKEY_RESPONSE_STATUS, "status", sizeof("status") - 1},
+    {LIBSSH2_PUBLICKEY_RESPONSE_VERSION, "version", sizeof("version") - 1},
+    {LIBSSH2_PUBLICKEY_RESPONSE_PUBLICKEY, "publickey",
+     sizeof("publickey") - 1} ,
     {0, NULL, 0}
 };
 
@@ -75,46 +75,39 @@ static const LIBSSH2_PUBLICKEY_CODE_LIST libssh2_publickey_response_codes[] = {
 
 #define LIBSSH2_PUBLICKEY_STATUS_CODE_MAX       8
 
-static const LIBSSH2_PUBLICKEY_CODE_LIST libssh2_publickey_status_codes[] = {
-    {LIBSSH2_PUBLICKEY_SUCCESS, "success", sizeof("success") - 1}
-    ,
+static const LIBSSH2_PUBLICKEY_CODE_LIST publickey_status_codes[] = {
+    {LIBSSH2_PUBLICKEY_SUCCESS, "success", sizeof("success") - 1} ,
     {LIBSSH2_PUBLICKEY_ACCESS_DENIED, "access denied",
-     sizeof("access denied") - 1}
-    ,
+     sizeof("access denied") - 1},
     {LIBSSH2_PUBLICKEY_STORAGE_EXCEEDED, "storage exceeded",
-     sizeof("storage exceeded") - 1}
-    ,
+     sizeof("storage exceeded") - 1} ,
     {LIBSSH2_PUBLICKEY_VERSION_NOT_SUPPORTED, "version not supported",
-     sizeof("version not supported") - 1}
-    ,
+     sizeof("version not supported") - 1} ,
     {LIBSSH2_PUBLICKEY_KEY_NOT_FOUND, "key not found",
-     sizeof("key not found") - 1}
-    ,
+     sizeof("key not found") - 1},
     {LIBSSH2_PUBLICKEY_KEY_NOT_SUPPORTED, "key not supported",
-     sizeof("key not supported") - 1}
-    ,
+     sizeof("key not supported") - 1},
     {LIBSSH2_PUBLICKEY_KEY_ALREADY_PRESENT, "key already present",
-     sizeof("key already present") - 1}
-    ,
+     sizeof("key already present") - 1},
     {LIBSSH2_PUBLICKEY_GENERAL_FAILURE, "general failure",
-     sizeof("general failure") - 1}
-    ,
+     sizeof("general failure") - 1},
     {LIBSSH2_PUBLICKEY_REQUEST_NOT_SUPPORTED, "request not supported",
-     sizeof("request not supported") - 1}
-    ,
+     sizeof("request not supported") - 1},
     {0, NULL, 0}
 };
 
-/* {{{ libssh2_publickey_status_error
+/*
+ * publickey_status_error
+ *
  * Format an error message from a status code
  */
 #define LIBSSH2_PUBLICKEY_STATUS_TEXT_START     "Publickey Subsystem Error: \""
-#define LIBSSH2_PUBLICKEY_STATUS_TEXT_MID       "\" Server Resports: \""
+#define LIBSSH2_PUBLICKEY_STATUS_TEXT_MID       "\" Server Reports: \""
 #define LIBSSH2_PUBLICKEY_STATUS_TEXT_END       "\""
 static void
-libssh2_publickey_status_error(const LIBSSH2_PUBLICKEY * pkey,
-                               LIBSSH2_SESSION * session, int status,
-                               const unsigned char *message, int message_len)
+publickey_status_error(const LIBSSH2_PUBLICKEY * pkey,
+                       LIBSSH2_SESSION * session, int status,
+                       const unsigned char *message, int message_len)
 {
     const char *status_text;
     int status_text_len;
@@ -130,8 +123,8 @@ libssh2_publickey_status_error(const LIBSSH2_PUBLICKEY * pkey,
         status_text = "unknown";
         status_text_len = sizeof("unknown") - 1;
     } else {
-        status_text = libssh2_publickey_status_codes[status].name;
-        status_text_len = libssh2_publickey_status_codes[status].name_len;
+        status_text = publickey_status_codes[status].name;
+        status_text_len = publickey_status_codes[status].name_len;
     }
 
     m_len =
@@ -161,14 +154,14 @@ libssh2_publickey_status_error(const LIBSSH2_PUBLICKEY * pkey,
     libssh2_error(session, LIBSSH2_ERROR_PUBLICKEY_PROTOCOL, m, 1);
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_packet_receive
- * read a packet from the subsystem
+/*
+ * publickey_packet_receive
+ *
+ * Read a packet from the subsystem
  */
 static int
-libssh2_publickey_packet_receive(LIBSSH2_PUBLICKEY * pkey,
-                                 unsigned char **data, unsigned long *data_len)
+publickey_packet_receive(LIBSSH2_PUBLICKEY * pkey,
+                         unsigned char **data, unsigned long *data_len)
 {
     LIBSSH2_CHANNEL *channel = pkey->channel;
     LIBSSH2_SESSION *session = channel->session;
@@ -176,16 +169,16 @@ libssh2_publickey_packet_receive(LIBSSH2_PUBLICKEY * pkey,
     int rc;
 
     if (pkey->receive_state == libssh2_NB_state_idle) {
-        rc = libssh2_channel_read_ex(channel, 0, (char *) buffer, 4);
+        rc = _libssh2_channel_read(channel, 0, (char *) buffer, 4);
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if (rc != 4) {
             libssh2_error(session, LIBSSH2_ERROR_PUBLICKEY_PROTOCOL,
                           "Invalid response from publickey subsystem", 0);
             return -1;
         }
 
-        pkey->receive_packet_len = libssh2_ntohu32(buffer);
+        pkey->receive_packet_len = _libssh2_ntohu32(buffer);
         pkey->receive_packet =
             LIBSSH2_ALLOC(session, pkey->receive_packet_len);
         if (!pkey->receive_packet) {
@@ -198,10 +191,10 @@ libssh2_publickey_packet_receive(LIBSSH2_PUBLICKEY * pkey,
     }
 
     if (pkey->receive_state == libssh2_NB_state_sent) {
-        rc = libssh2_channel_read_ex(channel, 0, (char *) pkey->receive_packet,
-                                     pkey->receive_packet_len);
+        rc = _libssh2_channel_read(channel, 0, (char *) pkey->receive_packet,
+                                   pkey->receive_packet_len);
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if (rc != (int)pkey->receive_packet_len) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_TIMEOUT,
                           "Timeout waiting for publickey subsystem response packet",
@@ -221,25 +214,23 @@ libssh2_publickey_packet_receive(LIBSSH2_PUBLICKEY * pkey,
     return 0;
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_response_id
+/* publickey_response_id
+ *
  * Translate a string response name to a numeric code
  * Data will be incremented by 4 + response_len on success only
  */
 static int
-libssh2_publickey_response_id(unsigned char **pdata, int data_len)
+publickey_response_id(unsigned char **pdata, int data_len)
 {
     unsigned long response_len;
     unsigned char *data = *pdata;
-    const LIBSSH2_PUBLICKEY_CODE_LIST *codes =
-        libssh2_publickey_response_codes;
+    const LIBSSH2_PUBLICKEY_CODE_LIST *codes = publickey_response_codes;
 
     if (data_len < 4) {
         /* Malformed response */
         return -1;
     }
-    response_len = libssh2_ntohu32(data);
+    response_len = _libssh2_ntohu32(data);
     data += 4;
     data_len -= 4;
     if (data_len < (int)response_len) {
@@ -259,13 +250,12 @@ libssh2_publickey_response_id(unsigned char **pdata, int data_len)
     return -1;
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_response_success
+/* libssh2_publickey_response_success
+ *
  * Generic helper routine to wait for success response and nothing else
  */
 static int
-libssh2_publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
+publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
 {
     LIBSSH2_SESSION *session = pkey->channel->session;
     unsigned char *data, *s;
@@ -274,9 +264,9 @@ libssh2_publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
     int rc;
 
     while (1) {
-        rc = libssh2_publickey_packet_receive(pkey, &data, &data_len);
+        rc = publickey_packet_receive(pkey, &data, &data_len);
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if (rc) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_TIMEOUT,
                           "Timeout waiting for response from publickey subsystem",
@@ -285,7 +275,7 @@ libssh2_publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
         }
 
         s = data;
-        if ((response = libssh2_publickey_response_id(&s, data_len)) < 0) {
+        if ((response = publickey_response_id(&s, data_len)) < 0) {
             libssh2_error(session, LIBSSH2_ERROR_PUBLICKEY_PROTOCOL,
                           "Invalid publickey subsystem response code", 0);
             LIBSSH2_FREE(session, data);
@@ -299,13 +289,13 @@ libssh2_publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
                 unsigned long status, descr_len, lang_len;
                 unsigned char *descr, *lang;
 
-                status = libssh2_ntohu32(s);
+                status = _libssh2_ntohu32(s);
                 s += 4;
-                descr_len = libssh2_ntohu32(s);
+                descr_len = _libssh2_ntohu32(s);
                 s += 4;
                 descr = s;
                 s += descr_len;
-                lang_len = libssh2_ntohu32(s);
+                lang_len = _libssh2_ntohu32(s);
                 s += 4;
                 lang = s;
                 s += lang_len;
@@ -322,8 +312,8 @@ libssh2_publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
                     return 0;
                 }
 
-                libssh2_publickey_status_error(pkey, session, status, descr,
-                                               descr_len);
+                publickey_status_error(pkey, session, status, descr,
+                                       descr_len);
                 LIBSSH2_FREE(session, data);
                 return -1;
             }
@@ -340,14 +330,13 @@ libssh2_publickey_response_success(LIBSSH2_PUBLICKEY * pkey)
     return -1;
 }
 
-/* }}} */
-
-
 /* *****************
    * Publickey API *
    ***************** */
 
-/* {{{ libssh2_publickey_init
+/*
+ * libssh2_publickey_init
+ *
  * Startup the publickey subsystem
  */
 LIBSSH2_API LIBSSH2_PUBLICKEY *
@@ -404,7 +393,7 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
                                              "publickey", strlen("publickey"));
         if (rc == PACKET_EAGAIN) {
             libssh2_error(session, LIBSSH2_ERROR_EAGAIN,
-                          "Would block starting publickkey subsystem", 0);
+                          "Would block starting publickey subsystem", 0);
             return NULL;
         } else if (rc) {
             libssh2_error(session, LIBSSH2_ERROR_CHANNEL_FAILURE,
@@ -420,7 +409,7 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
                                                    LIBSSH2_CHANNEL_EXTENDED_DATA_IGNORE);
         if (rc == PACKET_EAGAIN) {
             libssh2_error(session, LIBSSH2_ERROR_EAGAIN,
-                          "Would block starting publickkey subsystem", 0);
+                          "Would block starting publickey subsystem", 0);
             return NULL;
         }
 
@@ -436,13 +425,13 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
         session->pkeyInit_pkey->version = 0;
 
         s = buffer;
-        libssh2_htonu32(s, 4 + (sizeof("version") - 1) + 4);
+        _libssh2_htonu32(s, 4 + (sizeof("version") - 1) + 4);
         s += 4;
-        libssh2_htonu32(s, sizeof("version") - 1);
+        _libssh2_htonu32(s, sizeof("version") - 1);
         s += 4;
         memcpy(s, "version", sizeof("version") - 1);
         s += sizeof("version") - 1;
-        libssh2_htonu32(s, LIBSSH2_PUBLICKEY_VERSION);
+        _libssh2_htonu32(s, LIBSSH2_PUBLICKEY_VERSION);
         s += 4;
 
         _libssh2_debug(session, LIBSSH2_DBG_PUBLICKEY,
@@ -453,11 +442,11 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
     }
 
     if (session->pkeyInit_state == libssh2_NB_state_sent2) {
-        rc = libssh2_channel_write_ex(session->pkeyInit_channel, 0,
-                                      (char *) buffer, (s - buffer));
+        rc = _libssh2_channel_write(session->pkeyInit_channel, 0,
+                                    (char *) buffer, (s - buffer));
         if (rc == PACKET_EAGAIN) {
             libssh2_error(session, LIBSSH2_ERROR_EAGAIN,
-                          "Would block sending publickkey version packet", 0);
+                          "Would block sending publickey version packet", 0);
             return NULL;
         } else if ((s - buffer) != rc) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_SEND,
@@ -470,9 +459,9 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
 
     if (session->pkeyInit_state == libssh2_NB_state_sent3) {
         while (1) {
-            rc = libssh2_publickey_packet_receive(session->pkeyInit_pkey,
-                                                  &session->pkeyInit_data,
-                                                  &session->pkeyInit_data_len);
+            rc = publickey_packet_receive(session->pkeyInit_pkey,
+                                          &session->pkeyInit_data,
+                                          &session->pkeyInit_data_len);
             if (rc == PACKET_EAGAIN) {
                 libssh2_error(session, LIBSSH2_ERROR_EAGAIN,
                               "Would block waiting for response from publickey subsystem",
@@ -487,9 +476,7 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
 
             s = session->pkeyInit_data;
             if ((response =
-                 libssh2_publickey_response_id(&s,
-                                               session->pkeyInit_data_len)) <
-                0) {
+                 publickey_response_id(&s, session->pkeyInit_data_len)) < 0) {
                 libssh2_error(session, LIBSSH2_ERROR_PUBLICKEY_PROTOCOL,
                               "Invalid publickey subsystem response code", 0);
                 goto err_exit;
@@ -502,13 +489,13 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
                     unsigned long status, descr_len, lang_len;
                     unsigned char *descr, *lang;
 
-                    status = libssh2_ntohu32(s);
+                    status = _libssh2_ntohu32(s);
                     s += 4;
-                    descr_len = libssh2_ntohu32(s);
+                    descr_len = _libssh2_ntohu32(s);
                     s += 4;
                     descr = s;
                     s += descr_len;
-                    lang_len = libssh2_ntohu32(s);
+                    lang_len = _libssh2_ntohu32(s);
                     s += 4;
                     lang = s;
                     s += lang_len;
@@ -522,14 +509,14 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
                         goto err_exit;
                     }
 
-                    libssh2_publickey_status_error(NULL, session, status,
-                                                   descr, descr_len);
+                    publickey_status_error(NULL, session, status,
+                                           descr, descr_len);
                     goto err_exit;
                 }
 
             case LIBSSH2_PUBLICKEY_RESPONSE_VERSION:
                 /* What we want */
-                session->pkeyInit_pkey->version = libssh2_ntohu32(s);
+                session->pkeyInit_pkey->version = _libssh2_ntohu32(s);
                 if (session->pkeyInit_pkey->version >
                     LIBSSH2_PUBLICKEY_VERSION) {
                     _libssh2_debug(session, LIBSSH2_DBG_PUBLICKEY,
@@ -580,9 +567,9 @@ libssh2_publickey_init(LIBSSH2_SESSION * session)
     return NULL;
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_add_ex
+/*
+ * libssh2_publickey_add_ex
+ *
  * Add a new public key entry
  */
 LIBSSH2_API int
@@ -635,48 +622,48 @@ libssh2_publickey_add_ex(LIBSSH2_PUBLICKEY * pkey, const unsigned char *name,
         }
 
         pkey->add_s = pkey->add_packet;
-        libssh2_htonu32(pkey->add_s, packet_len - 4);
+        _libssh2_htonu32(pkey->add_s, packet_len - 4);
         pkey->add_s += 4;
-        libssh2_htonu32(pkey->add_s, sizeof("add") - 1);
+        _libssh2_htonu32(pkey->add_s, sizeof("add") - 1);
         pkey->add_s += 4;
         memcpy(pkey->add_s, "add", sizeof("add") - 1);
         pkey->add_s += sizeof("add") - 1;
         if (pkey->version == 1) {
-            libssh2_htonu32(pkey->add_s, comment_len);
+            _libssh2_htonu32(pkey->add_s, comment_len);
             pkey->add_s += 4;
             if (comment) {
                 memcpy(pkey->add_s, comment, comment_len);
                 pkey->add_s += comment_len;
             }
 
-            libssh2_htonu32(pkey->add_s, name_len);
+            _libssh2_htonu32(pkey->add_s, name_len);
             pkey->add_s += 4;
             memcpy(pkey->add_s, name, name_len);
             pkey->add_s += name_len;
-            libssh2_htonu32(pkey->add_s, blob_len);
+            _libssh2_htonu32(pkey->add_s, blob_len);
             pkey->add_s += 4;
             memcpy(pkey->add_s, blob, blob_len);
             pkey->add_s += blob_len;
         } else {
             /* Version == 2 */
 
-            libssh2_htonu32(pkey->add_s, name_len);
+            _libssh2_htonu32(pkey->add_s, name_len);
             pkey->add_s += 4;
             memcpy(pkey->add_s, name, name_len);
             pkey->add_s += name_len;
-            libssh2_htonu32(pkey->add_s, blob_len);
+            _libssh2_htonu32(pkey->add_s, blob_len);
             pkey->add_s += 4;
             memcpy(pkey->add_s, blob, blob_len);
             pkey->add_s += blob_len;
             *(pkey->add_s++) = overwrite ? 0x01 : 0;
-            libssh2_htonu32(pkey->add_s, num_attrs);
+            _libssh2_htonu32(pkey->add_s, num_attrs);
             pkey->add_s += 4;
             for(i = 0; i < num_attrs; i++) {
-                libssh2_htonu32(pkey->add_s, attrs[i].name_len);
+                _libssh2_htonu32(pkey->add_s, attrs[i].name_len);
                 pkey->add_s += 4;
                 memcpy(pkey->add_s, attrs[i].name, attrs[i].name_len);
                 pkey->add_s += attrs[i].name_len;
-                libssh2_htonu32(pkey->add_s, attrs[i].value_len);
+                _libssh2_htonu32(pkey->add_s, attrs[i].value_len);
                 pkey->add_s += 4;
                 memcpy(pkey->add_s, attrs[i].value, attrs[i].value_len);
                 pkey->add_s += attrs[i].value_len;
@@ -692,10 +679,10 @@ libssh2_publickey_add_ex(LIBSSH2_PUBLICKEY * pkey, const unsigned char *name,
     }
 
     if (pkey->add_state == libssh2_NB_state_created) {
-        rc = libssh2_channel_write_ex(channel, 0, (char *) pkey->add_packet,
-                                      (pkey->add_s - pkey->add_packet));
+        rc = _libssh2_channel_write(channel, 0, (char *) pkey->add_packet,
+                                    (pkey->add_s - pkey->add_packet));
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if ((pkey->add_s - pkey->add_packet) != rc) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_SEND,
                           "Unable to send publickey add packet", 0);
@@ -709,9 +696,9 @@ libssh2_publickey_add_ex(LIBSSH2_PUBLICKEY * pkey, const unsigned char *name,
         pkey->add_state = libssh2_NB_state_sent;
     }
 
-    rc = libssh2_publickey_response_success(pkey);
+    rc = publickey_response_success(pkey);
     if (rc == PACKET_EAGAIN) {
-        return PACKET_EAGAIN;
+        return rc;
     }
 
     pkey->add_state = libssh2_NB_state_idle;
@@ -719,9 +706,7 @@ libssh2_publickey_add_ex(LIBSSH2_PUBLICKEY * pkey, const unsigned char *name,
     return rc;
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_remove_ex
+/* libssh2_publickey_remove_ex
  * Remove an existing publickey so that authentication can no longer be performed using it
  */
 LIBSSH2_API int
@@ -747,17 +732,17 @@ libssh2_publickey_remove_ex(LIBSSH2_PUBLICKEY * pkey,
         }
 
         pkey->remove_s = pkey->remove_packet;
-        libssh2_htonu32(pkey->remove_s, packet_len - 4);
+        _libssh2_htonu32(pkey->remove_s, packet_len - 4);
         pkey->remove_s += 4;
-        libssh2_htonu32(pkey->remove_s, sizeof("remove") - 1);
+        _libssh2_htonu32(pkey->remove_s, sizeof("remove") - 1);
         pkey->remove_s += 4;
         memcpy(pkey->remove_s, "remove", sizeof("remove") - 1);
         pkey->remove_s += sizeof("remove") - 1;
-        libssh2_htonu32(pkey->remove_s, name_len);
+        _libssh2_htonu32(pkey->remove_s, name_len);
         pkey->remove_s += 4;
         memcpy(pkey->remove_s, name, name_len);
         pkey->remove_s += name_len;
-        libssh2_htonu32(pkey->remove_s, blob_len);
+        _libssh2_htonu32(pkey->remove_s, blob_len);
         pkey->remove_s += 4;
         memcpy(pkey->remove_s, blob, blob_len);
         pkey->remove_s += blob_len;
@@ -770,10 +755,10 @@ libssh2_publickey_remove_ex(LIBSSH2_PUBLICKEY * pkey,
     }
 
     if (pkey->remove_state == libssh2_NB_state_created) {
-        rc = libssh2_channel_write_ex(channel, 0, (char *) pkey->remove_packet,
-                                      (pkey->remove_s - pkey->remove_packet));
+        rc = _libssh2_channel_write(channel, 0, (char *) pkey->remove_packet,
+                                    (pkey->remove_s - pkey->remove_packet));
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if ((pkey->remove_s - pkey->remove_packet) != rc) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_SEND,
                           "Unable to send publickey remove packet", 0);
@@ -788,9 +773,9 @@ libssh2_publickey_remove_ex(LIBSSH2_PUBLICKEY * pkey,
         pkey->remove_state = libssh2_NB_state_sent;
     }
 
-    rc = libssh2_publickey_response_success(pkey);
+    rc = publickey_response_success(pkey);
     if (rc == PACKET_EAGAIN) {
-        return PACKET_EAGAIN;
+        return rc;
     }
 
     pkey->remove_state = libssh2_NB_state_idle;
@@ -798,9 +783,7 @@ libssh2_publickey_remove_ex(LIBSSH2_PUBLICKEY * pkey,
     return rc;
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_list_fetch
+/* libssh2_publickey_list_fetch
  * Fetch a list of supported public key from a server
  */
 LIBSSH2_API int
@@ -819,9 +802,9 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
         pkey->listFetch_data = NULL;
 
         pkey->listFetch_s = pkey->listFetch_buffer;
-        libssh2_htonu32(pkey->listFetch_s, buffer_len - 4);
+        _libssh2_htonu32(pkey->listFetch_s, buffer_len - 4);
         pkey->listFetch_s += 4;
-        libssh2_htonu32(pkey->listFetch_s, sizeof("list") - 1);
+        _libssh2_htonu32(pkey->listFetch_s, sizeof("list") - 1);
         pkey->listFetch_s += 4;
         memcpy(pkey->listFetch_s, "list", sizeof("list") - 1);
         pkey->listFetch_s += sizeof("list") - 1;
@@ -833,12 +816,12 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
     }
 
     if (pkey->listFetch_state == libssh2_NB_state_created) {
-        rc = libssh2_channel_write_ex(channel, 0,
-                                      (char *) pkey->listFetch_buffer,
-                                      (pkey->listFetch_s -
-                                       pkey->listFetch_buffer));
+        rc = _libssh2_channel_write(channel, 0,
+                                    (char *) pkey->listFetch_buffer,
+                                    (pkey->listFetch_s -
+                                     pkey->listFetch_buffer));
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if ((pkey->listFetch_s - pkey->listFetch_buffer) != rc) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_SEND,
                           "Unable to send publickey list packet", 0);
@@ -850,10 +833,10 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
     }
 
     while (1) {
-        rc = libssh2_publickey_packet_receive(pkey, &pkey->listFetch_data,
-                                              &pkey->listFetch_data_len);
+        rc = publickey_packet_receive(pkey, &pkey->listFetch_data,
+                                      &pkey->listFetch_data_len);
         if (rc == PACKET_EAGAIN) {
-            return PACKET_EAGAIN;
+            return rc;
         } else if (rc) {
             libssh2_error(session, LIBSSH2_ERROR_SOCKET_TIMEOUT,
                           "Timeout waiting for response from publickey subsystem",
@@ -863,8 +846,8 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
 
         pkey->listFetch_s = pkey->listFetch_data;
         if ((response =
-             libssh2_publickey_response_id(&pkey->listFetch_s,
-                                           pkey->listFetch_data_len)) < 0) {
+             publickey_response_id(&pkey->listFetch_s,
+                                   pkey->listFetch_data_len)) < 0) {
             libssh2_error(session, LIBSSH2_ERROR_PUBLICKEY_PROTOCOL,
                           "Invalid publickey subsystem response code", 0);
             goto err_exit;
@@ -877,13 +860,13 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
                 unsigned long status, descr_len, lang_len;
                 unsigned char *descr, *lang;
 
-                status = libssh2_ntohu32(pkey->listFetch_s);
+                status = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
-                descr_len = libssh2_ntohu32(pkey->listFetch_s);
+                descr_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 descr = pkey->listFetch_s;
                 pkey->listFetch_s += descr_len;
-                lang_len = libssh2_ntohu32(pkey->listFetch_s);
+                lang_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 lang = pkey->listFetch_s;
                 pkey->listFetch_s += lang_len;
@@ -904,8 +887,8 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
                     return 0;
                 }
 
-                libssh2_publickey_status_error(pkey, session, status, descr,
-                                               descr_len);
+                publickey_status_error(pkey, session, status, descr,
+                                       descr_len);
                 goto err_exit;
             }
         case LIBSSH2_PUBLICKEY_RESPONSE_PUBLICKEY:
@@ -929,7 +912,7 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
             if (pkey->version == 1) {
                 unsigned long comment_len;
 
-                comment_len = libssh2_ntohu32(pkey->listFetch_s);
+                comment_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 if (comment_len) {
                     list[keys].num_attrs = 1;
@@ -953,25 +936,25 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
                     list[keys].num_attrs = 0;
                     list[keys].attrs = NULL;
                 }
-                list[keys].name_len = libssh2_ntohu32(pkey->listFetch_s);
+                list[keys].name_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 list[keys].name = pkey->listFetch_s;
                 pkey->listFetch_s += list[keys].name_len;
-                list[keys].blob_len = libssh2_ntohu32(pkey->listFetch_s);
+                list[keys].blob_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 list[keys].blob = pkey->listFetch_s;
                 pkey->listFetch_s += list[keys].blob_len;
             } else {
                 /* Version == 2 */
-                list[keys].name_len = libssh2_ntohu32(pkey->listFetch_s);
+                list[keys].name_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 list[keys].name = pkey->listFetch_s;
                 pkey->listFetch_s += list[keys].name_len;
-                list[keys].blob_len = libssh2_ntohu32(pkey->listFetch_s);
+                list[keys].blob_len = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 list[keys].blob = pkey->listFetch_s;
                 pkey->listFetch_s += list[keys].blob_len;
-                list[keys].num_attrs = libssh2_ntohu32(pkey->listFetch_s);
+                list[keys].num_attrs = _libssh2_ntohu32(pkey->listFetch_s);
                 pkey->listFetch_s += 4;
                 if (list[keys].num_attrs) {
                     list[keys].attrs =
@@ -986,12 +969,12 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
                     }
                     for(i = 0; i < list[keys].num_attrs; i++) {
                         list[keys].attrs[i].name_len =
-                            libssh2_ntohu32(pkey->listFetch_s);
+                            _libssh2_ntohu32(pkey->listFetch_s);
                         pkey->listFetch_s += 4;
                         list[keys].attrs[i].name = (char *) pkey->listFetch_s;
                         pkey->listFetch_s += list[keys].attrs[i].name_len;
                         list[keys].attrs[i].value_len =
-                            libssh2_ntohu32(pkey->listFetch_s);
+                            _libssh2_ntohu32(pkey->listFetch_s);
                         pkey->listFetch_s += 4;
                         list[keys].attrs[i].value = (char *) pkey->listFetch_s;
                         pkey->listFetch_s += list[keys].attrs[i].value_len;
@@ -1030,9 +1013,7 @@ libssh2_publickey_list_fetch(LIBSSH2_PUBLICKEY * pkey, unsigned long *num_keys,
     return -1;
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_list_free
+/* libssh2_publickey_list_free
  * Free a previously fetched list of public keys
  */
 LIBSSH2_API void
@@ -1053,15 +1034,14 @@ libssh2_publickey_list_free(LIBSSH2_PUBLICKEY * pkey,
     LIBSSH2_FREE(session, pkey_list);
 }
 
-/* }}} */
-
-/* {{{ libssh2_publickey_shutdown
+/* libssh2_publickey_shutdown
  * Shutdown the publickey subsystem
  */
 LIBSSH2_API int
 libssh2_publickey_shutdown(LIBSSH2_PUBLICKEY * pkey)
 {
     LIBSSH2_SESSION *session = pkey->channel->session;
+    int rc;
 
     /*
      * Make sure all memory used in the state variables are free
@@ -1083,12 +1063,10 @@ libssh2_publickey_shutdown(LIBSSH2_PUBLICKEY * pkey)
         pkey->listFetch_data = NULL;
     }
 
-    if (libssh2_channel_free(pkey->channel) == PACKET_EAGAIN) {
-        return PACKET_EAGAIN;
-    }
+    rc = libssh2_channel_free(pkey->channel);
+    if (rc == PACKET_EAGAIN)
+        return rc;
 
     LIBSSH2_FREE(session, pkey);
     return 0;
 }
-
-/* }}} */

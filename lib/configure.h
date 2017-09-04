@@ -24,7 +24,7 @@ namespace MLSUTIL {
         bool deleted;
     };
 
-/// @brief    Entry 으로 비교하는 class
+/// @brief    Entry compare class
     class sort_Entry {
     public:
         bool operator()(Entry a, Entry b) {
@@ -64,7 +64,7 @@ namespace MLSUTIL {
 
         const string &getVersion() const { return _sVersion; }
 
-        void setValue(const string &section,
+        void SetValue(const string &section,
                       const string &var,
                       const string &val,
                       bool bSave = true);
@@ -72,44 +72,44 @@ namespace MLSUTIL {
         void SetValue(const string &var,
                       const string &val,
                       bool /*bSave*/ = true) {
-            setValue("", var, val, true);
+            SetValue("", var, val, true);
         }
 
-        void setStaticValue(const std::string &section,
+        void SetStaticValue(const std::string &section,
                             const std::string &var,
                             const std::string &val) {
-            setValue(section, var, val, false);
+            SetValue(section, var, val, false);
         }
 
-        void setStaticValue(const std::string &var, const std::string &val) {
-            setValue("Static", var, val, false);
+        void SetStaticValue(const std::string &var, const std::string &val) {
+            SetValue("Static", var, val, false);
         }
 
-        string getValue(const string &section,
+        string GetValue(const string &section,
                         const string &var,
                         const string &def = "");
 
         int GetValueNum(const string &section,
                         const string &var,
                         int nDef = 0) {
-            string str = getValue(section, var);
+            string str = GetValue(section, var);
             if (str != "")
                 return strtoint(str);
             return nDef;
         }
 
-        bool getBool(const string &section, const string &var, bool def = false);
+        bool GetBool(const string &section, const string &var, bool def = false);
 
-        void setBool(const std::string &section,
+        void SetBool(const std::string &section,
                      const std::string &var,
                      bool value,
                      bool bSave = true) {
-            if (value) setValue(section, var, "On", bSave);
-            else setValue(section, var, "Off", bSave);
+            if (value) SetValue(section, var, "On", bSave);
+            else SetValue(section, var, "Off", bSave);
         }
 
-        void setBool(const string &var, bool bBool, bool bSave = false) {
-            setBool("", var, bBool, bSave);
+        void SetBool(const string &var, bool bBool, bool bSave = false) {
+            SetBool("", var, bBool, bSave);
         }
     };
 

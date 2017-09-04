@@ -79,7 +79,7 @@ CHECK_LIBRARY_EXISTS (pt "" "" "HAVE_LIBPT")
 CHECK_INCLUDE_FILES (pthread.h PTHREAD_ENABLE)
 CHECK_INCLUDE_FILES (limits.h HAVE_LIMITS_H)
 
-CHECK_INCLUDE_FILES (locale.h HAVE_LC_MESSAGES)
+CHECK_INCLUDE_FILES (locale.h libintl.h HAVE_LC_MESSAGES)
 CHECK_INCLUDE_FILES (locale.h HAVE_LOCALE_H)
 
 CHECK_TYPE_SIZE("long double" HAVE_LONG_DOUBLE)
@@ -179,7 +179,7 @@ message( "-- Option - configure path : '${__LINM_CFGPATH__}'" )
 
 option(DEBUG_MODE "Build debugging mode")
 if( DEBUG_MODE )
-    set(DEBUG_MODE __DEBUGMODE__ )
+    set(__DEBUGMODE__ "ON" )
 endif(DEBUG_MODE)
 
 message( "-- Option - debug mode : ${DEBUG_MODE}" )

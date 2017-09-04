@@ -52,11 +52,11 @@ typedef basic_string<wchar_t> wstring;
 
 using namespace std;
 
-typedef unsigned int uint;    ///< unsigned int 재정의
-typedef long long ullong;    ///< off_t 재정의
+typedef unsigned int uint;    ///< unsigned int
+typedef long long ullong;    ///< use the file size
 
-#define        ERROR    -1        ///< ERROR 정의
-#define        SUCCESS 0        ///< SUCCESS 정의
+#define        ERROR    -1        ///< ERROR
+#define        SUCCESS 0        ///< SUCCESS
 
 enum McdExeMode {
     MCD_EXEMODE_NONE,

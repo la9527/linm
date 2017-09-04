@@ -20,12 +20,14 @@
 
 using namespace MLS;
 
-void MlsMenu::MenuColorSetting() {
+void MlsMenu::MenuColorSetting()
+{
 	_tColorMenu = g_tColorCfg.GetColorEntry("Func");
 	_tColorMenuA = g_tColorCfg.GetColorEntry("FuncA");
 }
 
-void MlsMenu::MenuAddCatecory() {
+void MlsMenu::MenuAddCatecory()
+{
 	MenuCategory mls("LinM", PANEL);
 		mls.AddItem(_("About"), "Cmd_About");
 		mls.AddItem(_("Help"), "Cmd_Help");
@@ -94,7 +96,7 @@ void MlsMenu::MenuAddCatecory() {
 		util.AddItem("", "");
 		util.AddItem(_("Compress (tar.gz)"), "Cmd_TargzComp");
 		util.AddItem(_("Compress (tar.bz2)"), "Cmd_Tarbz2Comp");
-		util.AddItem(_("Compress (zip)"), "Cmd_ZipComp");
+		util.AddItem(_("Compress (zip)"), "Cmd_ZipComp");		
 	AddItem(util);
 
 	MenuCategory view(_("View"), PANEL);
@@ -118,7 +120,7 @@ void MlsMenu::MenuAddCatecory() {
 			view.AddItem(_("Hide owner"), "Cmd_FileOwnerView");
 		else
 			view.AddItem(_("Show owner"), "Cmd_FileOwnerView");
-
+		
 		view.AddItem(_("Sort Change"), "Cmd_SortChange");
 		view.AddItem(_("Sort Asc/Descend"), "Cmd_SortAscDescend");
 		view.AddItem("", "");
@@ -140,12 +142,14 @@ void MlsMenu::MenuAddCatecory() {
 	AddItem(op);
 }
 
-void McdMenu::MenuColorSetting() {
+void McdMenu::MenuColorSetting()
+{
 	_tColorMenu = g_tColorCfg.GetColorEntry("Func");
 	_tColorMenuA = g_tColorCfg.GetColorEntry("FuncA");
 }
 
-void McdMenu::MenuAddCatecory() {
+void McdMenu::MenuAddCatecory()
+{
 	MenuCategory mcd("Mcd", MCD);
 		mcd.AddItem(_("About"), "Cmd_About");
 		mcd.AddItem(_("Help"), "Cmd_Help");
@@ -188,7 +192,7 @@ void McdMenu::MenuAddCatecory() {
 		view.AddItem(_("Next window"), "Cmd_NextWindow");
 		view.AddItem("", "");
 		view.AddItem(_("SplitSync On/Off"), "Cmd_SplitViewSync");
-
+		
 	AddItem(view);
 
 	MenuCategory op(_("Option"), MCD);
@@ -198,12 +202,14 @@ void McdMenu::MenuAddCatecory() {
 	AddItem(op);
 }
 
-void EditorMenu::MenuColorSetting() {
+void EditorMenu::MenuColorSetting()
+{
 	_tColorMenu = g_tColorCfg.GetColorEntry("Func");
 	_tColorMenuA = g_tColorCfg.GetColorEntry("FuncA");
 }
 
-void EditorMenu::MenuAddCatecory() {
+void EditorMenu::MenuAddCatecory()
+{
 	MenuCategory File(_("File"), EDITOR );
 		File.AddItem(_("New"), "Cmd_FileNew");
 		File.AddItem("", "");

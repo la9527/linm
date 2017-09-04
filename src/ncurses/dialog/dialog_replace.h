@@ -21,44 +21,41 @@
 
 #include "dialog.h"
 
-namespace MLS {
+namespace MLS
+{
 
-    class Dialog_Replace : public Form {
-    public:
-        Dialog_Replace(const string &sTitle, const string &strFind = "", const string &strReplace = "");
+class   Dialog_Replace: public Form
+{
+public:
+    Dialog_Replace(const string& sTitle, const string& strFind = "", const string& strReplace = "");
+    
+    string  GetFind()       { return _tFind.GetStr(); }
+    string  GetReplace()    { return _tReplace.GetStr(); }
+    bool    GetOk()         { return _bOk; }
 
-        string GetFind() { return _tFind.GetStr(); }
+protected:  
+    void    InputExec( Input* pInput, KeyInfo& tKeyInfo );
+    void    ButtonExec( Button* pButton, KeyInfo& tKeyInfo );
 
-        string GetReplace() { return _tReplace.GetStr(); }
+    void    SetPosition(Position* pPosition, int y, int x, int width, int nColNum);
 
-        bool GetOk() { return _bOk; }
+    bool    MouseEvent(int Y, int X, mmask_t bstate);
+    void    Draw();
+    void    Execute(KeyInfo& tKeyInfo);
+    
+private:
+    Label           _tLabelFind;
+    Label           _tLabelReplace;
 
-    protected:
-        void InputExec(Input *pInput, KeyInfo &tKeyInfo);
+    Input           _tFind;
+    Input           _tReplace;
 
-        void ButtonExec(Button *pButton, KeyInfo &tKeyInfo);
-
-        void SetPosition(Position *pPosition, int y, int x, int width, int nColNum);
-
-        bool MouseEvent(int Y, int X, mmask_t bstate);
-
-        void Draw();
-
-        void Execute(KeyInfo &tKeyInfo);
-
-    private:
-        Label _tLabelFind;
-        Label _tLabelReplace;
-
-        Input _tFind;
-        Input _tReplace;
-
-        Button _tOk;
-        Button _tCancel;
-
-        bool _bOk;
-        int _nCurNum;
-    };
+    Button          _tOk;
+    Button          _tCancel;
+    
+    bool            _bOk;
+    int             _nCurNum;
+};
 
 };
 

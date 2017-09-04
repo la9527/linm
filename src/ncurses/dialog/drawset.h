@@ -22,75 +22,71 @@
 #include "config.h"
 
 #ifdef HAVE_NCURSES_H
-
-#include <ncurses.h>
-
+	#include <ncurses.h>
 #else
-#include <curses.h>
+	#include <curses.h>
 #endif
 
 #include "define.h"
 #include "colorcfgload.h"
 
-namespace MLS {
+namespace MLS
+{
 
-    extern chtype HLINE;
-    extern chtype VLINE;
-    extern chtype ULCORNER;
-    extern chtype LLCORNER;
-    extern chtype URCORNER;
-    extern chtype LRCORNER;
-    extern chtype LTEE;
-    extern chtype RTEE;
-    extern chtype BTEE;
-    extern chtype TTEE;
+extern chtype HLINE;
+extern chtype VLINE;
+extern chtype ULCORNER;
+extern chtype LLCORNER;
+extern chtype URCORNER;
+extern chtype LRCORNER;
+extern chtype LTEE;
+extern chtype RTEE;
+extern chtype BTEE;
+extern chtype TTEE;
 
 /// @brief	Line Code
-    enum LINECODE {
-        AUTOLINE, CHARLINE, ACSLINE
-    };
+enum LINECODE { AUTOLINE, CHARLINE, ACSLINE };
 
-    extern LINECODE e_nBoxLineCode;
+extern LINECODE e_nBoxLineCode;
 
-///	\brief	color 지정 및 속성 지정 함수
+///	\brief	color, attribute setting function with font color.
 ///	\param	font	font color
 ///	\param	back	background color
 ///	\param	win		ncurses window
-    void setcol(int font, int back, WINDOW *win = stdscr);
+void setcol(int font, int back, WINDOW *win=stdscr);
 
-///	\brief	color 지정 및 속성 지정 함수
+///	\brief	color, attribute setting function with ColorEntry.
 ///	\param	p		ColorEntry
 ///	\param	win		ncurses window
-    inline void setcol(ColorEntry &p, WINDOW *win = stdscr) {
-        setcol(p.font, p.back, win);
-    }
+inline void setcol(ColorEntry &p, WINDOW *win=stdscr)
+{
+	setcol(p.font, p.back, win);
+}
 
-///	\brief	color 지정 및 속성 지정 함수(반전)
+///	\brief	color, attribute setting function with ColorEntry. It's setcol() reverse color.
 ///	\param	p		ColorEntry
 ///	\param	win		ncurses window
-    inline void setrcol(ColorEntry &p, WINDOW *win = stdscr) {
-        setcol(p.back, p.font, win);
-    }
+inline void setrcol(ColorEntry &p, WINDOW *win=stdscr)
+{
+	setcol(p.back, p.font, win);
+}
 
-    void Set_BoxLine(LINECODE nCode);
+void    Set_BoxLine(LINECODE nCode);
 
-    void CursesInit(bool bTransparency = false);
+void	CursesInit( bool bTransparency = false );
+void	CursesDestroy();
 
-    void CursesDestroy();
+void	CursesRestart( bool bTransparency = false );
 
-    void CursesRestart(bool bTransparency = false);
+void	MouseInit();
+void	MouseDestroy();
 
-    void MouseInit();
+void	ScreenClear();
 
-    void MouseDestroy();
+int 	Signal_Blocking();
 
-    void ScreenClear();
-
-    int Signal_Blocking();
-
-    void Signal_ResizeBlocking();
-
-    void Signal_ResizeUnblocking();
+void	Signal_ResizeBlocking();
+void	Signal_ResizeUnblocking();
 
 };
 

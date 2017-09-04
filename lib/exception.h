@@ -17,50 +17,46 @@
  ******************************************************************************/
 
 /// @file	exception.h
-/// @brief	exception 클래스 헤더 파일
-#ifndef    __Exception_h__
-#define    __Exception_h__
+/// @brief	exception class header file.
+#ifndef	__Exception_h__
+#define	__Exception_h__
 
 #include "define.h"
 #include "strutil.h"
 #include <stdarg.h>
 
-namespace MLSUTIL {
-    /// @brief	예외처리를 위한 Exception 클래스
-    class Exception {
-    public:
-        Exception() { _nErrNo = 0; }
+namespace	MLSUTIL
+{
+	/// @brief	Exception class for except
+	class	Exception
+	{
+		public:
+			Exception() { _nErrNo = 0; }
+			Exception(string	pMsg);
+			Exception(const char *fmt, ...);
 
-        Exception(string pMsg);
+			Exception(int nNum): _nErrNo(nNum) {}
+			Exception(int nErrNo, char* 	pMsg	= NULL);
+			Exception(int nErrNo, string	pMsg);
+			Exception(int nErrNo, const char *fmt, ...);
 
-        Exception(const char *fmt, ...);
+			char*	GetInfo(void);
+			int		GetErrNo() { return _nErrNo; }
 
-        Exception(int nNum) : _nErrNo(nNum) {}
+			/// @brief	return to char* type of error information.
+			operator	char*()	{return	(char*)_strError.c_str();}
 
-        Exception(int nErrNo, char *pMsg = NULL);
+			/// @brief	return to string type of error information.
+			operator	string()	{return	_strError;}
+			
+			/// @brief	for cout. operator ex) cout << ExceptionClass << endl;
+			friend 	ostream&	operator>>(ostream& output, Exception& tEx);
 
-        Exception(int nErrNo, string pMsg);
-
-        Exception(int nErrNo, const char *fmt, ...);
-
-        char *getInfo(void);
-
-        int getErrNo() { return _nErrNo; }
-
-        /// @brief	char*로 에러문장을 돌려준다.
-        operator char *() { return (char *) _strError.c_str(); }
-
-        /// @brief	string 으로 에러문장을 돌려준다.
-        operator string() { return _strError; }
-
-        /// @brief	cout을 위한 operator ex) cout << ExceptionClass << endl;
-        friend ostream &operator>>(ostream &output, Exception &tEx);
-
-    protected:
-        string _strError;        ///<	string형태의 에러내용
-        string _sExcepInfo;    ///<	string형태의 에러내용
-        int _nErrNo;
-    };
+		protected:
+			string	_strError;		///<	Error information of string type.
+			string	_sExcepInfo;	///<	Error description of string type.
+			int		_nErrNo;
+	};
 }
 
 #endif

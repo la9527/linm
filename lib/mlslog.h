@@ -34,30 +34,27 @@
 
 using namespace std;
 
-namespace MLSUTIL {
+namespace MLSUTIL
+{
 
-    class MlsLog {
-        string _LogFile;
-        bool _bLog;
+class MlsLog
+{
+	string	_LogFile;
+	bool	_bLog;
 
-    public:
-        MlsLog() { _bLog = false; }
+public:
+	MlsLog()	{ _bLog = false; }
 
-        void SetFile(const string &sFile) {
-            _LogFile = sFile;
-            _bLog = true;
-        }
+	void	SetFile(const string& sFile) {  _LogFile = sFile; _bLog = true; }
 
-        void Write(const string &sStr);
+	void	Write(const string& sStr);
+	void	Write(const char* fmt, ...);
+	#ifdef __DEBUGMODE__	
+	void    WriteLog(const char *strDebugFile, const int nDebugLine);
+	#endif	
+};
 
-        void Write(const char *fmt, ...);
-
-#ifdef __DEBUGMODE__
-        void    WriteLog(const char *strDebugFile, const int nDebugLine);
-#endif
-    };
-
-    extern MlsLog g_Log;
+extern MlsLog	g_Log;
 
 };
 

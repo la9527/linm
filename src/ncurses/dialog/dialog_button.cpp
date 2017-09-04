@@ -20,91 +20,90 @@
 
 using namespace MLS;
 
-Button::Button(const string &str, int W) : Position() {
-    x = 0;
-    y = 0;
-    height = 1;
-    width = W;
-    fontcolor = COLOR_WHITE;
-    backcolor = 0;
-    _sMsg = str;
-    _MsgPosition = MIDDLE;
-    _bFocus = false;
+Button::Button(const string& str, int W )  : Position()
+{
+	x = 0; y = 0; height = 1; width = W;
+	fontcolor = COLOR_WHITE;
+	backcolor = 0;
+	_sMsg = str;
+	_MsgPosition = MIDDLE;
+	_bFocus = false;
 }
 
-Button::Button(int Y, int X, int W) {
-    x = X;
-    y = Y;
-    height = 1;
-    width = W;
-    fontcolor = COLOR_WHITE;
-    backcolor = 0;
-    _MsgPosition = MIDDLE;
-    _bFocus = false;
+Button::Button(int Y, int X, int W )
+{
+	x = X; y = Y; height = 1; width = W;
+	fontcolor = COLOR_WHITE;
+	backcolor = 0;
+	_MsgPosition = MIDDLE;
+	_bFocus = false;
 }
 
-Button::Button() {
-    x = 0;
-    y = 0;
-    height = 1;
-    width = 15;
-    fontcolor = COLOR_WHITE;
-    backcolor = 0;
-    _MsgPosition = MIDDLE;
-    _bFocus = false;
+Button::Button()
+{
+	x = 0; y = 0; height = 1; width = 15;
+	fontcolor = COLOR_WHITE;
+	backcolor = 0;
+	_MsgPosition = MIDDLE;
+	_bFocus = false;
 }
 
-void Button::SetSize(int Y, int X, int W) {
-    x = X;
-    y = Y;
-    height = 1;
-    width = W;
+void 	Button::SetSize(int Y, int X, int W)
+{
+	x = X; y = Y; height = 1; width = W;
 }
 
-void Button::SetTxtAlign(POSITION posX) {
-    _MsgPosition = posX;
+void 	Button::SetTxtAlign(POSITION	posX)
+{
+	_MsgPosition = posX;
 }
 
-void Button::SetMsg(const string &sMsg) {
-    _sMsg = sMsg;
+void 	Button::SetMsg(const string& sMsg)
+{
+	_sMsg = sMsg;
 }
 
-void Button::SetFocus(bool bFocus) {
-    _bFocus = bFocus;
-    // 현재 라인만 업데이트
-    Resize();
-    Draw();
-    wredrawln(_pForm->GetWin(), y, 1);
+void	Button::SetFocus(bool bFocus)
+{
+	_bFocus = bFocus;
+	// current line update.
+	Resize();
+	Draw();
+	wredrawln(_pForm->GetWin(), y, 1);
 }
 
-void Button::Draw() {
-    WINDOW *pWin = _pForm->GetWin();
+void	Button::Draw()
+{
+	WINDOW*	pWin = _pForm->GetWin();
 
-    if (_bFocus == true)
-        wattron (pWin, COLOR(backcolor, fontcolor));
-    else {
-        wattron (pWin, COLOR(fontcolor, backcolor));
-        wattron (pWin, A_BOLD);
-    }
+	if (_bFocus == true)
+		wattron (pWin, COLOR(backcolor, fontcolor));
+	else
+	{
+		wattron (pWin, COLOR(fontcolor, backcolor));
+		wattron (pWin, A_BOLD);
+	}
 
-    string sMsg;
+	string sMsg;
 
-    if (_MsgPosition == RIGHT) {
-        int nSize = width - scrstrlen(_sMsg);
-        if (nSize > 0) sMsg.append(nSize, ' ');
-        sMsg = _sMsg;
-    } else if (_MsgPosition == MIDDLE)
-        sMsg = strmid(width, _sMsg);
-    else // LEFT
-    {
-        int nSize = width - scrstrlen(_sMsg);
-        sMsg = _sMsg;
-        if (nSize > 0) sMsg.append(nSize, ' ');
-    }
+	if (_MsgPosition == RIGHT)
+	{
+		int nSize = width-scrstrlen(_sMsg);
+		if (nSize > 0 )	sMsg.append(nSize, ' ');
+		sMsg = _sMsg;
+	}
+	else if (_MsgPosition == MIDDLE)
+		sMsg = strmid(width, _sMsg);
+	else // LEFT
+	{
+		int nSize = width-scrstrlen(_sMsg);
+		sMsg = _sMsg;
+		if (nSize > 0 )	sMsg.append(nSize, ' ');
+	}
 
-    LOG_WRITE("[%s] [%d]", sMsg.c_str(), width);
-    mvwprintw(pWin, y, x, "%s", (char *) sMsg.c_str());
-    wattroff(pWin, A_BOLD);
+	LOG_WRITE("[%s] [%d]", sMsg.c_str(), width);
+	mvwprintw(pWin, y, x, "%s", (char*)sMsg.c_str());
+	wattroff(pWin, A_BOLD);
 
-    wnoutrefresh(pWin);
+	wnoutrefresh(pWin);
 }

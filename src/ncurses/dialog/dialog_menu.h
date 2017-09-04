@@ -26,188 +26,183 @@
 namespace MLS {
 
 ///	\brief	MenuItem class
-    class MenuItem : public Position {
-        string _sName;        ///< 화면에 출력될 MenuItem 이름
-        string _sCmd;        ///< 실행될 MenuItem 명령어
-        string _sCtlKey;
+class MenuItem:public Position
+{
+	string	_sName;		///< screen output menu item name.
+	string	_sCmd;		///< command execute of menu item.
+	string	_sCtlKey;
 
-        bool _bEnable;
-        bool _bCur;        /// 선택 여부
+	bool	_bEnable;
+	bool	_bCur;		/// is selected.
+	
+	ColorEntry	_tMenuColor;
+	ColorEntry	_tMenuAColor;
+	
+public:
+	
+	///	\brief	instructor.
+	///	\param	n		MenuItem name
+	///	\param	c		MenuItem command.
+	MenuItem(	const string &n, 
+				const string &c, 
+				bool bEn = true,
+				bool bCur = false) 
+		: _sName(n), _sCmd(c), _bEnable(bEn), _bCur(bCur)
+	{}
+	
+	// setter	===================================
+	///	\brief	name setting function
+	///	\param	n		set item name
+	void SetName(const string &n) { _sName = n;}
 
-        ColorEntry _tMenuColor;
-        ColorEntry _tMenuAColor;
+	///	\brief	command setting function
+	///	\param	n		set command
+	void SetCmd(const string &n) { _sCmd = n;}	
+	// ============================================
+	
+	// getter	===================================
+	///	\brief	get menu item name 
+	///	\return	return the menu item name.
+	const string &GetName() {return _sName;}
 
-    public:
+	///	\brief	get menu command
+	///	\return	return the command.
+	const string &GetCmd() {return _sCmd;}
+	// ============================================
 
-        ///	\brief	생성자
-        ///	\param	n		MenuItem 이름
-        ///	\param	c		MenuItem 명령어
-        MenuItem(const string &n,
-                 const string &c,
-                 bool bEn = true,
-                 bool bCur = false)
-                : _sName(n), _sCmd(c), _bEnable(bEn), _bCur(bCur) {}
+	void	SetCtlKey(const string& sCtlKey)	{ _sCtlKey = sCtlKey; }
+	const string &GetCtlKey()	{ return _sCtlKey; }
 
-        // setter	===================================
-        ///	\brief	이름 설정함수
-        ///	\param	n		설정할 화면에 출력될 메뉴 Item
-        void SetName(const string &n) { _sName = n; }
+	///	\brief  enable command.
+	///	\param	bEn		if enable, return true.
+	void	SetEnable(bool bEn) { _bEnable = bEn; }
+	
+	///	\brief	get enable
+	///	\return	Enable
+	bool	GetEnable() { return _bEnable; }
+	
+	void	SetCur(bool bCur)	{ _bCur = bCur; }
+	bool	GetCur()	{ return _bCur; }
 
-        ///	\brief	명령 설정 함수
-        ///	\param	n		  설정할 명령어
-        void SetCmd(const string &n) { _sCmd = n; }
-        // ============================================
+	void	Color(const ColorEntry& tMenuColor, const ColorEntry& tMenuAColor)
+	{
+		_tMenuColor = tMenuColor;
+		_tMenuAColor = tMenuAColor;
+	}	
 
-        // getter	===================================
-        ///	\brief	화면에 출력될 이름 얻기 함수
-        ///	\return	화면에 출력될 이름
-        const string &GetName() { return _sName; }
+	void	Draw();
+};
 
-        ///	\brief	명령어 얻기 함수
-        ///	\return	명령어
-        const string &GetCmd() { return _sCmd; }
-        // ============================================
+// menu category.
+///	\brief	Menu Category class.
+class MenuCategory:public Form
+{
+	string _sName;		///< menu name
+	
+	int _nIndex;     		///< current position in menu category.
+	
+	vector<MenuItem> 	_vItem; ///< sub menu.
+	ColorEntry			_tMenuColor;
+	ColorEntry			_tMenuAColor;
+	ViewType			_eViewType;
 
-        void SetCtlKey(const string &sCtlKey) { _sCtlKey = sCtlKey; }
+public:
+	///	\brief	constructor
+	///	\param	p		MenuCategory name
+	///	\param	l		MenuCategory location
+	MenuCategory(const string &p, const ViewType eViewType)
+		: _sName(p) , _nIndex(0) 
+	{
+		_bNoOutRefresh = true; // when Refresh, do not doupdate() call.
+		_bNoViewUpdate = true; // do not update.
+		_bNotDrawBox = true; // do not draw box.
+		_eViewType = eViewType;
+	}
 
-        const string &GetCtlKey() { return _sCtlKey; }
+	~MenuCategory()
+	{
+	}
 
-        ///	\brief	명령 활성화
-        ///	\param	bEn		Enable이면 true
-        void SetEnable(bool bEn) { _bEnable = bEn; }
+	void	MenuColor(const ColorEntry& tMenuColor, const ColorEntry& tMenuAColor)
+	{
+		_tMenuColor = tMenuColor;
+		_tMenuAColor = tMenuAColor;
+	}	
 
-        ///	\brief	활성화 여부를 돌려준다.
-        ///	\return	Enable
-        bool GetEnable() { return _bEnable; }
+	///	\brief	menu category get name function
+	///	\return	return name
+	const string &GetName() const {return _sName;}
+	
+	///	\brief	Add to menu item function.
+	///	\param	n		MenuItem name
+	///	\param	c		MenuItem Command
+	///	\param	k		MenuItem KeyInfo
+	///	\param	b		is menu item Enable (default: true)
+	void AddItem(	const string &n, 
+					const string &c, 
+					bool b = true);
 
-        void SetCur(bool bCur) { _bCur = bCur; }
+	///	\brief	menu item get function
+	///	\return	return the menu item command.
+	string 	GetCmd()  { return _vItem[_nIndex].GetCmd(); }
 
-        bool GetCur() { return _bCur; }
+	///	\brief	get menu item command function.
+	///	\return	return the menu item command.
+	bool	GetEnable() { return _vItem[_nIndex].GetEnable(); }
+	int  	GetItemSize() { return _vItem.size(); }
 
-        void Color(const ColorEntry &tMenuColor, const ColorEntry &tMenuAColor) {
-            _tMenuColor = tMenuColor;
-            _tMenuAColor = tMenuAColor;
-        }
+	void	SetDisable(const std::string& sStr);
+	void 	SetCursor(const int nIdx);
+	void	SetTypeName(const ViewType e) { _eViewType = e; }
 
-        void Draw();
-    };
-
-// 메뉴의 분류
-///	\brief	MenuCategory class[메뉴의 분류]
-    class MenuCategory : public Form {
-        string _sName;        ///< 메뉴 이름
-
-        int _nIndex;            ///< 메뉴 Category 내에서 현재 커서 위치
-
-        vector<MenuItem> _vItem; ///< 서브메뉴
-        ColorEntry _tMenuColor;
-        ColorEntry _tMenuAColor;
-        ViewType _eViewType;
-
-    public:
-        ///	\brief	생성자
-        ///	\param	p		MenuCategory 이름
-        ///	\param	l		MenuCategory location
-        MenuCategory(const string &p, const ViewType eViewType)
-                : _sName(p), _nIndex(0) {
-            _bNoOutRefresh = true; // Refresh 할때 doupdate 하지 않는다.
-            _bNoViewUpdate = true; // 업데이트 하지 않는다.
-            _bNotDrawBox = true; // 박스를 그리지 않는다.
-            _eViewType = eViewType;
-        }
-
-        ~MenuCategory() {
-        }
-
-        void MenuColor(const ColorEntry &tMenuColor, const ColorEntry &tMenuAColor) {
-            _tMenuColor = tMenuColor;
-            _tMenuAColor = tMenuAColor;
-        }
-
-        ///	\brief	이름  얻기 함수
-        ///	\return	이름
-        const string &GetName() const { return _sName; }
-
-        ///	\brief	MenuItem 추가 함수
-        ///	\param	n		MenuItem 이름
-        ///	\param	c		MenuItem Command
-        ///	\param	k		MenuItem KeyInfo
-        ///	\param	b		MenuItem Enable 여부 (기본 Enable)
-        void AddItem(const string &n,
-                     const string &c,
-                     bool b = true);
-
-        ///	\brief	MenuItem Command 얻기함수
-        ///	\return	MenuItem Command
-        string GetCmd() { return _vItem[_nIndex].GetCmd(); }
-
-        ///	\brief	MenuItem Command 얻기함수
-        ///	\return	MenuItem Command
-        bool GetEnable() { return _vItem[_nIndex].GetEnable(); }
-
-        int GetItemSize() { return _vItem.size(); }
-
-        void SetDisable(const std::string &sStr);
-
-        void SetCursor(const int nIdx);
-
-        void SetTypeName(const ViewType e) { _eViewType = e; }
-
-        void DrawFirst();
-
-        void Draw();
-
-        void CursorUp();
-
-        void CursorDown();
-
-        bool MouseEvent(int Y, int X, mmask_t bstate);
-    };
+	void 	DrawFirst();
+	void 	Draw();
+	
+	void 	CursorUp();
+	void 	CursorDown();
+	bool	MouseEvent(int Y, int X, mmask_t bstate);
+};
 
 ///	\brief	Menu class
-    class Menu : public Form {
-    protected:
-        int _nNum;                                    ///< 현재 선택되어 있는 item index
-        bool _bESC_Exit;        ///< ESC Exit
-        std::vector<MenuCategory> _vItem;        ///< 메뉴 뭉치들(예.윈도우에서 File 메뉴)
-        std::vector<std::string> _vCmdDisable;    /// Disable될 Cmd list
-        ColorEntry _tColorMenu;
-        ColorEntry _tColorMenuA;
+class Menu:public Form
+{
+protected:
+	int _nNum;									///< currently selected index the menu item.
+	bool						_bESC_Exit;		///< Is ESC Exit.
+	std::vector<MenuCategory> 	_vItem; 		///< menu categoryes (ex. File, Menu)
+	std::vector<std::string>	_vCmdDisable; 	/// be disable the command list.
+	ColorEntry					_tColorMenu;
+	ColorEntry					_tColorMenuA;
+	
+	bool	MouseEvent(int Y, int X, mmask_t bstate);
 
-        bool MouseEvent(int Y, int X, mmask_t bstate);
+	// color setting of _tColorMenu, _tColorMenuA.
+	virtual void MenuColorSetting() = 0;
 
-        // _tColorMenu, _tColorMenuA 의 컬러를 세팅한다.
-        virtual void MenuColorSetting() = 0;
+	// When Reflash, another screen is need to refresh() call. for not broken text.
+	virtual void MenuRefresh() {}
+	
+	// virtual function for add each menu.
+	virtual void MenuAddCatecory() = 0;
 
-        // Reflash 할때 기타 화면을 Reflesh 꼭 넣어야 제대로 화면 나옴.
-        virtual void MenuRefresh() {}
+public:
+	Menu();
 
-        // 각 메뉴를 넣는 가상함수
-        virtual void MenuAddCatecory() = 0;
+	void 	AddItem(MenuCategory& p);
+	string	GetCurCmd();
+	
+	///	\brief	Add to be disable the command list.
+	///	\param	vCmd	set to disable menu list (command)
+	void 	SetDefault(void)	{ _vCmdDisable.clear(); }
+	void 	SetDisable(std::vector<std::string> vCmd) { _vCmdDisable = vCmd; }
 
-    public:
-        Menu();
+	void	Create();	
+	void	DrawFirst();
+	void 	Draw();
+	void 	Refresh(bool bNoOutRefresh = false);
 
-        void AddItem(MenuCategory &p);
-
-        string GetCurCmd();
-
-        ///	\brief	Disable 될 명령 list 를 추가한다.
-        ///	\param	vCmd	disable 할 메뉴 List (command)
-        void SetDefault(void) { _vCmdDisable.clear(); }
-
-        void SetDisable(std::vector<std::string> vCmd) { _vCmdDisable = vCmd; }
-
-        void Create();
-
-        void DrawFirst();
-
-        void Draw();
-
-        void Refresh(bool bNoOutRefresh = false);
-
-        void Execute(KeyInfo &tKeyInfo);
-    };
+	void	Execute(KeyInfo& tKeyInfo);
+};
 
 };
 

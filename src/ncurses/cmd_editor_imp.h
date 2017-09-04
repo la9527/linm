@@ -6,111 +6,85 @@
 #include "command.h"
 #include "selection.h"
 
-// PluginLoader 때문.
+// PluginLoader.
 #include "vfsplugin.h"
 #include "readerctl.h"
 
 namespace MLS {
 
-    class CmdEditorImp : public CmdCommonImp, public Configurable {
-    public:
-        CmdEditorImp() : CmdCommonImp() {
-            UpdateConfig();
-        }
+class CmdEditorImp:public CmdCommonImp, public Configurable
+{
+public:
+	CmdEditorImp() : CmdCommonImp()
+	{
+		UpdateConfig();
+	}
+	~CmdEditorImp()
+	{	
+		SaveConfig(); 
+	}
 
-        ~CmdEditorImp() {
-            SaveConfig();
-        }
+	// IConfigurable
+	void 	UpdateConfig();
+	void 	SaveConfig();
 
-        // IConfigurable
-        void UpdateConfig();
+	void	Split();
+	void	NextWindow();
 
-        void SaveConfig();
+	void	Key_Enter();
+	void	Key_Left();
+	void	Key_Right();
+	void	Key_Up();
+	void	Key_Down();
+	void	Key_Home();
+	void	Key_End();
+	void	Key_PageUp();
+	void	Key_PageDown();
+	void	Key_Ins();
+	void	Key_Del();
+	void	Key_BS();
+	void	Key_ESC();
 
-        void Split();
+	void	Refresh();
+	void	ClearRefresh();
+	void	RefreshAll();
+	
+	void	Menu();
+	void	Quit();
+	
+	void	ClipCopy();
+	void	ClipPaste();
+	void	ClipCut();
 
-        void NextWindow();
+	void	Undo();
 
-        void Key_Enter();
+	void	FileNew();
+	void	FileSave();
+	void	FileSaveAs();
 
-        void Key_Left();
+	void	LineNumberView();
 
-        void Key_Right();
+	void	Select()		{ _pEditor->Select();		}
+	void	SelectAll()		{ _pEditor->SelectAll();	}
 
-        void Key_Up();
+	void	Find() 			{ _pEditor->Find(); }
+	void	FindNext() 		{ _pEditor->FindNext(); }
+	void	FindPrevious()	{ _pEditor->FindPrevious(); }
 
-        void Key_Down();
+	void	Key_Tab()		{ _pEditor->Key_Tab();     }
+	void	Key_Untab()		{ _pEditor->Key_Untab();   }
 
-        void Key_Home();
+	void	IndentMode()	{ _pEditor->IndentMode(); }
+	
+	void	GotoLine()		{ _pEditor->GotoLine();  }
+	void	GotoFirst()		{ _pEditor->GotoFirst(); }
+	void	GotoEnd()		{ _pEditor->GotoEnd();   }
 
-        void Key_End();
+	void	VimView();
+	void	MouseUse();
 
-        void Key_PageUp();
-
-        void Key_PageDown();
-
-        void Key_Ins();
-
-        void Key_Del();
-
-        void Key_BS();
-
-        void Key_ESC();
-
-        void Refresh();
-
-        void ClearRefresh();
-
-        void RefreshAll();
-
-        void Menu();
-
-        void Quit();
-
-        void ClipCopy();
-
-        void ClipPaste();
-
-        void ClipCut();
-
-        void Undo();
-
-        void FileNew();
-
-        void FileSave();
-
-        void FileSaveAs();
-
-        void LineNumberView();
-
-        void Select() { _pEditor->Select(); }
-
-        void SelectAll() { _pEditor->SelectAll(); }
-
-        void Find() { _pEditor->Find(); }
-
-        void FindNext() { _pEditor->FindNext(); }
-
-        void FindPrevious() { _pEditor->FindPrevious(); }
-
-        void Key_Tab() { _pEditor->Key_Tab(); }
-
-        void Key_Untab() { _pEditor->Key_Untab(); }
-
-        void IndentMode() { _pEditor->IndentMode(); }
-
-        void GotoLine() { _pEditor->GotoLine(); }
-
-        void GotoFirst() { _pEditor->GotoFirst(); }
-
-        void GotoEnd() { _pEditor->GotoEnd(); }
-
-        void VimView();
-
-        void MouseUse();
-
-        void Replace();
-    }; // class CommandImp
+    void    Replace();
+}; // class CommandImp
 
 }; // namespace
 

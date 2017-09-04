@@ -29,99 +29,98 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class FtpReader : public Reader {
-    private:
-        string _sIP;
-        string _sUser;
-        string _sHome;        ///< 홈디렉토리
-        string _sInitFile;
+class FtpReader:public Reader
+{
+private:
+	string			_sIP;
+	string			_sUser;
+	string			_sHome;		///< 홈디렉토리
+	string			_sInitFile;
 
-    protected:
-        netbuf *_pDefaultFtpNet; // ftp Net
-        vector<File *> _vFileLists;
+protected:
+	netbuf* 		_pDefaultFtpNet; // ftp Net
+	vector<File*>	_vFileLists;
+	
+	string	GetPwd() const;
+	int		GetIpUserPw(const string& sStr, string& sIP, string& sUser, string& sPasswd, string& sDir);
+	int		LineFormatRead(vector<string>&	vLineToken, File* pFileInfo);
 
-        string GetPwd() const;
+public:
+	FtpReader();
+	~FtpReader();
+	
+	bool	Init(const string& sInitFile = "");
+	void	Destroy();
 
-        int GetIpUserPw(const string &sStr, string &sIP, string &sUser, string &sPasswd, string &sDir);
+	string	GetViewPath() const 					{ return _sInitTypeName + _sCurPath; }
+	string 	GetRealPath(const string& str) const;
+	
+	bool Read(const string &sPath);
+	bool Next();
+	bool GetInfo(File &tFile);
+	bool isRoot()
+	{
+		return false;
+	}
 
-        int LineFormatRead(vector<string> &vLineToken, File *pFileInfo);
+	bool isChkFile(const File& tFile)
+	{		
+		return true;
+	}
 
-    public:
-        FtpReader();
+	bool	View(const File* pFileOriginal, File* pFileChange);
 
-        ~FtpReader();
+	bool	Rename(File* pFile, const string& sRename = "");
+	bool	Mkdir(const string& sFullPathName = "");
+	bool	Copy(File& tFile, const string& sTargetPath, File* pFile = NULL)
+	{
+		return false;
+	}
+	
+	bool	Move(File& tFile, const string& sTargetPath, File* pFile = NULL)
+	{
+		return false;
+	}
 
-        bool Init(const string &sInitFile = "");
+	bool	Remove(File& tFile)
+	{
+		return false;
+	}
 
-        void Destroy();
+	bool 	Paste(File& tFile)
+	{
+		return false;
+	}	
 
-        string GetViewPath() const { return _sInitTypeName + _sCurPath; }
+	///	\brief	파일 복사
+	///	\return	복사 여부	
+	bool	Copy(	Selection& tSelection, 
+					const string& sTargetPath = "",
+					Selection*	pSelection = NULL);
+	
+	///	\brief	파일 이동
+	///	\return	이동 여부
+	bool	Move(	Selection& tSelection,
+					const string& sTargetPath = "",
+					Selection*	pSelection = NULL)
+	{
+		MsgBox(_("Error"), _("ftp file move fail !!!"));
+		return false;
+	}
 
-        string GetRealPath(const string &str) const;
+	///	\brief	파일 삭제
+	///	\return	삭제 여부
+	bool	Remove(MLS::Selection& tSelection, bool bMsgShow = true, bool bIgnore = false);
+	
+	///	\brief	파일 붙여넣기 할때 file일 경우는 Copy를 그냥  이용한다.
+	///	\return	false  리턴
+	bool	Paste(Selection& tSelection);
 
-        bool Read(const string &sPath);
-
-        bool Next();
-
-        bool GetInfo(File &tFile);
-
-        bool isRoot() {
-            return false;
-        }
-
-        bool isChkFile(const File &tFile) {
-            return true;
-        }
-
-        bool View(const File *pFileOriginal, File *pFileChange);
-
-        bool Rename(File *pFile, const string &sRename = "");
-
-        bool Mkdir(const string &sFullPathName = "");
-
-        bool Copy(File &tFile, const string &sTargetPath, File *pFile = NULL) {
-            return false;
-        }
-
-        bool Move(File &tFile, const string &sTargetPath, File *pFile = NULL) {
-            return false;
-        }
-
-        bool Remove(File &tFile) {
-            return false;
-        }
-
-        bool Paste(File &tFile) {
-            return false;
-        }
-
-        ///	\brief	파일 복사
-        ///	\return	복사 여부
-        bool Copy(Selection &tSelection,
-                  const string &sTargetPath = "",
-                  Selection *pSelection = NULL);
-
-        ///	\brief	파일 이동
-        ///	\return	이동 여부
-        bool Move(Selection &tSelection,
-                  const string &sTargetPath = "",
-                  Selection *pSelection = NULL) {
-            MsgBox(_("Error"), _("ftp file move fail !!!"));
-            return false;
-        }
-
-        ///	\brief	파일 삭제
-        ///	\return	삭제 여부
-        bool Remove(MLS::Selection &tSelection, bool bMsgShow = true, bool bIgnore = false);
-
-        ///	\brief	파일 붙여넣기 할때 file일 경우는 Copy를 그냥  이용한다.
-        ///	\return	false  리턴
-        bool Paste(Selection &tSelection);
-
-        void EncodeChk(vector<File *> &tFileList, bool bEncChk);
-    };
+	void	EncodeChk(vector<File*>& tFileList, bool bEncChk);
+};
 
 };
 

@@ -31,60 +31,54 @@
 #include "ncurses_mcd.h"
 #include "ncurses_editor.h"
 
-namespace MLS {
+namespace MLS
+{
 
-    class CmdPanelImp;
-
-    class CmdMcdImp;
-
-    class CmdEditorImp;
+class CmdPanelImp;
+class CmdMcdImp;
+class CmdEditorImp;
 
 /// @brief command Execute class
-    class Command {
-    protected:
-        typedef void (CmdPanelImp::* PanelFun)();
+class Command
+{
+protected:
+	typedef void (CmdPanelImp::* PanelFun)();
+	typedef void (CmdMcdImp::* McdFun)();
+	typedef void (CmdEditorImp::* EditorFun)();
 
-        typedef void (CmdMcdImp::* McdFun)();
+	typedef std::map<TypeInfo*, PanelFun>	PanelMap;
+	typedef std::map<TypeInfo*, McdFun>		McdMap;
+	typedef std::map<TypeInfo*, EditorFun>	EditorMap;
 
-        typedef void (CmdEditorImp::* EditorFun)();
+	CmdPanelImp*		_pPanelImp;
+	CmdMcdImp*			_pMcdImp;
+	CmdEditorImp*		_pEditorImp;
 
-        typedef std::map<TypeInfo *, PanelFun> PanelMap;
-        typedef std::map<TypeInfo *, McdFun> McdMap;
-        typedef std::map<TypeInfo *, EditorFun> EditorMap;
+	PanelMap 		_mapPanelFunc;
+	McdMap 			_mapMcdFunc;
+	EditorMap 		_mapEditorFunc;
 
-        CmdPanelImp *_pPanelImp;
-        CmdMcdImp *_pMcdImp;
-        CmdEditorImp *_pEditorImp;
+public:
+	Command();
+	~Command();
 
-        PanelMap _mapPanelFunc;
-        McdMap _mapMcdFunc;
-        EditorMap _mapEditorFunc;
+	// should be add to code to function of child class.
+	void Init();
 
-    public:
-        Command();
+	void SetPanel(NCurses_Panel*);
+	void SetMcd(NCurses_Mcd*);
+	void SetEditor(NCurses_Editor*);
+	NCurses_Panel*	GetPanel();
 
-        ~Command();
+	// Execute the command as command message.
+	int  Execute(const std::string &sCmd);
 
-        // 하위클래스에서 실행 내용 추가
-        void Init();
+	// the sCmd parse and execute as Run().
+	int	 ParseAndRun(const std::string &sCmd, bool bPause);
 
-        void SetPanel(NCurses_Panel *);
-
-        void SetMcd(NCurses_Mcd *);
-
-        void SetEditor(NCurses_Editor *);
-
-        NCurses_Panel *GetPanel();
-
-        // 커맨드 메시지와 실행명령을 처리한다.
-        int Execute(const std::string &sCmd);
-
-        // str을 파싱한 다음 Run으로 실행한다
-        int ParseAndRun(const std::string &sCmd, bool bPause);
-
-        // 쉘에 의해서 실행 되는 커맨드
-        int Run(const std::string &str, bool bPause = false);
-    };
+	// Executed the command by shell
+	int  Run(const std::string &str, bool bPause = false);
+};
 
 }; // namespace
 

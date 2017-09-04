@@ -37,6 +37,9 @@
  */
 
 #include "libssh2_priv.h"
+
+#ifndef LIBSSH2_LIBGCRYPT /* compile only if we build with OpenSSL */
+
 #include <string.h>
 
 #ifndef EVP_MAX_BLOCK_LENGTH
@@ -212,12 +215,40 @@ passphrase_cb(char *buf, int size, int rwflag, char *passphrase)
     return passphrase_len;
 }
 
+typedef void * (*pem_read_bio_func)(BIO *, void **, pem_password_cb *,
+                                    void * u);
+
+static int
+read_private_key_from_file(void ** key_ctx, LIBSSH2_SESSION * session,
+                           pem_read_bio_func read_private_key,
+                           const char * filename,
+                           unsigned const char *passphrase)
+{
+    BIO * bp;
+
+    *key_ctx = NULL;
+
+    bp = BIO_new_file(filename, "r");
+    if (!bp) {
+        return -1;
+    }
+
+    *key_ctx = read_private_key(bp, NULL, (void *) passphrase_cb,
+                                (void *) passphrase);
+
+    BIO_free(bp);
+    return (*key_ctx) ? 0 : -1;
+}
+
 int
 _libssh2_rsa_new_private(libssh2_rsa_ctx ** rsa,
                          LIBSSH2_SESSION * session,
-                         FILE * fp, unsigned const char *passphrase)
+                         const char *filename, unsigned const char *passphrase)
 {
+    pem_read_bio_func read_rsa =
+        (pem_read_bio_func) &PEM_read_bio_RSAPrivateKey;
     (void) session;
+
     if (!EVP_get_cipherbyname("des")) {
 /* If this cipher isn't loaded it's a pretty good indication that none are.
  * I have *NO DOUBT* that there's a better way to deal with this ($#&%#$(%$#(
@@ -225,20 +256,19 @@ _libssh2_rsa_new_private(libssh2_rsa_ctx ** rsa,
  */
         OpenSSL_add_all_ciphers();
     }
-    *rsa = PEM_read_RSAPrivateKey(fp, NULL, (void *) passphrase_cb,
-                                  (void *) passphrase);
-    if (!*rsa) {
-        return -1;
-    }
-    return 0;
+
+    return read_private_key_from_file((void **) rsa, session, read_rsa,
+                                      filename, passphrase);
 }
 
 int
 _libssh2_dsa_new_private(libssh2_dsa_ctx ** dsa,
                          LIBSSH2_SESSION * session,
-                         FILE * fp, unsigned const char *passphrase)
+                         const char *filename, unsigned const char *passphrase)
 {
-    (void) session;
+    pem_read_bio_func read_dsa =
+        (pem_read_bio_func) &PEM_read_bio_DSAPrivateKey;
+
     if (!EVP_get_cipherbyname("des")) {
 /* If this cipher isn't loaded it's a pretty good indication that none are.
  * I have *NO DOUBT* that there's a better way to deal with this ($#&%#$(%$#(
@@ -246,12 +276,9 @@ _libssh2_dsa_new_private(libssh2_dsa_ctx ** dsa,
  */
         OpenSSL_add_all_ciphers();
     }
-    *dsa = PEM_read_DSAPrivateKey(fp, NULL, (void *) passphrase_cb,
-                                  (void *) passphrase);
-    if (!*dsa) {
-        return -1;
-    }
-    return 0;
+
+    return read_private_key_from_file((void **) dsa, session, read_dsa,
+                                      filename, passphrase);
 }
 
 int
@@ -314,3 +341,5 @@ _libssh2_dsa_sha1_sign(libssh2_dsa_ctx * dsactx,
 
     return 0;
 }
+
+#endif /* !LIBSSH2_LIBGCRYPT */

@@ -26,37 +26,34 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class ColorCfgLoad : public Configure {
-    public:
-        static ColorCfgLoad &GetInstance();
+class ColorCfgLoad:public Configure
+{
+public:
+	static ColorCfgLoad &GetInstance();
 
-        ColorEntry _DefaultColor;
+	ColorEntry					_DefaultColor;
 
-        map<string, ColorEntry> _mapColor;
-        map<string, ColorEntry> _mapName;
-        map<string, ColorEntry> _mapExt;
-        map<int, ColorEntry> _mapMask;
+	map<string, ColorEntry>		_mapColor;
+	map<string, ColorEntry>		_mapName;
+	map<string, ColorEntry>		_mapExt;
+	map<int, ColorEntry> 		_mapMask;
 
-        void Init();
+	void		Init();
+	ColorEntry	GetColorEntry(const string& sName);
+	ColorEntry 	GetExtColorEntry(const string& sExt);
+	ColorEntry 	GetNameColorEntry(const string& sName);
+	ColorEntry 	GetMaskColorEntry(const int nMask);
 
-        ColorEntry GetColorEntry(const string &sName);
+protected:
+	bool	Parsing(const string& section, const string& var, const string& val);
 
-        ColorEntry GetExtColorEntry(const string &sExt);
-
-        ColorEntry GetNameColorEntry(const string &sName);
-
-        ColorEntry GetMaskColorEntry(const int nMask);
-
-    protected:
-        bool Parsing(const string &section, const string &var, const string &val);
-
-    private:
-        ColorCfgLoad() : Configure() {}
-
-        ~ColorCfgLoad() {}
-    };
+private:
+	ColorCfgLoad() : Configure()  {}
+	~ColorCfgLoad() {}
+};
 
 #define g_tColorCfg ColorCfgLoad::GetInstance()
 

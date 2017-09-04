@@ -33,202 +33,205 @@
 #include "mainframe_view.h"
 #include "selection.h"
 
-namespace MLS {
+namespace MLS
+{
 
-    class McdExecuteMode {
-    public:
-        McdExeMode eMcdExeMode;
-        string sData;
+class	McdExecuteMode
+{
+public:
+	McdExeMode	eMcdExeMode;
+	string		sData;
 
-        McdExecuteMode() {
-            eMcdExeMode = MCD_EXEMODE_NONE;
-        }
+	McdExecuteMode()
+	{
+		eMcdExeMode = MCD_EXEMODE_NONE;
+	}
 
-        void operator=(McdExecuteMode &tExeMode) {
-            eMcdExeMode = tExeMode.eMcdExeMode;
-            sData = tExeMode.sData;
-        }
-    };
+	void	operator = (McdExecuteMode& tExeMode)
+	{
+		eMcdExeMode = tExeMode.eMcdExeMode;
+		sData = tExeMode.sData;
+	}
+};
 
-    class MainFrame : public Form, public Configurable {
-    private:
-        DrawTop _tDrawTop;
-        DrawPath _tDrawPath[2];
-        Hint _tHint;
-        DirInfo _tDirInfo;
-        StatusInfo _tStatusInfo[2];
-        ShellCmd _tShell;
+class MainFrame:public Form, public Configurable
+{
+private:
+	DrawTop			_tDrawTop;
+	DrawPath		_tDrawPath[2];
+	Hint			_tHint;
+	DirInfo			_tDirInfo;
+	StatusInfo		_tStatusInfo[2];
+	ShellCmd			_tShell;
 
-    protected:
-        bool _bSplit;
-        bool _bViewType;
-        bool _bShell;
-        bool _bAlwaysRedraw;
-        bool _bHintView;
-        int _nActive;
-        string _sLastPath;
-        string _sLineCodeChange;
-        ViewType _eViewType[2];
-        bool _bTitleChange;
+protected:
+	bool			_bSplit;
+	bool			_bViewType;
+	bool			_bShell;
+	bool			_bAlwaysRedraw;
+	bool			_bHintView;
+	int				_nActive;
+	string			_sLastPath;
+	string			_sLineCodeChange;	
+	ViewType		_eViewType[2];
+	bool			_bTitleChange;	
 
-        bool _bScrSync;    // 화면 동기화
-        ViewType _eViewTypeSyncBef[2];
+	bool			_bScrSync;	// screen sync
+	ViewType		_eViewTypeSyncBef[2];
+	
+	NCurses_Panel	_tPanel[2];
+	NCurses_Mcd		_tMcd[2];
+	NCurses_Editor	_tEditor[2];
+	Command			_tCommand;
 
-        NCurses_Panel _tPanel[2];
-        NCurses_Mcd _tMcd[2];
-        NCurses_Editor _tEditor[2];
-        Command _tCommand;
+	Selection		_tSelection;
+	ClipBoard		_tClipboard;
 
-        Selection _tSelection;
-        ClipBoard _tClipboard;
+protected:
+	void	UpdateConfig();
+	
+	void	Init();
+	void	DrawInit();
+	void	DrawStatus();
+	void	Draw();
+	void	Execute(KeyInfo& tKeyInfo);
+	bool	MouseEvent(int Y, int X, mmask_t bstate);
 
-    protected:
-        void UpdateConfig();
+public:
+	MainFrame():Form()
+	{
+		_bSplit = false; _bViewType = false;
+		_bNotDrawBox = true;	// not draw a box.
+		_nActive = 0;
+		_bScrSync = false;
+		_eMcdClipCopy = CLIP_NONE;
+		_bTitleChange = true;
+		x = 0; y = 0;
+		width = COLS; height = LINES;
+		_bHintView = true;
 
-        void Init();
+		UpdateConfig();
+		Init();
+		Refresh();
+	}
 
-        void DrawInit();
+	~MainFrame()
+	{
+		LOG_WRITE("MainFrame Success Exit ...");
+	}
 
-        void DrawStatus();
+	void	SaveConfig();
+	void	Split();
+	void	NextWindow();	
+	void 	Refresh(bool bNoOutRefresh = false);
 
-        void Draw();
+	Command* 		GetCommand()	{ return &_tCommand; }
 
-        void Execute(KeyInfo &tKeyInfo);
+	int		GetActiveNum()			{ return _nActive; }
 
-        bool MouseEvent(int Y, int X, mmask_t bstate);
+	NCurses_Panel*	GetPanel(int nNum)
+	{ 
+		if (nNum < 0 && nNum > 1) return NULL;
+		return &_tPanel[nNum];
+	}
 
-    public:
-        MainFrame() : Form() {
-            _bSplit = false;
-            _bViewType = false;
-            _bNotDrawBox = true;    // 박스를 그리지 않는다.
-            _nActive = 0;
-            _bScrSync = false;
-            _eMcdClipCopy = CLIP_NONE;
-            _bTitleChange = true;
-            x = 0;
-            y = 0;
-            width = COLS;
-            height = LINES;
-            _bHintView = true;
+	NCurses_Mcd*	GetMcd(int nNum)
+	{ 
+		if (nNum < 0 && nNum > 1) return NULL;
+		return &_tMcd[nNum];
+	}
 
-            UpdateConfig();
-            Init();
-            Refresh();
-        }
+	NCurses_Editor*	GetEditor(int nNum)
+	{ 
+		if (nNum < 0 && nNum > 1) return NULL;
+		return &_tEditor[nNum];
+	}
 
-        ~MainFrame() {
-            LOG_WRITE("MainFrame Success Exit ...");
-        }
+	ViewType	GetActiveViewType()
+	{
+		return _eViewType[_nActive];
+	}
 
-        void SaveConfig();
+	void	SetActiveViewType(ViewType	eFormViewType)
+	{
+		_eViewType[_nActive] = eFormViewType;
+	}
 
-        void Split();
+	void	SetTitleChange( bool bTitleChange )		{ _bTitleChange = bTitleChange; }
 
-        void NextWindow();
+	void	CmdShell(bool bExecute);
 
-        void Refresh(bool bNoOutRefresh = false);
+	int		GetScreenSync() 			{ return _bScrSync; }
+	void	SetScreenSync(bool bSync)
+	{
+		if (bSync)
+		{
+			_eViewTypeSyncBef[0] = _eViewType[0];
+			_eViewTypeSyncBef[1] = _eViewType[1];
+			_eViewType[0] = MCD;
+			_eViewType[1] = PANEL;
+			_bSplit = true;
+			_bViewType = false;
+		}
+		else
+		{
+			if (_bScrSync)
+			{
+				_eViewType[0] = PANEL;
+				_eViewType[1] = PANEL;
+				_tMcd[0]._bFocus = _tPanel[0]._bFocus = _nActive ? false : true;
+				_tMcd[1]._bFocus = _tPanel[1]._bFocus = _nActive ? true : false;
+				Refresh(false);
+			}
+		}
+		_bScrSync = bSync;
+	}
 
-        Command *GetCommand() { return &_tCommand; }
+	void	LineCodeChange()
+	{
+		if (e_nBoxLineCode == ACSLINE)
+			Set_BoxLine(CHARLINE);
+		else
+			Set_BoxLine(ACSLINE);
+	}
 
-        int GetActiveNum() { return _nActive; }
+	static MainFrame &GetInstance()
+	{
+		static MainFrame   tMainFrame;
+		return tMainFrame;
+	}
 
-        NCurses_Panel *GetPanel(int nNum) {
-            if (nNum < 0 && nNum > 1) return NULL;
-            return &_tPanel[nNum];
-        }
+	void	Exit()	{ _bExit = true; }
 
-        NCurses_Mcd *GetMcd(int nNum) {
-            if (nNum < 0 && nNum > 1) return NULL;
-            return &_tMcd[nNum];
-        }
+	void	DoMcd();
 
-        NCurses_Editor *GetEditor(int nNum) {
-            if (nNum < 0 && nNum > 1) return NULL;
-            return &_tEditor[nNum];
-        }
+	Selection*	GetSelection() 	{ return &_tSelection; }
+	ClipBoard*  GetClip()		{ return &_tClipboard; }
 
-        ViewType GetActiveViewType() {
-            return _eViewType[_nActive];
-        }
-
-        void SetActiveViewType(ViewType eFormViewType) {
-            _eViewType[_nActive] = eFormViewType;
-        }
-
-        void SetTitleChange(bool bTitleChange) { _bTitleChange = bTitleChange; }
-
-        void CmdShell(bool bExecute);
-
-        int GetScreenSync() { return _bScrSync; }
-
-        void SetScreenSync(bool bSync) {
-            if (bSync) {
-                _eViewTypeSyncBef[0] = _eViewType[0];
-                _eViewTypeSyncBef[1] = _eViewType[1];
-                _eViewType[0] = MCD;
-                _eViewType[1] = PANEL;
-                _bSplit = true;
-                _bViewType = false;
-            } else {
-                if (_bScrSync) {
-                    _eViewType[0] = PANEL;
-                    _eViewType[1] = PANEL;
-                    _tMcd[0]._bFocus = _tPanel[0]._bFocus = _nActive ? false : true;
-                    _tMcd[1]._bFocus = _tPanel[1]._bFocus = _nActive ? true : false;
-                    Refresh(false);
-                }
-            }
-            _bScrSync = bSync;
-        }
-
-        void LineCodeChange() {
-            if (e_nBoxLineCode == ACSLINE)
-                Set_BoxLine(CHARLINE);
-            else
-                Set_BoxLine(ACSLINE);
-        }
-
-        static MainFrame &GetInstance() {
-            static MainFrame tMainFrame;
-            return tMainFrame;
-        }
-
-        void Exit() { _bExit = true; }
-
-        void DoMcd();
-
-        Selection *GetSelection() { return &_tSelection; }
-
-        ClipBoard *GetClip() { return &_tClipboard; }
-
-        void Reload();
+	void	Reload();
 
 // Mcd Copy
-    protected:
-        ClipState _eMcdClipCopy;
-        McdExecuteMode _tMcdExecuteMode;
+protected:
+	ClipState		_eMcdClipCopy;
+	McdExecuteMode	_tMcdExecuteMode;
 
-    public:
-        ClipState GetMcdCopyMode() { return _eMcdClipCopy; }
+public:
+	ClipState		GetMcdCopyMode()	{ return _eMcdClipCopy; }
+	McdExecuteMode&	GetMcdExeMode()		{ return _tMcdExecuteMode; }
 
-        McdExecuteMode &GetMcdExeMode() { return _tMcdExecuteMode; }
+	void	SetMcdExeMode(McdExeMode eMcdExeMode = MCD_EXEMODE_NONE, const string& sData = "")
+	{ 
+		_tMcdExecuteMode.eMcdExeMode = eMcdExeMode;
+		_tMcdExecuteMode.sData = sData;
+	}
+	
+	void	Copy();
+	void	Move();
+	void	McdClipCopyClear();
+	void	SyncDirectory();
+};
 
-        void SetMcdExeMode(McdExeMode eMcdExeMode = MCD_EXEMODE_NONE, const string &sData = "") {
-            _tMcdExecuteMode.eMcdExeMode = eMcdExeMode;
-            _tMcdExecuteMode.sData = sData;
-        }
-
-        void Copy();
-
-        void Move();
-
-        void McdClipCopyClear();
-
-        void SyncDirectory();
-    };
-
-#define g_tMainFrame    MainFrame::GetInstance()
+#define g_tMainFrame	MainFrame::GetInstance()
 
 };
 

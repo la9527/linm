@@ -21,37 +21,46 @@
 using namespace MLSUTIL;
 using namespace MLS;
 
-CfgLoader &CfgLoader::GetInstance() {
-    static CfgLoader conf;
-    return conf;
+CfgLoader &CfgLoader::GetInstance()
+{
+	static CfgLoader conf;
+	return conf;
 }
 
-void CfgLoader::Init() {
-    _mapExtBind.clear();
-    _mapNameBind.clear();
+void	CfgLoader::Init()
+{
+	_mapExtBind.clear();
+	_mapNameBind.clear();
 }
 
-bool CfgLoader::Parsing(const string &section, const string &var, const string &val) {
-    LOG_WRITE("Parcing Default Cfg [%s][%s][%s]", section.c_str(), var.c_str(), val.c_str());
+bool	CfgLoader::Parsing(const string& section, const string& var, const string& val)
+{
+	LOG_WRITE("Parcing Default Cfg [%s][%s][%s]", section.c_str(), var.c_str(), val.c_str());
 
-    if (section == "RunProgram") {
-        if (Tolower(var.substr(0, 4)) == "ext[") {
-            StringToken st(getbetween(var, '[', ']'), "; ");
-            while (st.Next()) {
-                _mapExtBind[Tolower(st.Get())] = val;
-            }
-        } else if (Tolower(var.substr(0, 5)) == "name[") {
-            StringToken st(getbetween(var, '[', ']'), "; ");
-            while (st.Next()) {
-                _mapNameBind[Tolower(st.Get())] = val;
-            }
-        }
-    }
-    return false;
+	if ( section == "RunProgram" )
+	{
+		if (Tolower(var.substr(0, 4)) == "ext[")
+		{
+			StringToken st(getbetween(var, '[', ']'), "; ");
+			while (st.Next())
+			{
+				_mapExtBind[Tolower(st.Get())] = val;
+			}
+		}
+		else if (Tolower(var.substr(0, 5)) == "name[")
+		{
+			StringToken st(getbetween(var, '[', ']'), "; ");
+			while (st.Next())
+			{
+				_mapNameBind[Tolower(st.Get())] = val;
+			}
+		}
+	}
+	return false;
 }
 
 Configurable::Configurable()
-        : _Config(CfgLoader::GetInstance()) {}
+	: _Config( CfgLoader::GetInstance() )  { } 
 
-Configurable::~Configurable() {}
+Configurable::~Configurable() { }
 

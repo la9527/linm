@@ -23,6 +23,6 @@
 #include "reader.h"
 #include "readerctl.h"
 
-extern void PluginLoader(MLS::ReaderCtl *pReaderCtl);
+extern void	PluginLoader(MLS::ReaderCtl* pReaderCtl);
 
 #endif

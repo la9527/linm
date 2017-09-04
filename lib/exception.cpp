@@ -21,99 +21,112 @@
 
 #include "exception.h"
 
-namespace MLSUTIL {
+namespace MLSUTIL
+{
 
-/// @brief	Exception 생성자
-/// @param	file	에러파일명
-/// @param	lineno	라인번호
-/// @param	pMsg	에러메시지스트링
-    Exception::Exception(string pMsg) {
-        _nErrNo = 0;
-        _strError += pMsg;
-    }
+/// @brief	Exception Constructor
+/// @param	file	the error filename.
+/// @param	lineno	line number
+/// @param	pMsg	error mesage string.
+Exception::Exception(string	pMsg)
+{
+	_nErrNo = 0;
+	_strError		+= pMsg;
+}
 
-/// @brief	Exception 생성자
-/// @param	file	에러파일명
-/// @param	lineno	라인번호
-/// @param	fmt		에러메시지 형식
-    Exception::Exception(const char *fmt, ...) {
-        _nErrNo = 0;
+/// @brief	Exception constructor
+/// @param	file	error file name
+/// @param	lineno	line number
+/// @param	fmt		error message string.
+Exception::Exception(const char *fmt, ...)
+{
+	_nErrNo = 0;
 
-        va_list argptr;
-        char buf_data[256];
-        char *data = buf_data;
-        int data_size = sizeof(buf_data);
-        int ret;
+	va_list argptr;
+	char buf_data[256];
+	char* data = buf_data;
+	int data_size = sizeof(buf_data);
+	int ret;
 
-        va_start(argptr, fmt);
-        ret = vsnprintf(data, data_size, fmt, argptr);
-        ++ret;
-        va_end(argptr);
+	va_start(argptr, fmt);
+	ret = vsnprintf(data, data_size, fmt, argptr);
+	++ret;
+	va_end(argptr);
 
-        if (ret > (int) sizeof(buf_data)) {
-            data = (char *) malloc(ret);
-            if (data == NULL) {
-                cerr << "Buffer over flow" << endl;
-                return;
-            }
-            data_size = ret;
-            va_start(argptr, fmt);
-            vsnprintf(data, data_size, fmt, argptr);
-            va_end(argptr);
-        }
+	if(ret > (int)sizeof(buf_data))
+	{
+		data = (char*)malloc(ret);
+		if (data == NULL)
+		{
+			cerr << "Buffer over flow" << endl;
+			return;
+		}
+		data_size = ret;
+		va_start(argptr, fmt);
+		vsnprintf(data, data_size, fmt, argptr);
+		va_end(argptr);
+	}
 
-        _strError = data;
-        if (data != buf_data) {
-            if (data != NULL) free(data);
-        }
-    }
+	_strError	= data;
+	if(data != buf_data)
+	{
+		if (data != NULL) free(data);
+	}
+}
 
-    Exception::Exception(int nErrNo, string pMsg) {
-        _strError += pMsg;
-        _nErrNo = nErrNo;
-    }
+Exception::Exception(int nErrNo, string	pMsg)
+{
+	_strError += pMsg;
+	_nErrNo = nErrNo;
+}
 
-    Exception::Exception(int nErrNo, const char *fmt, ...) {
-        va_list argptr;
-        char buf_data[256];
-        char *data = buf_data;
-        int data_size = sizeof(buf_data);
-        int ret;
+Exception::Exception(int nErrNo, const char *fmt, ...)
+{
+	va_list argptr;
+	char buf_data[256];
+	char* data = buf_data;
+	int data_size = sizeof(buf_data);
+	int ret;
 
-        va_start(argptr, fmt);
-        ret = vsnprintf(data, data_size, fmt, argptr);
-        ++ret;
-        va_end(argptr);
+	va_start(argptr, fmt);
+	ret = vsnprintf(data, data_size, fmt, argptr);
+	++ret;
+	va_end(argptr);
 
-        if (ret > (int) sizeof(buf_data)) {
-            data = (char *) malloc(ret);
-            if (data == NULL) {
-                cerr << "Buffer over flow" << endl;
-                return;
-            }
-            data_size = ret;
-            va_start(argptr, fmt);
-            vsnprintf(data, data_size, fmt, argptr);
-            va_end(argptr);
-        }
+	if(ret > (int)sizeof(buf_data))
+	{
+		data = (char*)malloc(ret);
+		if (data == NULL)
+		{
+			cerr << "Buffer over flow" << endl;
+			return;
+		}
+		data_size = ret;
+		va_start(argptr, fmt);
+		vsnprintf(data, data_size, fmt, argptr);
+		va_end(argptr);
+	}
 
-        _strError = data;
-        if (data != buf_data) {
-            if (data != NULL) free(data);
-        }
-        _nErrNo = nErrNo;
-    }
+	_strError	= data;
+	if(data != buf_data)
+	{
+		if (data != NULL) free(data);
+	}
+	_nErrNo = nErrNo;
+}
 
-/// @brief	에러내용만 리턴
-/// @return 에러내용리턴
-    char *Exception::getInfo(void) {
-        return (char *) _strError.c_str();
-    }
+/// @brief	return the error contents.
+/// @return return the error string
+char*	Exception::GetInfo(void)
+{
+	return (char*)_strError.c_str();
+}
 
 
-/// @brief	cout으로 데이터를 출력할때 (char*)를 이용하지 않아도 되는 함수 처리
-    ostream &operator>>(ostream &output, Exception &tEx) {
-        return output << (char *) tEx;
-    }
+/// @brief	if cout of the data, it's not used the char*.
+ostream&	operator>>(ostream& output, Exception& tEx)
+{
+	return output << (char*)tEx;
+}
 
 };

@@ -25,56 +25,56 @@
 
 using namespace MLSUTIL;
 
-namespace MLS {
+namespace MLS
+{
 
-    class RemoteConnEntry {
-    public:
-        RemoteConnEntry(const string &s1 = "",
-                        const string &s2 = "",
-                        const string &s3 = "",
-                        const string &s4 = "",
-                        const string &s5 = "",
-                        const string &s6 = "",
-                        const string &s7 = "")
-                : sName(s1), sProtocol(s2), sAddress(s3), sPort(s4), sDirectory(s5),
-                  sUserName(s6), sPassword(s7), bKeyFile(false), bModify(false) {
-        }
+class RemoteConnEntry
+{
+public:
+	RemoteConnEntry(const string& s1 = "",
+					const string& s2 = "",
+					const string& s3 = "",
+					const string& s4 = "",
+					const string& s5 = "",
+					const string& s6 = "",
+					const string& s7 = "")
+		: sName(s1), sProtocol(s2), sAddress(s3), sPort(s4), sDirectory(s5), 
+		  sUserName(s6), sPassword(s7), bKeyFile(false), bModify(false)
+	{
+	}
+	
+	void	Clear();
+	string	GetURLFormat(bool bPasswd);
+	
+	string		sName;
+	string		sProtocol;	
+	string		sAddress;
+	string		sPort;
+	string		sDirectory;
+	string		sUserName;
+	string		sPassword;
+	string		sPrivateKey;
+	string		sPublicKey;
 
-        void Clear();
+	bool		bKeyFile;
+	bool		bModify;
+};
 
-        string GetURLFormat(bool bPasswd);
+class RemoteCfgLoad:public Configure
+{
+public:
+	RemoteCfgLoad() : Configure()  {}
+	~RemoteCfgLoad() {}
 
-        string sName;
-        string sProtocol;
-        string sAddress;
-        string sPort;
-        string sDirectory;
-        string sUserName;
-        string sPassword;
-        string sPrivateKey;
-        string sPublicKey;
+	vector<RemoteConnEntry>			_vConnInfo;
+	
+	void	Init();
+	bool	GetRemoteConnEntry(const string& sName, RemoteConnEntry& tRemote);
 
-        bool bKeyFile;
-        bool bModify;
-    };
-
-    class RemoteCfgLoad : public Configure {
-    public:
-        RemoteCfgLoad() : Configure() {}
-
-        ~RemoteCfgLoad() {}
-
-        vector<RemoteConnEntry> _vConnInfo;
-
-        void Init();
-
-        bool GetRemoteConnEntry(const string &sName, RemoteConnEntry &tRemote);
-
-    protected:
-        bool Parsing(const string &section, const string &var, const string &val);
-
-        bool SaveParcing();
-    };
+protected:
+	bool	Parsing(const string& section, const string& var, const string& val);
+	bool	SaveParcing();
+};
 
 };
 

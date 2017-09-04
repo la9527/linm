@@ -1,5 +1,6 @@
-/* Copyright (C) 2006, 2007 The Written Word, Inc.  All rights reserved.
- * Author: Simon Josefsson
+/* Copyright (C) 2006, 2007, The Written Word, Inc.
+ * Copyright (C) 2008, Simon Josefsson
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms,
  * with or without modification, are permitted provided
@@ -111,7 +112,8 @@ int _libssh2_rsa_new(libssh2_rsa_ctx ** rsa,
                      const unsigned char *coeffdata, unsigned long coefflen);
 int _libssh2_rsa_new_private(libssh2_rsa_ctx ** rsa,
                              LIBSSH2_SESSION * session,
-                             FILE * fp, unsigned const char *passphrase);
+                             const char *filename,
+                             unsigned const char *passphrase);
 int _libssh2_rsa_sha1_verify(libssh2_rsa_ctx * rsa,
                              const unsigned char *sig,
                              unsigned long sig_len,
@@ -139,7 +141,8 @@ int _libssh2_dsa_new(libssh2_dsa_ctx ** dsa,
                      const unsigned char *x, unsigned long x_len);
 int _libssh2_dsa_new_private(libssh2_dsa_ctx ** dsa,
                              LIBSSH2_SESSION * session,
-                             FILE * fp, unsigned const char *passphrase);
+                             const char *filename,
+                             unsigned const char *passphrase);
 int _libssh2_dsa_sha1_verify(libssh2_dsa_ctx * dsa,
                              const unsigned char *sig,
                              const unsigned char *m, unsigned long m_len);
@@ -174,7 +177,7 @@ int _libssh2_cipher_crypt(_libssh2_cipher_ctx * ctx,
 #define _libssh2_bn struct gcry_mpi
 #define _libssh2_bn_ctx int
 #define _libssh2_bn_ctx_new() 0
-#define _libssh2_bn_ctx_free(bnctx) 0
+#define _libssh2_bn_ctx_free(bnctx) ((void)0)
 #define _libssh2_bn_init() gcry_mpi_new(0)
 #define _libssh2_bn_rand(bn, bits, top, bottom) gcry_mpi_randomize (bn, bits, GCRY_WEAK_RANDOM)
 #define _libssh2_bn_mod_exp(r, a, p, m, ctx) gcry_mpi_powm (r, a, p, m)

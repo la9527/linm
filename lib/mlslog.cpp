@@ -18,49 +18,53 @@
 #include "mlslog.h"
 #include "strutil.h"
 
-namespace MLSUTIL {
-    MlsLog g_Log;
+namespace MLSUTIL
+{
+	MlsLog	g_Log;
+	
+	void	MlsLog::Write(const string& sStr)
+	{
+		#ifdef __DEBUGMODE__
+		if (!_bLog) return;
+		ofstream	fp(_LogFile.c_str(), ios::out|ios::app);
 
-    void MlsLog::Write(const string &sStr) {
-#ifdef __DEBUGMODE__
-        if (!_bLog) return;
-        ofstream	fp(_LogFile.c_str(), ios::out|ios::app);
-
-        if (fp.is_open())
-        {
-            fp.write(sStr.c_str(), sStr.size());
-            fp.write("\n", 1);
-        }
-#endif
-    }
-
-    void MlsLog::Write(const char *fmt, ...) {
-#ifdef __DEBUGMODE__
-        if (!_bLog) return;
+		if (fp.is_open())
+		{
+			fp.write(sStr.c_str(), sStr.size());
+			fp.write("\n", 1);
+		}
+		#endif
+	}
+	
+	void	MlsLog::Write(const char* fmt, ...)
+	{
+		#ifdef __DEBUGMODE__
+		if (!_bLog) return;
 
 /* coded by revival / 2006/05/06 */
-        va_list argptr;
-        int ret;
-        FILE *fp = fopen(_LogFile.c_str(), "a");
-        va_start(argptr, fmt);
-        vfprintf(fp, fmt, argptr);
-        fprintf(fp, "\n");
-        fclose(fp);
-        va_end(argptr);
+		va_list argptr;
+		int ret;
+		FILE *fp = fopen(_LogFile.c_str(), "a");
+		va_start(argptr, fmt);
+		vfprintf(fp, fmt, argptr);
+		fprintf(fp, "\n");
+		fclose(fp);
+		va_end(argptr);
 /* end of revival */
-#endif
-    }
+		#endif
+	}
 
 /* coded by revival / 2006/05/06 */
 #ifdef __DEBUGMODE__
-    // FIXME: need more info
-    void	MlsLog::WriteLog(const char *strDebugFile, const int nDebugLine) {
-        if (!_bLog) return;
+// FIXME: need more info
+	void	MlsLog::WriteLog(const char *strDebugFile, const int nDebugLine)
+	{
+		if (!_bLog) return;
 
-        FILE *fp = fopen(_LogFile.c_str(), "a");
-        fprintf(fp, "%-15s:%-3d] ", strDebugFile, nDebugLine);
-        fclose(fp);
-    }
+		FILE *fp = fopen(_LogFile.c_str(), "a");
+		fprintf(fp, "%-15s:%-3d] ", strDebugFile, nDebugLine);
+		fclose(fp);
+	}
 #endif
 /* end of revival */
 };

@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (C) 2005 by la9527                                             *
+ *   Copyright (C) 2010 by la9527                                             *
  *                                                                            *
  *  This program is free software; you can redistribute it and/or modify      * 
  *  it under the terms of the GNU General Public License as published by      *
@@ -16,41 +16,43 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.*
  ******************************************************************************/
 
-#include "vfsplugin.h"
+#ifndef __SYNTEXCFGLOAD_H__
+#define __SYNTEXCFGLOAD_H__
 
-#include "dirreader.h"
-#include "arcreader.h"
-#include "ftpreader.h"		// ftp plugin
+#include "define.h"
+#include "strutil.h"
+#include "configure.h"
+#include "mpool.h"
 
-#ifdef __LINM_SFTP_USE__
-	#include "SFtpReader.h"		// sftp plugin
-#endif
+using namespace MLSUTIL;
 
-#ifdef __LINM_SAMBA_USE__
-	#include "SMBReader.h"		// samba plugin
-#endif
-
-using namespace MLS;
-
-void	PluginLoader(ReaderCtl* pReaderCtl)
+namespace MLS
 {
-	DirReader*	pDirReader = new DirReader;
-	pReaderCtl->Insert(dynamic_cast<Reader*>(pDirReader));
-	
-	ArcReader*	pArcReader = new ArcReader;
-	pReaderCtl->Insert(dynamic_cast<Reader*>(pArcReader));
 
-	FtpReader*	pFtpReader = new FtpReader;
-	pReaderCtl->Insert(dynamic_cast<Reader*>(pFtpReader));
+class SyntexExtLoad:public Configure
+{
+public:
+	static SyntexExtLoad &GetInstance();
+    
+    void    Init();
 
-#ifdef __LINM_SFTP_USE__
-	SFtpReader*	pSFtpReader = new SFtpReader;
-	pReaderCtl->Insert(dynamic_cast<Reader*>(pSFtpReader));
-#endif
+    bool    getExtSyntex( const string& strExt, std::string& strRt );
+    bool    getNameSyntex( const string& strName, std::string& strRt );
+   
+protected:
+    bool	Parsing(const string& section, const string& var, const string& val);
+    
+    map<string, string >     _mapSyntexExtList;
+    map<string, string >     _mapSyntexNameList;
+    
+private:
+    SyntexExtLoad(): Configure() { }
+};
 
-#ifdef __LINM_SAMBA_USE__
-	SMBReader*	pSMBReader = new SMBReader;
-	pReaderCtl->Insert(dynamic_cast<Reader*>(pSMBReader));
-#endif
+#define g_tSyntexExtCfg SyntexExtLoad::GetInstance()
 
-}
+};
+
+#endif // __SYNTEXCFGLOAD_H__
+
+

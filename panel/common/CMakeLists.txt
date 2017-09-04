@@ -13,6 +13,8 @@ if (OPENSSL_FOUND)
     include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
+SET(panelcommon_STAT_HEADERS colorcfgload.h colorentry.h file.h mcd.h history.h mlscfgload.h mpool.h panel.h passencrypt.h reader.h readerctl.h remotecfgload.h selection.h sortfile.h syntexcfgload.h)
+
 SET(panelcommon_STAT_SRCS
    colorcfgload.cpp
    history.cpp
@@ -21,12 +23,12 @@ SET(panelcommon_STAT_SRCS
    mlscfgload.cpp
    panel.cpp
    passencrypt.cpp
-   reader.cpp
    remotecfgload.cpp
    selection.cpp
+   syntexcfgload.cpp
 )
 
-add_library(panelcommon STATIC ${panelcommon_STAT_SRCS})
+add_library(panelcommon STATIC ${panelcommon_STAT_SRCS} ${panelcommon_STAT_HEADERS})
 
 
 ########### install files ###############

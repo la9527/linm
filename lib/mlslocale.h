@@ -17,60 +17,55 @@
  ******************************************************************************/
 
 /// @file	mlslocale.h
-/// @brief	locale 설정 관련 소스
+/// @brief	locale setting file.
 /// @author 
 
 #ifndef __MLSLOCALE_H__
 #define __MLSLOCALE_H__
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+	#include <config.h>
 #endif
 
 #ifdef HAVE_ICONV
-#include <iconv.h>
+	#include <iconv.h>
 #endif
 
-#ifdef HAVE_LC_MESSAGES
-#include <locale.h>
-#endif
-
-#ifdef HAVE_GETTEXT
-#include <libintl.h>
+#ifdef HAVE_LC_MESSAGES 
+	#include <locale.h>
+	#include <libintl.h>
 #endif
 
 #include "define.h"
 #include "strutil.h"
 
-namespace MLSUTIL {
-    /// @brief	locale language enum
-    enum ENCODING {
-        KO_EUCKR,    ///< korean Language - EUC-KR
-        KO_UTF8,    ///< korean Language - UTF-8
-        US,            ///< USA Language
-        AUTO        ///< AUTO 자동으로 바꿔준다.
-    };
+namespace MLSUTIL
+{
+	/// @brief	locale language enum
+	enum ENCODING {
+		KO_EUCKR,	///< korean Language - EUC-KR
+		KO_UTF8,	///< korean Language - UTF-8
+		US,			///< USA Language
+		AUTO		///< locale is auto convert.
+	};
+	
+	extern ENCODING	e_nCurLang; // Setting to currunt system language.
+	extern ENCODING	e_nBefLang;
+	
+	void Set_Locale(ENCODING e);
 
-    extern ENCODING e_nCurLang; // 현재 시스템의 language 를 세팅한다.
-    extern ENCODING e_nBefLang;
-
-    void Set_Locale(ENCODING e);
-
-#ifdef HAVE_ICONV
-    char* code_convert(const char *str,
-                        const char *to_codeset,
-                        const char *from_codeset);
-#endif
-
-    string CodeConvert(const string &sSource, const char *to_codeset, const char *from_codeset);
-
-    string ChgCurLocale(const string &sStr);
-
-    string ChgEngKor(const string &sEnglish, const string &sKorean);
-
-    string isKorCode(const string &sSrc, ENCODING *eEncode = NULL);
-
-    string KorCodeChg(const string &sSrc, ENCODING eEncode);
+	#ifdef HAVE_ICONV	
+	char* code_convert(const char *str, 
+						const char *to_codeset, 
+						const char *from_codeset);
+	#endif
+	
+	string 	CodeConvert(const string& sSource, const char *to_codeset, const char *from_codeset);
+	
+	string 	ChgCurLocale(const string& sStr);
+	string 	ChgEngKor(const string& sEnglish, const string& sKorean);
+	string 	isKorCode(const string& sSrc, ENCODING* eEncode = NULL);
+	string	KorCodeChg(const string& sSrc, ENCODING eEncode);
 };
 
 #endif //__MLSLOCALE_H__

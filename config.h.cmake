@@ -1,10 +1,7 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
-
 /* Define to 1 if using `alloca.c'. */
 #cmakedefine C_ALLOCA
 
-/* Define to 1 if translation of program messages to the user's native
-language is requested. */
+/* Define to 1 if translation of program messages to the user's native language is requested. */
 #cmakedefine ENABLE_NLS
 
 /* Define to 1 if you have `alloca', as a function or macro. */
@@ -28,23 +25,10 @@ language is requested. */
 /* curses.h header file. */
 #cmakedefine01 HAVE_CURSES_H
 
-/* Define if the GNU dcgettext() function is already present or preinstalled. */
-#cmakedefine01 HAVE_DCGETTEXT
-
-/* Define to 1 if you have the declaration of `feof_unlocked', and to 0 if you don't. */
-#cmakedefine01 HAVE_DECL_FEOF_UNLOCKED
-
-/* Define to 1 if you have the declaration of `fgets_unlocked', and to 0 if you don't. */
-#cmakedefine01 HAVE_DECL_FGETS_UNLOCKED
-
-/* Define to 1 if you have the declaration of `getc_unlocked', and to 0 if you don't. */
-#cmakedefine01 HAVE_DECL_GETC_UNLOCKED
-
 /* Have getopt getopt_long function */
 #cmakedefine01 HAVE_DECL_GETOPT
 
-/* Define to 1 if you have the declaration of `_snprintf', and to 0 if you
-don't. */
+/* Define to 1 if you have the declaration of `_snprintf', and to 0 if you don't. */
 #cmakedefine01 HAVE_DECL__SNPRINTF
 
 /* Define to 1 if you have the declaration of `_snwprintf', and to 0 if you  don't. */
@@ -265,9 +249,6 @@ zero-length file name argument. */
 /* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
 #cmakedefine01 HAVE_SYS_WAIT_H
 
-/* Define to 1 if you have the `tsearch' function. */
-#cmakedefine01 HAVE_TSEARCH
-
 /* Define if you have the 'uintmax_t' type in <stdint.h> or <inttypes.h>. */
 #cmakedefine01 HAVE_UINTMAX_T
 
@@ -289,66 +270,8 @@ zero-length file name argument. */
 /* Define if you have the 'wint_t' type. */
 #cmakedefine HAVE_WINT_T
 
-/* Define to 1 if the system has the type `_Bool'. */
-#cmakedefine01 HAVE__BOOL
-
-/* Define to 1 if you have the `__argz_count' function. */
-#cmakedefine01 HAVE___ARGZ_COUNT
-
-/* Define to 1 if you have the `__argz_next' function. */
-#cmakedefine01 HAVE___ARGZ_NEXT
-
-/* Define to 1 if you have the `__argz_stringify' function. */
-#cmakedefine01 HAVE___ARGZ_STRINGIFY
-
-/* Define to 1 if you have the `__fsetlocking' function. */
-#cmakedefine HAVE___FSETLOCKING
-
 /* Define as const if the declaration of iconv() needs const. */
 #cmakedefine ICONV_CONST
-
-/* Define if integer division by zero raises signal SIGFPE. */
-#cmakedefine INTDIV0_RAISES_SIGFPE
-
-/* Enable "none" cipher -- NOT RECOMMENDED */
-#cmakedefine LIBSSH2_CRYPT_NONE
-
-/* Output connection layer debugging info to stderr */
-#cmakedefine LIBSSH2_DEBUG_CONNECTION
-
-/* Output failure events to stderr */
-#cmakedefine LIBSSH2_DEBUG_ERRORS
-
-/* Output Key Exchange debugging info to stderr */
-#cmakedefine01 LIBSSH2_DEBUG_KEX
-
-/* Output publickey subsystem debugging info to stderr */
-#cmakedefine LIBSSH2_DEBUG_PUBLICKEY
-
-/* Output scp subsystem debugging info to stderr */
-#cmakedefine LIBSSH2_DEBUG_SCP
-
-/* Output sftp subsystem debugging info to stderr */
-#cmakedefine LIBSSH2_DEBUG_SFTP
-
-/* Output transport layer debugging info to stderr */
-#cmakedefine LIBSSH2_DEBUG_TRANSPORT
-
-/* Output userauth layer debugging info to stderr */
-#cmakedefine LIBSSH2_DEBUG_USERAUTH
-
-/* Enable newer diffie-hellman-group-exchange-sha1 syntax */
-#cmakedefine LIBSSH2_DH_GEX_NEW
-
-/* Compile in zlib support */
-#cmakedefine LIBSSH2_HAVE_ZLIB
-
-/* Enable "none" MAC -- NOT RECOMMENDED */
-#cmakedefine LIBSSH2_MAC_NONE
-
-/* Define to 1 if `lstat' dereferences a symlink specified with a trailing
-slash. */
-#cmakedefine01 LSTAT_FOLLOWS_SLASHED_SYMLINK
 
 /* Name of package */
 #cmakedefine PACKAGE "@PACKAGE@"
@@ -461,66 +384,3 @@ doesn't define it. */
 
 /* Define to unsigned long or unsigned long long if <stdint.h> and <inttypes.h> don't define. */
 #cmakedefine uintmax_t
-
-/* for gettext(intl) library */
-#define __libc_lock_t                   gl_lock_t
-#define __libc_lock_define              gl_lock_define
-#define __libc_lock_define_initialized  gl_lock_define_initialized
-#define __libc_lock_init                gl_lock_init
-#define __libc_lock_lock                gl_lock_lock
-#define __libc_lock_unlock              gl_lock_unlock
-#define __libc_lock_recursive_t                   gl_recursive_lock_t
-#define __libc_lock_define_recursive              gl_recursive_lock_define
-#define __libc_lock_define_initialized_recursive  gl_recursive_lock_define_initialized
-#define __libc_lock_init_recursive                gl_recursive_lock_init
-#define __libc_lock_lock_recursive                gl_recursive_lock_lock
-#define __libc_lock_unlock_recursive              gl_recursive_lock_unlock
-#define glthread_in_use  libintl_thread_in_use
-#define glthread_lock_init_func     libintl_lock_init_func
-#define glthread_lock_lock_func     libintl_lock_lock_func
-#define glthread_lock_unlock_func   libintl_lock_unlock_func
-#define glthread_lock_destroy_func  libintl_lock_destroy_func
-#define glthread_rwlock_init_multithreaded     libintl_rwlock_init_multithreaded
-#define glthread_rwlock_init_func              libintl_rwlock_init_func
-#define glthread_rwlock_rdlock_multithreaded   libintl_rwlock_rdlock_multithreaded
-#define glthread_rwlock_rdlock_func            libintl_rwlock_rdlock_func
-#define glthread_rwlock_wrlock_multithreaded   libintl_rwlock_wrlock_multithreaded
-#define glthread_rwlock_wrlock_func            libintl_rwlock_wrlock_func
-#define glthread_rwlock_unlock_multithreaded   libintl_rwlock_unlock_multithreaded
-#define glthread_rwlock_unlock_func            libintl_rwlock_unlock_func
-#define glthread_rwlock_destroy_multithreaded  libintl_rwlock_destroy_multithreaded
-#define glthread_rwlock_destroy_func           libintl_rwlock_destroy_func
-#define glthread_recursive_lock_init_multithreaded     libintl_recursive_lock_init_multithreaded
-#define glthread_recursive_lock_init_func              libintl_recursive_lock_init_func
-#define glthread_recursive_lock_lock_multithreaded     libintl_recursive_lock_lock_multithreaded
-#define glthread_recursive_lock_lock_func              libintl_recursive_lock_lock_func
-#define glthread_recursive_lock_unlock_multithreaded   libintl_recursive_lock_unlock_multithreaded
-#define glthread_recursive_lock_unlock_func            libintl_recursive_lock_unlock_func
-#define glthread_recursive_lock_destroy_multithreaded  libintl_recursive_lock_destroy_multithreaded
-#define glthread_recursive_lock_destroy_func           libintl_recursive_lock_destroy_func
-#define glthread_once_func            libintl_once_func
-#define glthread_once_singlethreaded  libintl_once_singlethreaded
-#define glthread_once_multithreaded   libintl_once_multithreaded
-
-#cmakedefine01 HAVE_DCGETTEXT
-#cmakedefine01 HAVE_DECL_CLEARERR_UNLOCKED
-#cmakedefine01 HAVE_DECL_FEOF_UNLOCKED
-#cmakedefine01 HAVE_DECL_FERROR_UNLOCKED
-#cmakedefine01 HAVE_DECL_FFLUSH_UNLOCKED
-#cmakedefine01 HAVE_DECL_FGETS_UNLOCKED
-#cmakedefine01 HAVE_DECL_FPUTC_UNLOCKED
-#cmakedefine01 HAVE_DECL_FPUTS_UNLOCKED
-#cmakedefine01 HAVE_DECL_FREAD_UNLOCKED
-#cmakedefine01 HAVE_DECL_FWRITE_UNLOCKED
-#cmakedefine01 HAVE_DECL_GETCHAR_UNLOCKED
-#cmakedefine01 HAVE_DECL_GETC_UNLOCKED
-
-#if defined __APPLE__ && defined __MACH__ && __APPLE_CC__ >= 5465 && !defined __cplusplus && __STDC_VERSION__ >= 199901L && !defined __GNUC_STDC_INLINE__
-# define __GNUC_STDC_INLINE__ 1
-#endif
-
-#define _GL_INLINE_HEADER_BEGIN
-#define _GL_INLINE_HEADER_END
-#define _GL_EXTERN_INLINE extern
-#define _GL_EXTERN_INLINE_IN_USE
-#define _GL_INLINE extern inline

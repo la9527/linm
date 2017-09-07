@@ -3,12 +3,16 @@ include_directories(${CMAKE_SOURCE_DIR}/lib ${CMAKE_SOURCE_DIR}/panel/common )
 
 ########### next target ###############
 
+SET(editor_STAT_INCLUDES
+        editor.h editorclipboard.h
+        )
+
 SET(editor_STAT_SRCS
     editor.cpp
     editorexecute.cpp
 )
 
-add_library(editor STATIC ${editor_STAT_SRCS})
+add_library(editor STATIC ${editor_STAT_SRCS} ${editor_STAT_INCLUDES})
 
 
 ########### install files ###############

@@ -131,7 +131,7 @@ bool Initialize()
 				g_tCfg.SetStaticValue("CfgFile", cfgfile);
 #ifdef __DEBUGMODE__
 				String sMsg;
-				sMsg.AppendBlank(60, "Load configuration %s", cfgfile.c_str());
+				sMsg.AppendBlank(60, "Loading configuration %s", cfgfile.c_str());
 				cout << sMsg.c_str();
 				cout << succMsg << endl;
 #endif
@@ -145,7 +145,7 @@ bool Initialize()
 			else
 			{
 				String sMsg;
-				sMsg.AppendBlank(60, "Load configuration %s", cfgfile.c_str());
+				sMsg.AppendBlank(60, "Loading configuration %s", cfgfile.c_str());
 				cout << sMsg.c_str();
 				cout << failMsg << endl;
 			}
@@ -154,7 +154,7 @@ bool Initialize()
 		if (t == (int)_vCfgFile.size())
 		{
 			String sMsg;
-			sMsg.AppendBlank(60, "Load configuration ");
+			sMsg.AppendBlank(60, "Loading configuration ");
 			cout << sMsg.c_str();
 			cout << failMsg << endl;
 			return false;
@@ -174,7 +174,7 @@ bool Initialize()
 				g_tCfg.SetStaticValue("ColFile", colfile);
 #ifdef __DEBUGMODE__
 				String sMsg;
-				sMsg.AppendBlank(60, "Load colorset %s", colfile.c_str());
+				sMsg.AppendBlank(60, "Loading colorset %s", colfile.c_str());
 				cout << sMsg.c_str();
 				cout << succMsg << endl;
 #endif
@@ -188,7 +188,7 @@ bool Initialize()
 			else
 			{
 				String sMsg;
-				sMsg.AppendBlank(60, "Load colorset %s", colfile.c_str());
+				sMsg.AppendBlank(60, "Loading colorset %s", colfile.c_str());
 				cout << failMsg << endl;
 			}
 		}
@@ -196,7 +196,7 @@ bool Initialize()
 		if (t == (int)_vColFile.size())
 		{
 			String sMsg;
-			sMsg.AppendBlank(60, "Load colorset");
+			sMsg.AppendBlank(60, "Loading colorset");
 			cout << sMsg.c_str();
 			cout << failMsg << endl;
 			return false;
@@ -231,7 +231,7 @@ bool	Load_KeyFile()
 				g_tCfg.SetStaticValue("KeyFile", keyfile);
 #ifdef __DEBUGMODE__
 				String sMsg;
-				sMsg.AppendBlank(60, "Load key settings... %s", keyfile.c_str());
+				sMsg.AppendBlank(60, "Loading key setting... %s", keyfile.c_str());
 				cout << sMsg.c_str();
 				cout << succMsg << endl;
 #endif
@@ -245,7 +245,7 @@ bool	Load_KeyFile()
 			else
 			{
 				String sMsg;
-				sMsg.AppendBlank(60, "Load key settings... %s", keyfile.c_str());
+				sMsg.AppendBlank(60, "Loading key settings... %s", keyfile.c_str());
 				cout << sMsg.c_str();
 				cout << failMsg << endl;
 			}
@@ -254,7 +254,7 @@ bool	Load_KeyFile()
 		if (t==(int)_vKeyFile.size())
 		{
 			String sMsg;
-			sMsg.AppendBlank(60, "Load key settings... ");
+			sMsg.AppendBlank(60, "Loading key settings... ");
 			cout << sMsg.c_str();
 			cout << failMsg << endl;
 			return false;
@@ -276,7 +276,7 @@ bool	Load_KeyFile()
 				g_tCfg.SetStaticValue("SyntexCfgFile", syntexFile);
 #ifdef __DEBUGMODE__
 				String sMsg;
-				sMsg.AppendBlank(60, "Load syntex %s", syntexFile.c_str());
+				sMsg.AppendBlank(60, "Loading syntex %s", syntexFile.c_str());
 				cout << sMsg.c_str();
 				cout << succMsg << endl;
 #endif
@@ -290,7 +290,7 @@ bool	Load_KeyFile()
 			else
 			{
 				String sMsg;
-				sMsg.AppendBlank(60, "Load syntex %s", syntexFile.c_str());
+				sMsg.AppendBlank(60, "Loading syntex %s", syntexFile.c_str());
 				cout << sMsg.c_str();
 				cout << failMsg << endl;
 			}

@@ -9,18 +9,16 @@ include_directories(
 ########### next target ###############
 
 if (NOT DISABLE_SFTP AND OPENSSL_FOUND)
-    message( "openssl include directory : ${OPENSSL_INCLUDE_DIR}" )
-    include_directories(${OPENSSL_INCLUDE_DIR})
+    message( STATUS "openssl include directory : ${OPENSSL_INCLUDE_DIR} ${LIBSSH_LIBRARY_INCLUDE_DIRS}" )
+    include_directories(${OPENSSL_INCLUDE_DIR} ${LIBSSH_LIBRARY_INCLUDE_DIRS})
 
     SET(linmpluginsftp_LIB_SRCS
        SFtpReader.cpp
     )
 
-    add_library(linmpluginsftp STATIC ${linmpluginsftp_LIB_SRCS} ${OPENSSL_LIBRARY})
-
-    #target_link_libraries(linmpluginsftp ${OPENSSL_LIBRARY})
-    #set_target_properties(linmpluginsftp PROPERTIES VERSION 4.2.0 SOVERSION 4)
-    #install(TARGETS linmpluginsftp DESTINATION lib)
+    add_library(linmpluginsftp STATIC ${linmpluginsftp_LIB_SRCS})
+else()
+    message( WARNING "Unsupported sftp connect" )
 endif()
 
 ########### install files ###############

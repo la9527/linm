@@ -151,7 +151,7 @@ void	Dialog_FileBox::Draw2(WINDOW* pWin)
 		sName = _pFile->sName + " -> " + _pFile->sLinkName;
 	else
 		sName = _pFile->sName;
-		
+
 #ifdef __APPLE__
 	sName = MLSUTIL::CodeConvert( sName, "UTF-8", "UTF-8-MAC" );
 #endif

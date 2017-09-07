@@ -6,9 +6,7 @@ set(VERSION "0.9.0")
 set(CMAKE_CXX_STANDARD 11)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-set(CMAKE_MODULE_PATH
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules
-        )
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 # disallow in-source build
 include(MacroEnsureOutOfSourceBuild)
@@ -38,12 +36,6 @@ check_function_exists (CFLocaleCopyCurrent HAVE_CFLOCALECOPYCURRENT)
 check_function_exists (CFPreferencesCopyAppValue HAVE_CFPREFERENCESCOPYAPPVALUE)
 
 CHECK_INCLUDE_FILES (curses.h HAVE_CURSES_H)
-check_function_exists (dcgettext HAVE_DCGETTEXT)
-
-check_function_exists (feof_unlocked HAVE_DECL_FEOF_UNLOCKED)
-
-check_function_exists (fgets_unlocked HAVE_DECL_FGETS_UNLOCKED)
-check_function_exists (getc_unlocked HAVE_DECL_GETC_UNLOCKED)
 
 check_function_exists (getopt getopt_long HAVE_DECL_GETOPT)
 
@@ -62,14 +54,10 @@ check_function_exists (getopt HAVE_GETOPT)
 check_function_exists (getopt_long HAVE_GETOPT_LONG)
 
 check_function_exists (getpt HAVE_GETPT)
-check_function_exists (gettext HAVE_GETTEXT)
-
 check_function_exists (gettimeofday HAVE_GETTIMEOFDAY)
 check_function_exists (getuid HAVE_GETUID)
 
 check_function_exists (grantpt HAVE_GRANTPT)
-check_function_exists (iconv HAVE_ICONV)
-
 check_function_exists (intmax_t HAVE_INTMAX_T)
 CHECK_INCLUDE_FILES (inttypes.h HAVE_INTTYPES_H)
 CHECK_INCLUDE_FILES (inttypes.h HAVE_INTTYPES_H_WITH_UINTMAX)
@@ -158,12 +146,42 @@ check_function_exists (__argz_next HAVE___ARGZ_NEXT)
 check_function_exists (__argz_stringify HAVE___ARGZ_STRINGIFY)
 check_function_exists (__fsetlocking HAVE___FSETLOCKING)
 
-check_function_exists (iconv ICONV_CONST)
-
 set(_FILE_OFFSET_BITS 64)
 set(_LARGEFILE_SOURCE TRUE)
 
-# set configure file
+include(GNUInstallDirs)
+
+add_definitions("-DHAVE_CONFIG_H")
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/intl ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} )
+
+########### find iconv library
+
+find_library(LIBICONV iconv)
+find_path(ICONV_H iconv.h PATHS /usr/local/opt/libiconv/include )
+
+if (NOT LIBICONV OR NOT ICONV_H)
+    message("Please install 'iconv' library. (https://ftp.gnu.org/pub/gnu/libiconv/)")
+    message(FATAL_ERROR "'iconv' library is not found.")
+else()
+    set(HAVE_ICONV "TRUE")
+    set(ICONV_CONST "TRUE")
+    message( STATUS "iconv: ${LIBICONV}")
+endif()
+
+########### find intl(gettext) library
+
+find_library(LIBINTL intl)
+if (NOT LIBINTL)
+    message(FATAL_ERROR "'intl' library is not found. please install 'gettext' library.(https://www.gnu.org/software/gettext)")
+else()
+    find_path(PATH_LIBINTL_H libintl.h PATHS /usr/local/include )
+    include_directories( ${PATH_LIBINTL_H} )
+    set(HAVE_GETTEXT "TRUE")
+    add_definitions( -DLOCALEDIR=\"${CMAKE_INSTALL_LOCALEDIR}\" )
+    message( STATUS "intl: ${LIBINTL}")
+endif()
+
+########### set configure file
 
 option(LINM_CFGPATH "set configure file install path. (default: '${CMAKE_INSTALL_PREFIX}/etc/linm')")
 
@@ -173,18 +191,18 @@ else()
     set(__LINM_CFGPATH__ "${CMAKE_INSTALL_PREFIX}/etc/linm")
 endif(LINM_CFGPATH)
 
-message( "-- Option - configure path : '${__LINM_CFGPATH__}'" )
+message( STATUS "Option - configure path : '${__LINM_CFGPATH__}'" )
 
-# set debug mode
+########### set debug mode
 
 option(DEBUG_MODE "Build debugging mode")
 if( DEBUG_MODE )
     set(__DEBUGMODE__ "ON" )
 endif(DEBUG_MODE)
 
-message( "-- Option - debug mode : ${DEBUG_MODE}" )
+message( STATUS "Option - debug mode : ${DEBUG_MODE}" )
 
-# setting tar name
+########### setting tar name
 option(TAR_FILE_NAME "set 'tar' filename. (default: 'tar')")
 
 if (TAR_FILE_NAME)
@@ -200,9 +218,9 @@ else()
     endif(GTAR)
 endif(TAR_FILE_NAME)
 
-message( "-- Option - tar or gtar program name : '${TARGNAME}'" )
+message(  STATUS  "Option - tar or gtar program name : '${TARGNAME}'" )
 
-# find ncurses library
+########### find ncurses library
 
 find_library(CURSES_LIB curses)
 find_library(NCURSES_LIB ncurses)
@@ -226,7 +244,7 @@ else()
     message(STATUS "find NCURSESW_LIB: ${NCURSESW_LIB}")
 endif()
 
-# find openssl library
+########### find openssl library
 option(DISABLE_SFTP "SFTP Unsupport. (default: OFF)")
 if( NOT DISABLE_SFTP )
 
@@ -248,12 +266,15 @@ if( NOT DISABLE_SFTP )
 
     include(FindPkgConfig)
     if ( PKG_CONFIG_EXECUTABLE )
-        pkg_check_modules(LIBSSH_LIBRARY REQUIRED libssh)
+        pkg_check_modules(LIBSSH2 REQUIRED libssh2)
+        find_library(LIBSSH2 ssh2 PATHS ${LIBSSH2__LIBRARY_DIRS})
     else ( PKG_CONFIG_EXECUTABLE )
-        find_library(LIBSSH_LIBRARY ssh)
+        find_library(LIBSSH2_LIBRARIES ssh2)
+        #find_library(LIBSSH2_LIBRARY_INCLUDE_DIRS ssh2)
     endif( PKG_CONFIG_EXECUTABLE )
 
-    message(STATUS "find LIBSSH_LIBRARY: ${LIBSSH_LIBRARY_LIBRARIES}")
+    message(STATUS "find LIBSSH_LIBRARY: ${LIBSSH2_LIBRARY_LIBRARIES}")
+    message(STATUS "find LIBSSH2_LIBRARY_INCLUDE_DIRS: ${LIBSSH2_LIBRARY_INCLUDE_DIRS}")
 else()
     message(STATUS "Option - Disable SFTP: ON")
 endif()
@@ -276,7 +297,6 @@ configure_file(
 
 # subdirectory
 
-#add_subdirectory(intl)
 #add_subdirectory(po)
 add_subdirectory(lib)
 add_subdirectory(panel)
@@ -286,64 +306,4 @@ add_subdirectory(sh)
 
 ########### install files ###############
 
-install(FILES README.md README.ko DESTINATION share )
-
-#original Makefile.am contents follow:
-
-## not a GNU package. You can remove this line, if
-## have all needed files, that a GNU package needs
-#AUTOMAKE_OPTIONS = foreign 1.4
-#
-#ACLOCAL_AMFLAGS = -I m4
-#
-#SUBDIRS = intl po lib panel editor src sh
-#
-#noinst_DATA = README.ko_euckr README.ko_utf8 linm.spec debian/*
-#EXTRA_DIST = config.rpath m4/ChangeLog  $(noinst_DATA)
-#
-#install-exec-hook :
-#	if test -d $(DESTDIR)$(sysconfdir)/profile.d ; then \
-#		if test -w $(DESTDIR)$(sysconfdir)/profile.d ; then \
-#			install -c -m 755 $(top_srcdir)/sh/linm_alias.sh $(DESTDIR)$(sysconfdir)/profile.d \
-#		; fi \
-#	; fi
-#	
-#	if ! test -d $(DESTDIR)$(LINM_CFGPATH) ; then \
-#		install -d -m 755 $(DESTDIR)$(LINM_CFGPATH) \
-#	; fi
-#
-#	if test -w $(DESTDIR)$(LINM_CFGPATH) ; then \
-#		install -c -m 644 $(top_srcdir)/sh/default.cfg \
-#					$(top_srcdir)/sh/colorset.cfg \
-#					$(top_srcdir)/sh/keyset.cfg \
-#					$(DESTDIR)$(LINM_CFGPATH) \
-#	; else \
-#		if ! test -d ~/.linm ; then \
-#			install -d -m 755 ~/.linm \
-#		; fi && \
-#		install -c -m 644 $(top_srcdir)/sh/default.cfg \
-#					$(top_srcdir)/sh/colorset.cfg \
-#					$(top_srcdir)/sh/keyset.cfg \
-#					~/.linm \
-#	; fi
-#
-#	if ! test -d $(DESTDIR)$(datadir)/pixmaps ; then \
-#		install -d -m 755 $(DESTDIR)$(datadir)/pixmaps \
-#	; fi
-#
-#	if test -w $(DESTDIR)$(datadir)/pixmaps ; then \
-#		install -c -m 644 $(top_srcdir)/debian/linm.xpm $(DESTDIR)$(datadir)/pixmaps \
-#	; fi
-#	
-#	if ! test -d $(DESTDIR)$(datadir)/applications ; then \
-#		install -d -m 755 $(DESTDIR)$(datadir)/applications \
-#	; fi
-#
-#	if test -w $(DESTDIR)$(datadir)/applications ; then \
-#		install -c -m 644 $(top_srcdir)/debian/LinM.desktop $(DESTDIR)$(datadir)/applications \
-#	; fi
-#
-#uninstall-hook :
-#	-rm -f $(DESTDIR)$(LINM_CFGPATH)/default.cfg $(DESTDIR)$(LINM_CFGPATH)/keyset.cfg $(DESTDIR)$(LINM_CFGPATH)/colorset.cfg
-#	-rm -f $(DESTDIR)$(sysconfdir)/profile.d/linm_alias.sh
-#	-rm -rf ~/.linm
+# install(FILES README.md README.ko DESTINATION share )

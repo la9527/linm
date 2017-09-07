@@ -24,8 +24,9 @@
 #include "selection.h"
 #include "sortfile.h"
 
-#include "libssh2.h"
-#include "libssh2_sftp.h"
+#include <libssh2.h>
+#include <libssh2_publickey.h>
+#include <libssh2_sftp.h>
 
 #include "mlscfgload.h"
 
@@ -205,15 +206,14 @@ int		SFtpReader::SessionStartup(const string& sIP)
 	_pSession = (void*)libssh2_session_init();
 
 	// reference : http://libssh2.sourceforge.net/doc/#libssh2sessionmethodpref
-	// 
+
 	string 	sKex = "none", sHostKey = "none", sCrypt_cs = "none", sMac_cs = "none", sComp_cs = "none";
 
 	sKex = g_tCfg.GetValue("SSH", "Method_Kex", 
 						"diffie-hellman-group1-sha1,"
 						"diffie-hellman-group14-sha1,"
 						"diffie-hellman-group-exchange-sha1");
-	sHostKey = g_tCfg.GetValue("SSH", "Method_HostKey", 
-						"ssh-dss,ssh-rsa");
+	sHostKey = g_tCfg.GetValue("SSH", "Method_HostKey", "ssh-dss,ssh-rsa");
 	sCrypt_cs = g_tCfg.GetValue("SSH", "Method_Crypto",
 						"aes256-cbc,"
 						"rijndael-cbc@lysator.liu.se,"
@@ -655,7 +655,7 @@ bool	SFtpReader::GetInfo(File &tFile)
 
 		if (pFileAttr->flags & LIBSSH2_SFTP_ATTR_PERMISSIONS)
 		{
-			char	cAttr[10];
+			char	cAttr[11];
 			
 			if ( bLink )
 				cAttr[0]= 'l';

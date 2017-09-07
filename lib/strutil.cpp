@@ -345,8 +345,8 @@ namespace	MLSUTIL
 	{
 		#ifdef __CYGWIN_C__
 			return str;
-		#else
-			string 	s = str;
+        #else
+            string 	s = str;
 			if (s.size() == 0 && s.size() > 10000000) return L"";
 			wstring		wstr;
 			
@@ -371,11 +371,11 @@ namespace	MLSUTIL
 	{
 		#ifdef __CYGWIN_C__
 			return wstr;
-		#else
-			wstring	s = wstr;
+        #else
+            wstring	s = wstr;
 			if (s.size() == 0) return "";
 			string  str;
-			char	mbchar[10];
+			char	mbchar[20];
 				
 			for (uint n = 0; n < s.size(); n++)
 			{

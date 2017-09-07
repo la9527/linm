@@ -1,5 +1,5 @@
 #ifndef __SFTPREADER_H__
-#define __SFTPREADER_H_
+#define __SFTPREADER_H__
 
 #include "define.h"
 #include "reader.h"
@@ -120,7 +120,7 @@ public:
 	///	\brief	파일을 보기 위한..
 	///	\param	tFileOriginal	볼 원본 파일
 	///	\param	pFileChange		Target 파일
-	///	\return	압축 파일을 tmp 에 복사 해놓고 파일 위치 리턴
+    ///	\return	압축 파일을 tmp 에 복사 해놓고 파일 위치 리턴
 	bool	View(const File* tFileOriginal, File* pFileChange);
 
 	///	\brief	파일 붙여넣기 할때

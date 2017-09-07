@@ -232,14 +232,15 @@ namespace MLSUTIL
 	
 		#ifdef HAVE_ICONV
 		cStr = code_convert((char*)sSource.c_str(), to_codeset, from_codeset);
-		#endif
-	
 		if (cStr != NULL)
 		{
 			sCodeConvertStr = cStr;
 			free(cStr);
 		}
-		return sCodeConvertStr;
+        return sCodeConvertStr;
+        #else
+        return sSource;
+        #endif
 	}
 	
 	/// @brief	This function is change from english to korean.

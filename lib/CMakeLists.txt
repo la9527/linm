@@ -1,10 +1,3 @@
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/intl ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} )
-
-# -DLOCALEDIR=\"$(localedir)\" @DEFS@
-include(GNUInstallDirs)
-
-add_definitions(-DHAVE_CONFIG_H -DLOCALEDIR="${CMAKE_INSTALL_DATADIR}/locale")
-
 ########### next target ###############
 
 SET(mlscommon_STAT_HEADERS define.h exception.h mlslocale.h strutil.h configure.h mlslog.h mlsmutex.h cmdshell.h mlsthread.h strlinetoken.h mlsdialog.h)

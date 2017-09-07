@@ -22,7 +22,7 @@ endif()
 SET(vfsplugin_STAT_HEADERS dirreader.h vfsplugin.h)
 SET(vfsplugin_STAT_SRCS dirreader.cpp vfsplugin.cpp)
 
-add_library(vfsplugin STATIC ${vfsplugin_STAT_SRCS} ${vfsplugin_STAT_HEADERS})
+add_library(vfsplugin STATIC ${vfsplugin_STAT_SRCS})
 
 ########### install files ###############
 

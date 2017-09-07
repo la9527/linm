@@ -44,7 +44,6 @@ void	McdDirButton::Draw()
 	else
 	{
 		string sName = _pNode->tFile.sName;
-		
 #ifdef __APPLE__
 		sName = MLSUTIL::CodeConvert( sName, "UTF-8", "UTF-8-MAC" );
 #endif

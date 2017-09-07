@@ -38,10 +38,12 @@ SET(linm_SRCS
 )
 
 add_executable(linm ${linm_SRCS})
+#target_link_libraries(vfsplugin linmpluginsftp)
 
-target_link_libraries(linm mlscommon vfsplugin dialog editor panelcommon linmpluginarc linmpluginftp "${NCURSES_LIB}")
+target_link_libraries(linm mlscommon vfsplugin dialog editor panelcommon linmpluginarc linmpluginftp ${LIBICONV} ${LIBINTL} ${NCURSES_LIB})
 if ( OPENSSL_FOUND )
-    target_link_libraries(linm ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY})
+    add_dependencies(linm linmpluginsftp)
+    target_link_libraries(linm linmpluginsftp ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${LIBSSH2}  )
 endif()
 
 install(TARGETS linm DESTINATION bin)

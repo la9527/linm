@@ -50,15 +50,11 @@
  LinM is distributed under the GNU Version 3.
  See ['LICENSE'] for the detail.
 
-
 ## Changes
 
 v0.9.0 - 2017-08-24
 
-    - build package is change from automake to cmake.
+    - build package is change from automake to cmake.    
     - fix compile warning.
-    
+    - Fixed syntax highlighter in internal editor.
 
-    
-
-    

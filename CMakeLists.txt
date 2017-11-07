@@ -322,7 +322,6 @@ add_subdirectory(panel)
 add_subdirectory(editor)
 add_subdirectory(src)
 add_subdirectory(sh)
-add_subdirectory(test)
 
 # make config.h
 configure_file(

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project (linm)
 
 set(PACKAGE "linm")
-set(VERSION "0.9.0")
+set(VERSION "0.9.1")
 set(CMAKE_CXX_STANDARD 11)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked

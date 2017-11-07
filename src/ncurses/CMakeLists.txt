@@ -41,20 +41,23 @@ SET(linm_SRCS
    subshell.cpp
    FSWatchDetect.cpp)
 
-if ( SOURCEHIGHLIGHT_FOUND )
+if ( SOURCEHIGHLIGHT )
+    SET( linm_INCLUDES ${linm_INCLUDES} src_highlight.h )
     SET( linm_SRCS ${linm_SRCS} src_highlight.cpp )
-endif()
+endif( SOURCEHIGHLIGHT )
 
 add_executable(linm ${linm_SRCS} ${linm_INCLUDES})
 target_link_libraries(linm libfswatch mlscommon vfsplugin dialog editor panelcommon linmpluginarc linmpluginftp ${LIBICONV} ${LIBINTL} ${NCURSES_LIB})
 
 if ( OPENSSL_FOUND )
+    message(STATUS "Linking : ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${LIBSSH2}")
     add_dependencies(linm linmpluginsftp)
     target_link_libraries(linm linmpluginsftp ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${LIBSSH2}  )
 endif()
 
-if ( SOURCEHIGHLIGHT_FOUND )
+if ( SOURCEHIGHLIGHT )
+    message(STATUS "Linking : ${SOURCEHIGHLIGHT}")
     target_link_libraries(linm ${SOURCEHIGHLIGHT} )
-endif()
+endif ( SOURCEHIGHLIGHT )
 
 install(TARGETS linm DESTINATION bin)

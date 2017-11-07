@@ -84,7 +84,7 @@ void CmdMcdImp::Key_Enter()
 				break;
 			case CLIP_COPY:
 			case CLIP_CUT:
-				LOG_WRITE("Key_Enter CLIP_COPY or CLIP_CUT");
+				LOG("Key_Enter CLIP_COPY or CLIP_CUT");
 				ClipPaste();
 				g_tMainFrame.McdClipCopyClear();
 				break;
@@ -201,7 +201,7 @@ void CmdMcdImp::Menu()
 	g_tMainFrame.Refresh(false);
 	if (tMcdMenu.GetCurCmd().size() != 0)
 	{
-		LOG_WRITE("Menu Run [%s]", tMcdMenu.GetCurCmd().c_str());McdSave();
+		LOG("Menu Run [%s]", tMcdMenu.GetCurCmd().c_str());McdSave();
 		g_tMainFrame.GetCommand()->Execute(tMcdMenu.GetCurCmd());
 	}
 }
@@ -355,7 +355,7 @@ void CmdMcdImp::Remove()
 	_pMcd->SetCur( _pPanel->GetPath() );
 	if (g_tMainFrame.GetScreenSync()) ViewSync();
 	
-	LOG_WRITE("Remove :: Cur Set ---- [%s]", _pPanel->GetPath().c_str());
+	LOG("Remove :: Cur Set ---- [%s]", _pPanel->GetPath().c_str());
 	Refresh();
 }
 
@@ -374,7 +374,7 @@ void CmdMcdImp::ClipCopy()
 	else
 		g_tMainFrame.GetClip()->Set(CLIP_COPY);
 	
-	LOG_WRITE("Mcd ClipCopy [%s] [%s]", 
+	LOG("Mcd ClipCopy [%s] [%s]",
 				_pMcd->GetParentFile().sFullName.c_str(),
 				tFile.sFullName.c_str());
 }
@@ -394,7 +394,7 @@ void CmdMcdImp::ClipCut()
 	else
 		g_tMainFrame.GetClip()->Set(CLIP_CUT);
 
-	LOG_WRITE("Mcd ClipCut [%s] [%s]",
+	LOG("Mcd ClipCut [%s] [%s]",
 				_pMcd->GetParentFile().sFullName.c_str(),
 				tFile.sFullName.c_str());
 }
@@ -411,18 +411,18 @@ void CmdMcdImp::ClipPaste()
 
 	if (state == CLIP_NONE) 
 	{
-		LOG_WRITE("CmdMcdImp None !!!");
+		LOG("CmdMcdImp None !!!");
 		return;
 	}
 
 	if (state == CLIP_COPY)
 	{
-		LOG_WRITE("CmdMcdImp Copy !!!");
+		LOG("CmdMcdImp Copy !!!");
 		CopyPaste();
 	}
 	else if (state == CLIP_CUT)
 	{
-		LOG_WRITE("CmdMcdImp Cut !!!");
+		LOG("CmdMcdImp Cut !!!");
 		CutPaste();
 	}
 
@@ -432,7 +432,7 @@ void CmdMcdImp::ClipPaste()
 	
 	if (g_tMainFrame.GetScreenSync()) ViewSync();
 
-	LOG_WRITE("Cur Set ---- [%s]", sBefPath.c_str());
+	LOG("Cur Set ---- [%s]", sBefPath.c_str());
 }
 
 void	CmdMcdImp::CopyPaste()
@@ -443,7 +443,7 @@ void	CmdMcdImp::CopyPaste()
 	
 	Selection	tSelectionCopy;
 
-	LOG_WRITE("ClipPaste Copy Start 1 - [%d] [%s] [%s] !!!", 
+	LOG("ClipPaste Copy Start 1 - [%d] [%s] [%s] !!!",
 						_tMainSelection.GetSize(),
 						_tMainSelection[0]->sType.c_str(), 
 						_pPanel->GetReader()->GetInitType().c_str());
@@ -484,7 +484,7 @@ void	CmdMcdImp::CopyPaste()
 					return;
 				}
 
-				LOG_WRITE("g_tReaderCtl USE [%p] [%s]", pReader, sInitName.c_str());
+				LOG("g_tReaderCtl USE [%p] [%s]", pReader, sInitName.c_str());
 
 				bUseGlobalReaderCtl = true;	
 				if (p == string::npos)
@@ -497,7 +497,7 @@ void	CmdMcdImp::CopyPaste()
 			}
 		}
 
-		LOG_WRITE("File Copy !!!");
+		LOG("File Copy !!!");
 
 		if (_pPanel->GetReader()->GetConnected() == false)
 		{
@@ -510,18 +510,18 @@ void	CmdMcdImp::CopyPaste()
 		// copy to temp directory and then, copy from temp directory to copy directoy.
 		if (pReader->Copy(_tMainSelection, g_tCfg.GetValue("Static", "TmpDir"), &tSelectionCopy))
 		{
-			LOG_WRITE("File Copy Complite !!!");
+			LOG("File Copy Complite !!!");
 		
 			if (_pPanel->GetReader()->GetInitType() == "file://")
 			{
-				LOG_WRITE("File Copy Move !!!");
+				LOG("File Copy Move !!!");
 
 				// if init type is 'file', move to files.
 				_pPanel->GetReader()->Move(tSelectionCopy);
 			}
 			else
 			{	
-				LOG_WRITE("File Copy TmpDir Remove !!!");
+				LOG("File Copy TmpDir Remove !!!");
 
 				// if init type is not 'file', copy from the temp directory to the paste directoy and then,
 				// temp directoy is remove.				
@@ -542,7 +542,7 @@ void 	CmdMcdImp::CutPaste()
 
 	if (_tMainSelection.GetSize() <= 0) return;
 	
-	LOG_WRITE("ClipPaste CLIP_CUT Start - [%d] [%s] [%s] !!!", 
+	LOG("ClipPaste CLIP_CUT Start - [%d] [%s] [%s] !!!",
 						_tMainSelection.GetSize(),
 						_tMainSelection[0]->sType.c_str(),
 						_pPanel->GetReader()->GetInitType().c_str());

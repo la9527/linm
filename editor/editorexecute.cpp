@@ -332,7 +332,7 @@ void 	Editor::Copy()
 
 	if (_EditSelect.y2 >= (int)_vText.size())
 	{
-		LOG_WRITE("Error :: _EditSelect.y2 > _vText.size ");
+		LOG("Error :: _EditSelect.y2 > _vText.size ");
 		return;
 	}
 
@@ -378,7 +378,7 @@ void	Editor::Selected_Del()
 
 	if (_EditSelect.y2 >= (int)_vText.size())
 	{
-		LOG_WRITE("Error :: _EditSelect.y2 > _vText.size ");
+		LOG("Error :: _EditSelect.y2 > _vText.size ");
 		_EditMode = EDIT;
 		return;
 	}
@@ -441,9 +441,9 @@ void	Editor::Selected_Del()
 	if (_vText.size() == 0)
 	{
 		#ifdef __CYGWIN_C__
-			_vText.push_back(LineSyntex(" "));
+			_vText.push_back(LineSyntax(" "));
 		#else
-			_vText.push_back(LineSyntex(L" "));
+			_vText.push_back(LineSyntax(L" "));
 		#endif
 	}
 }
@@ -459,7 +459,7 @@ void 	Editor::Cut()
 
 	if (_EditSelect.y2 >= (int)_vText.size())
 	{
-		LOG_WRITE("Error :: _EditSelect.y2 > _vText.size ");
+		LOG("Error :: _EditSelect.y2 > _vText.size ");
 		_EditMode = EDIT;
 		return;
 	}
@@ -507,7 +507,7 @@ void 	Editor::Paste()
 	wstring				WClip, WClip2;
 
 	vClip = g_tEditorClip.Get();
-	LOG_WRITE("ClipSize :: [%d]", vClip.size());
+	LOG("ClipSize :: [%d]", vClip.size());
 
 	if (_EditMode != EDIT)	Selected_Del();
 
@@ -578,7 +578,7 @@ void	Editor::Undo()
 
 	if (pDoInfo == NULL)
 	{
-		LOG_WRITE("Undo pDoInfo NULL !!!");
+		LOG("Undo pDoInfo NULL !!!");
 		return;
 	}
 
@@ -649,14 +649,14 @@ void	Editor::FileNew()
 {
 	if (_bReadOnly == true)
 	{
-		MsgBox(_("Error"), _("Read only file loaded."));
+		MsgBox(_("Error"), _("Loaded a read-only file."));
 		return;
 	}
 
 	// if exist the change file, ask the current file save.
 	if (_nConvInfo != (int)_vDoInfo.size())
 	{
-		if (YNBox(_("File New"), _("New file. Do you want to save ?"), true) == true)
+		if (YNBox(_("File New"), _("New file. Do you want to save it?"), true) == true)
 		{
 			FileSave();
 		}
@@ -669,7 +669,7 @@ void	Editor::FileNew()
 	ifstream in(sFilename.c_str());
 	if (in)
 	{
-		MsgBox(_("Error"), _("current file using."));
+		MsgBox(_("Error"), _("This file is already in use."));
 		return;
 	}
 
@@ -681,7 +681,7 @@ bool	Editor::FileSave()
 {
 	if (_bReadOnly == true)
 	{
-		MsgBox(_("Error"), _("This file read only."));
+		MsgBox(_("Error"), _("This file is a read-only file and can not be saved."));
 		return false;
 	}
 	if (Save(_sFile, AUTO, _bDosMode, _bBackup) == true)

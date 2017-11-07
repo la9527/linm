@@ -197,7 +197,7 @@ Reader*	Panel::GetReader(const string& sPathOrType)
 	if ( pReader )
 		pReader->SetTmpDir( g_tCfg.GetValue("Static", "TmpDir") );
 	
-	LOG_WRITE("sReaderName [%s] pReader [%p]", sReaderName.c_str(), pReader);
+	LOG("sReaderName [%s] pReader [%p]", sReaderName.c_str(), pReader);
 	return pReader;
 }
 
@@ -209,7 +209,7 @@ bool	Panel::Read(const string& sPathConst)
 	string::size_type idx = string::npos;
 	string 		sPath = sPathConst;
 
-	LOG_WRITE("Panel::Read [%s]", sPathConst.c_str());
+	LOG("Panel::Read [%s]", sPathConst.c_str());
 
 	// . History에 예전 dir name 저장
 	if ( !_sCurPath.empty() && GetReader() )
@@ -305,13 +305,13 @@ bool	Panel::Read(const string& sPathConst)
 		if (sPath.size() != 0) idx = sPath.find("://");
 		if (idx != string::npos)
 		{
-			LOG_WRITE("PrevDir 2 [%s]", sPrevDir.substr(idx+2).c_str());
+			LOG("PrevDir 2 [%s]", sPrevDir.substr(idx+2).c_str());
 			
 			SearchExactFile(sPrevDir.substr(idx+2), _uCur, true);
 		}
 		else
 		{
-			LOG_WRITE("PrevDir 1 [%s]", sPrevDir.c_str());
+			LOG("PrevDir 1 [%s]", sPrevDir.c_str());
 			SearchExactFile(sPrevDir, _uCur, true);
 		}
 		_bChange = true;
@@ -319,7 +319,7 @@ bool	Panel::Read(const string& sPathConst)
 
 	ReadEnd();
 
-	LOG_WRITE("Read End [%s]", sPrevDir.c_str());
+	LOG("Read End [%s]", sPrevDir.c_str());
 	return true;
 }
 
@@ -417,7 +417,7 @@ void	Panel::SelectExecute()
 		sPrgExeCmd = g_tCfg.GetNameBind(_vDirFiles[_uCur]->sName);
 	}
 
-	LOG_WRITE("SelectExecute :: [%s]", sPrgExeCmd.c_str());
+	LOG("SelectExecute :: [%s]", sPrgExeCmd.c_str());
 
 	if (sPrgExeCmd.size() == 0)
 	{
@@ -480,7 +480,7 @@ void	Panel::SelectExecute()
 		sCmd = vCmd[nSelect];
 		string sExeCmd = getbetween(sCmd, '<', '>');
 	
-		LOG_WRITE("Enter Command : [%s] [%s]", sCmd.c_str(), sExeCmd.c_str());
+		LOG("Enter Command : [%s] [%s]", sCmd.c_str(), sExeCmd.c_str());
 	
 		if (sExeCmd.size() != 0)
 		{
@@ -535,7 +535,7 @@ void	Panel::Key_Enter()
 
 	if (pFile->bDir)
 	{
-		LOG_WRITE("Key_Enter !!! [%s] [%s]", pFile->sFullName.c_str(), pFile->sName.c_str());
+		LOG("Key_Enter !!! [%s] [%s]", pFile->sFullName.c_str(), pFile->sName.c_str());
 		// 이때는 플러그인에서 나올때 원래 위치로 돌아가기 위한..
 		if (pFile->sFullName == "Exit" && pFile->sName == "..")
 		{
@@ -569,7 +569,7 @@ void	Panel::Key_Enter()
 				}
 			}
 
-			LOG_WRITE("Key_Enter Exit Zip !!!");
+			LOG("Key_Enter Exit Zip !!!");
 		}
 		else
 		{
@@ -602,7 +602,7 @@ void	Panel::Key_Enter()
 			sCmd = g_tCfg.GetNameBind( sName );
 			if (sCmd.size() == 0)
 			{
-				LOG_WRITE("GetBind1 [%s] [%s]", sCmd.c_str(), sName.c_str());
+				LOG("GetBind1 [%s] [%s]", sCmd.c_str(), sName.c_str());
 					
 				if (tFile.isExecute())
 				{
@@ -612,7 +612,7 @@ void	Panel::Key_Enter()
 			}
 		}
 
-		LOG_WRITE("GetBind [%s]2", sCmd.c_str());
+		LOG("GetBind [%s]2", sCmd.c_str());
 
 		StringToken			tToken(sCmd, ";");
 		vector<string>		vCmd, vView;
@@ -675,17 +675,17 @@ void	Panel::Key_Enter()
 				string strCmd = tToken.Get();
 
 				vector<string> vList = CmdShell::CmdExecute( "whereis " + strCmd + " | wc -w");
-				LOG_WRITE("CmdShell::CmdExecute.... [%s]", strCmd.c_str());
+				LOG("CmdShell::CmdExecute.... [%s]", strCmd.c_str());
 				
 				if ( vList.size() == 1 && MLSUTIL::strtoint( vList[0] ) > 1)
 				{
-					LOG_WRITE("MLSUTIL::strtoint(%s)", (const char*)vList[0].c_str());
+					LOG("MLSUTIL::strtoint(%s)", (const char*)vList[0].c_str());
 					break;
 				}
 			}
 		}
 
-		LOG_WRITE("Enter Command : [%s] [%s]", sCmd.c_str(), sExeCmd.c_str());
+		LOG("Enter Command : [%s] [%s]", sCmd.c_str(), sExeCmd.c_str());
 
 		if (sExeCmd.size() != 0)
 		{
@@ -949,7 +949,7 @@ void	Panel::MountList()
 
 	if (CmdShell::CmdExeArg( "mount", 0, vLineArgData, false) == -1)
 	{
-		LOG_WRITE("CmdExeArg Error !!!");
+		LOG("CmdExeArg Error !!!");
 		return;
 	}
 

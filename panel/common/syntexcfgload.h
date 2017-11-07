@@ -29,27 +29,27 @@ using namespace MLSUTIL;
 namespace MLS
 {
 
-class SyntexExtLoad:public Configure
+class SyntaxExtLoad:public Configure
 {
 public:
-	static SyntexExtLoad &GetInstance();
+	static SyntaxExtLoad &GetInstance();
     
     void    Init();
 
-    bool    getExtSyntex( const string& strExt, std::string& strRt );
-    bool    getNameSyntex( const string& strName, std::string& strRt );
+    bool    getExtSyntax( const string& strExt, std::string& strRt );
+    bool    getNameSyntax( const string& strName, std::string& strRt );
    
 protected:
     bool	Parsing(const string& section, const string& var, const string& val);
     
-    map<string, string >     _mapSyntexExtList;
-    map<string, string >     _mapSyntexNameList;
+    map<string, string >     _mapSyntaxExtList;
+    map<string, string >     _mapSyntaxNameList;
     
 private:
-    SyntexExtLoad(): Configure() { }
+    SyntaxExtLoad(): Configure() { }
 };
 
-#define g_tSyntexExtCfg SyntexExtLoad::GetInstance()
+#define g_tSyntaxExtCfg SyntaxExtLoad::GetInstance()
 
 };
 

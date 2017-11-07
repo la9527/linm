@@ -323,7 +323,14 @@ void	NCurses_Panel::DrawFirst()
 	{
 		werase(_pWin);
 		wbkgd(_pWin, COLOR(g_tColorCfg._DefaultColor.font, g_tColorCfg._DefaultColor.back));
-		
+	}
+}
+
+void	NCurses_Panel::LineDraw()
+{
+	// Line draw and split line.
+	if (_bChange)
+	{
 		setcol(_tLineColor, _pWin);
 		mvwaddch (_pWin, 0, 0, ULCORNER);
 		mvwaddch (_pWin, 0, width-1, URCORNER);
@@ -333,14 +340,7 @@ void	NCurses_Panel::DrawFirst()
 		mvwvline(_pWin, 1, 0, VLINE, _nRow);
 		mvwhline(_pWin, _nRow+1, 1, HLINE, width-2);
 		mvwvline(_pWin, 1, width-1, VLINE, _nRow);
-	}
-}
 
-void	NCurses_Panel::LineDraw()
-{
-	// Line draw and split line.
-	if (_bChange)
-	{
 		setcol(_tLineColor, _pWin);
 		for (int i=1; i<_nCol; i++)
 			for (int j=1; j<_nRow+1; j++)
@@ -368,7 +368,7 @@ void NCurses_Panel::Draw()
 		_nPage = _uCur / (_nCol * _nRow);
 
 	int nCur = (_nCol*_nRow)*_nPage;
-	LOG_WRITE("_uCur [%d] _nPage [%d]", _uCur, _nPage );
+	LOG("_uCur [%d] _nPage [%d]", _uCur, _nPage );
 	_nItemWidth = (width / _nCol) - 2;
 
 	for (int nCol = 0; nCol < _nCol; nCol++)
@@ -388,7 +388,7 @@ void NCurses_Panel::Draw()
 					pFileBox->y = nRow;
 					if (nCur == (int)_uCur && _bFocus)
 					{
-						LOG_WRITE("Cur Select [%s]", pFile->sName.c_str());
+						LOG("Cur Select [%s]", pFile->sName.c_str());
 						pFileBox->SetFile(pFile, true, nCur, _bShowFileOwner);
 					}
 					else

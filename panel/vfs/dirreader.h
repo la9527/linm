@@ -73,7 +73,7 @@ public:
 	{
 		if (pFile == NULL) 
 		{
-			LOG_WRITE("Rename pFile is NULL !!!");
+			LOG("Rename pFile is NULL !!!");
 			return false;
 		}
 

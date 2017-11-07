@@ -101,7 +101,7 @@ void	Button::Draw()
 		if (nSize > 0 )	sMsg.append(nSize, ' ');
 	}
 
-	LOG_WRITE("[%s] [%d]", sMsg.c_str(), width);
+	LOG("[%s] [%d]", sMsg.c_str(), width);
 	mvwprintw(pWin, y, x, "%s", (char*)sMsg.c_str());
 	wattroff(pWin, A_BOLD);
 

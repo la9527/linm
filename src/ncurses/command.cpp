@@ -243,7 +243,7 @@ int Command::Execute( const std::string &	strCmd )
 {
 	if (strCmd.empty()) return ERROR;
 
-	LOG_WRITE("Execute [%s]", strCmd.c_str() );
+	LOG("Execute [%s]", strCmd.c_str() );
 
 	if (strCmd.size() > 4 && strCmd.substr(0, 4) == "Cmd_")
 	{	

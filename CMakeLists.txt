@@ -6,15 +6,16 @@ set(VERSION "0.9.0")
 set(CMAKE_CXX_STANDARD 11)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/output")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 # disallow in-source build
 include(MacroEnsureOutOfSourceBuild)
 macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake /path/to/${PROJECT_NAME} [options]' there.")
 
-#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # header or library check.
 
@@ -22,6 +23,21 @@ include(CheckIncludeFiles)
 include(CheckFunctionExists)
 include(CheckLibraryExists)
 include(CheckTypeSize)
+include(CheckStructHasMember)
+include(CheckIncludeFileCXX)
+
+# Boost library find
+set(Boost_USE_STATIC_LIBS        ON) # only find static libs
+set(Boost_USE_MULTITHREADED      ON)
+find_package(Boost 1.50.0 COMPONENTS program_options signals system)
+
+if (NOT Boost_FOUND)
+    message(FATAL_ERROR "'boost' library is not found. please install 'boost' library.(http://www.boost.org/)")
+else()
+    include_directories(${Boost_INCLUDE_DIRS})
+    message( STATUS "BOOST INCLUDE : ${Boost_INCLUDE_DIRS}")
+    message( STATUS "BOOST LIBS : ${Boost_LIBRARIES}")
+endif()
 
 CHECK_INCLUDE_FILES(errno.h HAVE_ERRNO_H)
 CHECK_INCLUDE_FILES(fcntl.h HAVE_FCNTL_H)
@@ -285,19 +301,33 @@ else()
     message(STATUS "Option - SMB protocol : OFF")
 endif()
 
-# make config.h
-configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+option(ENABLE_SOURCE_HIGHLIGHT "Enable support for source highlight. (default: ON)" ON)
+if( ENABLE_SOURCE_HIGHLIGHT )
+    message(STATUS "Option - SOURCE HIGHLIGHT : ON")
+    find_library(SOURCEHIGHLIGHT source-highlight)
+    if ( SOURCEHIGHLIGHT )
+        set(__LINM_SOURCE_HIGHLIGHT_USE__ ON)
+    endif( SOURCEHIGHLIGHT )
+else()
+    message(STATUS "Option - SOURCE HIGHLIGHT : OFF")
+endif()
 
 # subdirectory
 
 #add_subdirectory(po)
+
+add_subdirectory(libfswatch)
 add_subdirectory(lib)
 add_subdirectory(panel)
 add_subdirectory(editor)
 add_subdirectory(src)
 add_subdirectory(sh)
+add_subdirectory(test)
+
+# make config.h
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 ########### install files ###############
 

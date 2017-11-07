@@ -77,37 +77,37 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/*
 
 %changelog
-* Sun Feb 10 2008 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Feb 10 2008 Byoungyoung La, <la9527@daum.net>
 - 0.8.1 version make
-* Mon Dec 31 2007 Byoungyoung La, <la9527@yahoo.co.kr>
+* Mon Dec 31 2007 Byoungyoung La, <la9527@daum.net>
 - 0.8 version make
-* Mon Jan 1 2007 Byoungyoung La, <la9527@yahoo.co.kr>
+* Mon Jan 1 2007 Byoungyoung La, <la9527@daum.net>
 - 0.7.12 version make
 - samba supported.
-* Sat Sep 9 2006 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sat Sep 9 2006 Byoungyoung La, <la9527@daum.net>
 - 0.7.11 version make
 - bugfix and sftp, ftp support.
-* Sat Apr 22 2006 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sat Apr 22 2006 Byoungyoung La, <la9527@daum.net>
 - 0.7.10 version make
-* Sat Apr 22 2006 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sat Apr 22 2006 Byoungyoung La, <la9527@daum.net>
 - 0.7.9 version make
-* Sun Apr 2 2006 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Apr 2 2006 Byoungyoung La, <la9527@daum.net>
 - 0.7.8 version make
-* Mon Jan 30 2006 Byoungyoung La, <la9527@yahoo.co.kr>
+* Mon Jan 30 2006 Byoungyoung La, <la9527@daum.net>
 - 0.7.7 version make
-* Fri Jul 29 2005 Byoungyoung La, <la9527@yahoo.co.kr>
+* Fri Jul 29 2005 Byoungyoung La, <la9527@daum.net>
 - 0.7.6 version make
-* Fri Jul 29 2005 Byoungyoung La, <la9527@yahoo.co.kr>
+* Fri Jul 29 2005 Byoungyoung La, <la9527@daum.net>
 - 0.6.7 version make
-* Sun Jul 24 2005 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Jul 24 2005 Byoungyoung La, <la9527@daum.net>
 - 0.6.5 version make
-* Mon Jul 11 2005 Byoungyoung La, <la9527@yahoo.co.kr>
+* Mon Jul 11 2005 Byoungyoung La, <la9527@daum.net>
 - 0.6 version make
-* Sun Nov 21 2004 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Nov 21 2004 Byoungyoung La, <la9527@daum.net>
 - 0.5 version make
-* Sun Nov 21 2004 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Nov 21 2004 Byoungyoung La, <la9527@daum.net>
 - 0.4.5 version make
-* Sun Nov 21 2004 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Nov 21 2004 Byoungyoung La, <la9527@daum.net>
 - 0.3 version make 
-* Sun Sep 12 2004 Byoungyoung La, <la9527@yahoo.co.kr>
+* Sun Sep 12 2004 Byoungyoung La, <la9527@daum.net>
 - first make rpm package.

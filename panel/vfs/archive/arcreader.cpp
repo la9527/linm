@@ -59,7 +59,7 @@ bool ArcReader::Read(const string &sPath)
 {
 	if (_pArchive == NULL)
 	{
-		LOG_WRITE("_pArchive is NULL");
+		LOG("_pArchive is NULL");
 		return false;
 	}
 	
@@ -73,12 +73,12 @@ bool ArcReader::Read(const string &sPath)
 	{
 		_uCur = 0;
 		_sCurPath = sRealPath;
-		LOG_WRITE("ArcReader Read Ok !!! - Path [%s] [%d]", sRealPath.c_str(), _vFileList.size());
+		LOG("ArcReader Read Ok !!! - Path [%s] [%d]", sRealPath.c_str(), _vFileList.size());
 		return true;
 	}
 	else
 	{
-		LOG_WRITE("ArcReader Read false !!!");
+		LOG("ArcReader Read false !!!");
 		return false;
 	}
 }
@@ -145,7 +145,7 @@ bool ArcReader::GetInfo(File &tFile)
 		tFile.bSelected = pFile->bSelected;
 		tFile.uSize = pFile->uSize;
 		/*
-		LOG_WRITE("%s, %s, %d, %s, %s, %s, %ld", 	tFile.sName.c_str(), 
+		LOG("%s, %s, %d, %s, %s, %s, %ld", 	tFile.sName.c_str(),
 													tFile.sFullName.c_str(),
 													tFile.bDir,
 													tFile.sDate,
@@ -221,7 +221,7 @@ bool	ArcReader::Copy(Selection&	tSelection, const string& sTargetPath, Selection
 
 	SetKeyBreakUse( false );
 
-	LOG_WRITE("ArcReader Copy :: sTargetPath [%s]", sTargetPath.c_str());
+	LOG("ArcReader Copy :: sTargetPath [%s]", sTargetPath.c_str());
 
 	if (pSelection != NULL)
 	{
@@ -235,12 +235,12 @@ bool	ArcReader::Copy(Selection&	tSelection, const string& sTargetPath, Selection
 		{
 			File* pFile = tFileList[n];
 			File	tFile = *pFile;
-			//LOG_WRITE("ArcReader::Copy Path [%s]", tFile.sFullName.c_str());
+			//LOG("ArcReader::Copy Path [%s]", tFile.sFullName.c_str());
 			if (pFile->sFullName.size() > 0	&& pFile->sFullName.substr(0, 1) == "/")
 				tFile.sFullName = sTargetPathTmp + pFile->sFullName.substr(1, pFile->sFullName.length()-1);
 			else
 				tFile.sFullName = sTargetPathTmp + pFile->sFullName;
-			LOG_WRITE("ArcReader::Copy Name [%s]", tFile.sFullName.c_str());
+			LOG("ArcReader::Copy Name [%s]", tFile.sFullName.c_str());
 			pSelection->Add(&tFile);
 		}
 

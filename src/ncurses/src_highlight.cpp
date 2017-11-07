@@ -64,9 +64,9 @@ int	StyleFormatter::getColorNumber( const string& strColorName )
 	return 7; // normal color value.
 }
 
-void StyleFormatter::setSyntexDataList( std::vector<SyntexData>* pListSyntex )
+void StyleFormatter::setSyntaxDataList( std::vector<SyntaxData>* pListSyntax )
 {
-	_pListSyntex = pListSyntex;
+	_pListSyntax = pListSyntax;
 }
 
 void StyleFormatter::format(const std::string &str,
@@ -81,35 +81,35 @@ void StyleFormatter::format(const std::string &str,
 	
 	if ( str.size() && nColorNum != 7 )
 	{
-		SyntexData		tSyntexData( str, nColorNum, nBgColorNum );
-		tSyntexData.bold = bold;
-		tSyntexData.italic = italic;
-		tSyntexData.underline = underline;
-		tSyntexData.fixed = fixed;
-		tSyntexData.not_fixed = not_fixed;
+		SyntaxData		tSyntaxData( str, nColorNum, nBgColorNum );
+		tSyntaxData.bold = bold;
+		tSyntaxData.italic = italic;
+		tSyntaxData.underline = underline;
+		tSyntaxData.fixed = fixed;
+		tSyntaxData.not_fixed = not_fixed;
 		if ( params )
-			tSyntexData.nStart = params->start;
+			tSyntaxData.nStart = params->start;
 /* Debug code.
 		string strTmp;
-		if ( tSyntexData.bold )			strTmp =+ "B";
-		if ( tSyntexData.italic )		strTmp =+ "I";
-		if ( tSyntexData.underline )	strTmp =+ "U";
-		if ( tSyntexData.fixed )		strTmp =+ "F";
-		if ( tSyntexData.fixed )		strTmp =+ "N";
-		LOG_WRITE( "pushed [%s] [%d] [%d] [%s] [%s]", tSyntexData.strString.c_str(), tSyntexData.nStart, tSyntexData.nColor, color.c_str(), strTmp.c_str()  );
+		if ( tSyntaxData.bold )			strTmp =+ "B";
+		if ( tSyntaxData.italic )		strTmp =+ "I";
+		if ( tSyntaxData.underline )	strTmp =+ "U";
+		if ( tSyntaxData.fixed )		strTmp =+ "F";
+		if ( tSyntaxData.fixed )		strTmp =+ "N";
+		LOG( "pushed [%s] [%d] [%d] [%s] [%s]", tSyntaxData.strString.c_str(), tSyntaxData.nStart, tSyntaxData.nColor, color.c_str(), strTmp.c_str()  );
 */	
-		_pListSyntex->push_back( tSyntexData );
+		_pListSyntax->push_back( tSyntaxData );
 	}
 }
 
-void StyleFormatterFactory::clearSyntexList()
+void StyleFormatterFactory::clearSyntaxList()
 {
-	_vListSyntex.clear();
+	_vListSyntax.clear();
 }
 
-const vector<SyntexData>& 	StyleFormatterFactory::getSyntexList()
+const vector<SyntaxData>& 	StyleFormatterFactory::getSyntaxList()
 {
-	return _vListSyntex;
+	return _vListSyntax;
 }
 
 bool StyleFormatterFactory::createFormatter(const string &key,
@@ -121,7 +121,7 @@ bool StyleFormatterFactory::createFormatter(const string &key,
 		return false;
 	
 	StyleFormatter *formatter = new StyleFormatter(key);
-	formatter->setSyntexDataList( &_vListSyntex );
+	formatter->setSyntaxDataList( &_vListSyntax );
 	
 	formatterMap[key] = StyleFormatterPtr(formatter);
 

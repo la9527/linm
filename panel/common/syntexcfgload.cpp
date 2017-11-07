@@ -21,96 +21,96 @@
 using namespace MLS;
 using namespace MLSUTIL;
 
-SyntexExtLoad& SyntexExtLoad::GetInstance()
+SyntaxExtLoad& SyntaxExtLoad::GetInstance()
 {
-	static SyntexExtLoad tInstance;
+	static SyntaxExtLoad tInstance;
 	return tInstance;
 }
 
-void SyntexExtLoad::Init()
+void SyntaxExtLoad::Init()
 {
-    _mapSyntexExtList.clear();
-    _mapSyntexNameList.clear();
+    _mapSyntaxExtList.clear();
+    _mapSyntaxNameList.clear();
 
-    //_mapSyntexExtList["default.lang"] = "";    
-    _mapSyntexExtList["ada.lang"] = "ada";
-    _mapSyntexExtList["asm.lang"] = "S";
-    _mapSyntexExtList["awk.lang"] = "awk";
-    _mapSyntexExtList["bat.lang"] = "bat";
-    _mapSyntexExtList["bib.lang"] = "bib";
-    _mapSyntexExtList["bison.lang"] = "bison";
-    _mapSyntexExtList["c.lang"] = "c";
-    _mapSyntexExtList["caml.lang"] = "calm";
-    _mapSyntexExtList["changelog.lang"] = "changelog";
-    _mapSyntexExtList["clipper.lang"] = "clipper";
-    _mapSyntexExtList["cobol.lang"] = "cobol";
-    _mapSyntexExtList["conf.lang"] = "conf;ini;cfg";
-    _mapSyntexExtList["cpp.lang"] = "cpp;cc;h";
-    _mapSyntexExtList["csharp.lang"] = "cs;csharp;";
-    _mapSyntexExtList["css.lang"] = "css";
-    _mapSyntexExtList["d.lang"] = "d";
-    _mapSyntexExtList["desktop.lang"] = "desktop";
-    _mapSyntexExtList["diff.lang"] = "diff;dif;";
-    _mapSyntexExtList["erlang.lang"] = "erl";
-    _mapSyntexExtList["errors.lang"] = "err";
-    _mapSyntexExtList["flex.lang"] = "flex";
-    _mapSyntexExtList["fortran.lang"] = "fr";
-    _mapSyntexExtList["glsl.lang"] = "glsl;gls";
-    _mapSyntexExtList["haskell.lang"] = "has;haskell";
-    _mapSyntexExtList["haxe.lang"] = "hex;haxe";
-    _mapSyntexExtList["html.lang"] = "html;htm;html4;html3";
-    _mapSyntexExtList["java.lang"] = "java";
-    _mapSyntexExtList["javascript.lang"] = "js";
-    _mapSyntexExtList["key_string.lang"] = "";
-    _mapSyntexExtList["langdef.lang"] = "";
-    _mapSyntexExtList["latex.lang"] = "latex";
-    _mapSyntexExtList["ldap.lang"] = "ldap";
-    _mapSyntexExtList["log.lang"] = "log";
-    _mapSyntexExtList["lsm.lang"] = "lsm";
-    _mapSyntexExtList["lua.lang"] = "lua";
-    _mapSyntexExtList["m4.lang"] = "m4";
-    _mapSyntexExtList["makefile.lang"] = "makefile;mk";
-    _mapSyntexExtList["manifest.lang"] = "manifest";
-    _mapSyntexExtList["nohilite.lang"] = "nohilite";
-    _mapSyntexExtList["number.lang"] = "num";
-    _mapSyntexExtList["outlang.lang"] = "outlang";
-    _mapSyntexExtList["oz.lang"] = "oz";
-    _mapSyntexExtList["pascal.lang"] = "pascal";
-    _mapSyntexExtList["pc.lang"] = "pc";
-    _mapSyntexExtList["perl.lang"] = "pl;perl";
-    _mapSyntexExtList["php.lang"] = "php;php3;php4;";
-    _mapSyntexExtList["postscript.lang"] = "ps;post";
-    _mapSyntexExtList["prolog.lang"] = "prolog";
-    _mapSyntexExtList["properties.lang"] = "ini";
-    _mapSyntexExtList["python.lang"] = "py;python;";
-    _mapSyntexExtList["ruby.lang"] = "ru";
-    _mapSyntexExtList["scala.lang"] = "";
-    _mapSyntexExtList["sh.lang"] = "sh;bash;";
-    _mapSyntexExtList["slang.lang"] = "slang";
-    _mapSyntexExtList["sml.lang"] = "sml";
-    _mapSyntexExtList["spec.lang"] = "spec";
-    _mapSyntexExtList["sql.lang"] = "sql";
-    _mapSyntexExtList["style.lang"] = "style";
-    _mapSyntexExtList["symbols.lang"] = "symbols";
-    _mapSyntexExtList["tcl.lang"] = "tcl";
-    _mapSyntexExtList["texinfo.lang"] = "tex;texinfo";
-    _mapSyntexExtList["todo.lang"] = "todo";
-    _mapSyntexExtList["url.lang"] = "url";
-    _mapSyntexExtList["vbscript.lang"] = "vb;vbscript";
-    _mapSyntexExtList["xml.lang"] = "xml;xsl;xslt;";
-    _mapSyntexExtList["xorg.lang"] = "xorg";
+    //_mapSyntaxExtList["default.lang"] = "";
+    _mapSyntaxExtList["ada.lang"] = "ada";
+    _mapSyntaxExtList["asm.lang"] = "S";
+    _mapSyntaxExtList["awk.lang"] = "awk";
+    _mapSyntaxExtList["bat.lang"] = "bat";
+    _mapSyntaxExtList["bib.lang"] = "bib";
+    _mapSyntaxExtList["bison.lang"] = "bison";
+    _mapSyntaxExtList["c.lang"] = "c";
+    _mapSyntaxExtList["caml.lang"] = "calm";
+    _mapSyntaxExtList["changelog.lang"] = "changelog";
+    _mapSyntaxExtList["clipper.lang"] = "clipper";
+    _mapSyntaxExtList["cobol.lang"] = "cobol";
+    _mapSyntaxExtList["conf.lang"] = "conf;ini;cfg";
+    _mapSyntaxExtList["cpp.lang"] = "cpp;cc;h";
+    _mapSyntaxExtList["csharp.lang"] = "cs;csharp;";
+    _mapSyntaxExtList["css.lang"] = "css";
+    _mapSyntaxExtList["d.lang"] = "d";
+    _mapSyntaxExtList["desktop.lang"] = "desktop";
+    _mapSyntaxExtList["diff.lang"] = "diff;dif;";
+    _mapSyntaxExtList["erlang.lang"] = "erl";
+    _mapSyntaxExtList["errors.lang"] = "err";
+    _mapSyntaxExtList["flex.lang"] = "flex";
+    _mapSyntaxExtList["fortran.lang"] = "fr";
+    _mapSyntaxExtList["glsl.lang"] = "glsl;gls";
+    _mapSyntaxExtList["haskell.lang"] = "has;haskell";
+    _mapSyntaxExtList["haxe.lang"] = "hex;haxe";
+    _mapSyntaxExtList["html.lang"] = "html;htm;html4;html3";
+    _mapSyntaxExtList["java.lang"] = "java";
+    _mapSyntaxExtList["javascript.lang"] = "js";
+    _mapSyntaxExtList["key_string.lang"] = "";
+    _mapSyntaxExtList["langdef.lang"] = "";
+    _mapSyntaxExtList["latex.lang"] = "latex";
+    _mapSyntaxExtList["ldap.lang"] = "ldap";
+    _mapSyntaxExtList["log.lang"] = "log";
+    _mapSyntaxExtList["lsm.lang"] = "lsm";
+    _mapSyntaxExtList["lua.lang"] = "lua";
+    _mapSyntaxExtList["m4.lang"] = "m4";
+    _mapSyntaxExtList["makefile.lang"] = "makefile;mk";
+    _mapSyntaxExtList["manifest.lang"] = "manifest";
+    _mapSyntaxExtList["nohilite.lang"] = "nohilite";
+    _mapSyntaxExtList["number.lang"] = "num";
+    _mapSyntaxExtList["outlang.lang"] = "outlang";
+    _mapSyntaxExtList["oz.lang"] = "oz";
+    _mapSyntaxExtList["pascal.lang"] = "pascal";
+    _mapSyntaxExtList["pc.lang"] = "pc";
+    _mapSyntaxExtList["perl.lang"] = "pl;perl";
+    _mapSyntaxExtList["php.lang"] = "php;php3;php4;";
+    _mapSyntaxExtList["postscript.lang"] = "ps;post";
+    _mapSyntaxExtList["prolog.lang"] = "prolog";
+    _mapSyntaxExtList["properties.lang"] = "ini";
+    _mapSyntaxExtList["python.lang"] = "py;python;";
+    _mapSyntaxExtList["ruby.lang"] = "ru";
+    _mapSyntaxExtList["scala.lang"] = "";
+    _mapSyntaxExtList["sh.lang"] = "sh;bash;";
+    _mapSyntaxExtList["slang.lang"] = "slang";
+    _mapSyntaxExtList["sml.lang"] = "sml";
+    _mapSyntaxExtList["spec.lang"] = "spec";
+    _mapSyntaxExtList["sql.lang"] = "sql";
+    _mapSyntaxExtList["style.lang"] = "style";
+    _mapSyntaxExtList["symbols.lang"] = "symbols";
+    _mapSyntaxExtList["tcl.lang"] = "tcl";
+    _mapSyntaxExtList["texinfo.lang"] = "tex;texinfo";
+    _mapSyntaxExtList["todo.lang"] = "todo";
+    _mapSyntaxExtList["url.lang"] = "url";
+    _mapSyntaxExtList["vbscript.lang"] = "vb;vbscript";
+    _mapSyntaxExtList["xml.lang"] = "xml;xsl;xslt;";
+    _mapSyntaxExtList["xorg.lang"] = "xorg";
     
-    _mapSyntexNameList["changelog.lang"] = "changelog";
-    _mapSyntexNameList["url.lang"] = "url";
-    _mapSyntexNameList["todo.lang"] = "todo";
-    _mapSyntexNameList["xorg.lang"] = "xorg";
+    _mapSyntaxNameList["changelog.lang"] = "changelog";
+    _mapSyntaxNameList["url.lang"] = "url";
+    _mapSyntaxNameList["todo.lang"] = "todo";
+    _mapSyntaxNameList["xorg.lang"] = "xorg";
 }
 
-bool    SyntexExtLoad::getExtSyntex( const string& strExt, std::string& strRt )
+bool    SyntaxExtLoad::getExtSyntax( const string& strExt, std::string& strRt )
 {
     map<string, string>::iterator i;
     
-    for (i = _mapSyntexExtList.begin(); i != _mapSyntexExtList.end(); ++i)
+    for (i = _mapSyntaxExtList.begin(); i != _mapSyntaxExtList.end(); ++i)
 	{
 	    if ( i->second.length() == 0 ) continue;
 	    
@@ -127,10 +127,10 @@ bool    SyntexExtLoad::getExtSyntex( const string& strExt, std::string& strRt )
 	return false;
 }
 
-bool    SyntexExtLoad::getNameSyntex( const string& strName, std::string& strRt )
+bool    SyntaxExtLoad::getNameSyntax( const string& strName, std::string& strRt )
 {
     map<string, string>::iterator i;
-    for (i = _mapSyntexNameList.begin(); i != _mapSyntexNameList.end(); ++i)
+    for (i = _mapSyntaxNameList.begin(); i != _mapSyntaxNameList.end(); ++i)
 	{
 	    if ( i->second.length() == 0 ) continue;
 	    
@@ -147,16 +147,16 @@ bool    SyntexExtLoad::getNameSyntex( const string& strName, std::string& strRt 
 	return false;
 }
 
-bool	SyntexExtLoad::Parsing(const string& section, const string& var, const string& val)
+bool	SyntaxExtLoad::Parsing(const string& section, const string& var, const string& val)
 {
-    if ( section == "Syntex" )
+    if ( section == "Syntax" )
 	{
 		if (Tolower(var.substr(0, 4)) == "ext[")
 		{
 			StringToken st(getbetween(var, '[', ']'), "; ");
 			while (st.Next())
 			{
-				_mapSyntexExtList[Tolower(st.Get())] = val;
+				_mapSyntaxExtList[Tolower(st.Get())] = val;
 			}
 		}
 		else if (Tolower(var.substr(0, 5)) == "name[")
@@ -164,7 +164,7 @@ bool	SyntexExtLoad::Parsing(const string& section, const string& var, const stri
 			StringToken st(getbetween(var, '[', ']'), "; ");
 			while (st.Next())
 			{
-				_mapSyntexNameList[Tolower(st.Get())] = val;
+				_mapSyntaxNameList[Tolower(st.Get())] = val;
 			}
 		}
 	}

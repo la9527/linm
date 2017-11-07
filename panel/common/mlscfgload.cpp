@@ -35,7 +35,7 @@ void	CfgLoader::Init()
 
 bool	CfgLoader::Parsing(const string& section, const string& var, const string& val)
 {
-	LOG_WRITE("Parcing Default Cfg [%s][%s][%s]", section.c_str(), var.c_str(), val.c_str());
+	LOG("Parcing Default Cfg [%s][%s][%s]", section.c_str(), var.c_str(), val.c_str());
 
 	if ( section == "RunProgram" )
 	{

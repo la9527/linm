@@ -51,7 +51,7 @@ void	McdDirButton::Draw()
 		if (_bSelect)
 		{
 			setrcol(_tMCDColor, pWin);
-			LOG_WRITE("Selected [%s]", sName.c_str());
+			LOG("Selected [%s]", sName.c_str());
 			if (scrstrlen(_pNode->tFile.sName) <= 12)
 				wprintw(pWin, "%-12s", sName.c_str());
 			else
@@ -59,7 +59,7 @@ void	McdDirButton::Draw()
 		}
 		else
 		{
-			LOG_WRITE("Mcd Data [%s]", sName.c_str());
+			LOG("Mcd Data [%s]", sName.c_str());
 
 			if (scrstrlen(sName) <= 12)
 			{
@@ -200,8 +200,8 @@ void	NCurses_Mcd::Draw()
 		if (pNode->nDepth != 0 && pNode->pParentDir->vNode.back()==pNode)
 			vLineChType[nCol-1] = ' ';
 
-		//LOG_WRITE("nODep [%d] nCol [%d] nRow [%d] _nSRow [%d] _nSCol [%d]", nODep, nCol, nRow, _nSRow, _nSCol);
-		//LOG_WRITE("NCurses::Draw pNode->nDepth [%d]", pNode->nDepth);
+		//LOG("nODep [%d] nCol [%d] nRow [%d] _nSRow [%d] _nSCol [%d]", nODep, nCol, nRow, _nSRow, _nSCol);
+		//LOG("NCurses::Draw pNode->nDepth [%d]", pNode->nDepth);
 			
 		if (nRow - _nSRow > height-3) break;
 		if (nRow - _nSRow < 0) continue;
@@ -278,7 +278,7 @@ void	NCurses_Mcd::Draw()
 				waddch(pWin, HLINE);
 			}
 
-			//LOG_WRITE("NCurses_Mcd::Draw nButtonCount [%d] [%d]", nButtonCount, _vDirButtonList.size());
+			//LOG("NCurses_Mcd::Draw nButtonCount [%d] [%d]", nButtonCount, _vDirButtonList.size());
 
 			McdDirButton* pDirButton = _vDirButtonList[nButtonCount];
 
@@ -314,7 +314,7 @@ bool	NCurses_Mcd::MouseEvent(int Y, int X, mmask_t bstate)
 		{
 			if (pDirButton->AreaChk(nY, nX))
 			{
-				LOG_WRITE("MouseEvent Y [%d] X [%d]", Y, X);
+				LOG("MouseEvent Y [%d] X [%d]", Y, X);
 				if (bstate & BUTTON1_CLICKED) 
 				{
 					SetCur(pDirButton->GetNode()->tFile.sFullName);
@@ -357,8 +357,8 @@ void	NCurses_Mcd::Key_PageDown()
 	
 	if (pNode)
 	{
-		LOG_WRITE("pNode [%d]", pNode->nRow);
-		LOG_WRITE("pNode [%d]", pNode->tFile.sFullName.c_str());
+		LOG("pNode [%d]", pNode->nRow);
+		LOG("pNode [%d]", pNode->tFile.sFullName.c_str());
 		SetCur(pNode->tFile.sFullName);
 	}
 }
@@ -371,8 +371,8 @@ void	NCurses_Mcd::Key_PageUp()
 	
 	if (pNode)
 	{
-		LOG_WRITE("pNode [%d]", pNode->nRow);
-		LOG_WRITE("pNode [%d]", pNode->tFile.sFullName.c_str());
+		LOG("pNode [%d]", pNode->nRow);
+		LOG("pNode [%d]", pNode->tFile.sFullName.c_str());
 		SetCur(pNode->tFile.sFullName);
 	}
 }

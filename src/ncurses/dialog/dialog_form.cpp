@@ -131,7 +131,7 @@ void	Form::Show()
 	
 	if (_pWin == NULL)
 	{
-		LOG_WRITE("new win");
+		LOG("new win");
 	
 		_pWin = newwin(y, x, height, width);
 
@@ -139,15 +139,15 @@ void	Form::Show()
 			_pWin = newwin(0, 0, 0, 0);
 		
 		if (_pWin == NULL)
-			LOG_WRITE("_pWin is NULL !!!!");
+			LOG("_pWin is NULL !!!!");
 
-		LOG_WRITE("new win end");
+		LOG("new win end");
 	}
 
 	wresize(_pWin, height, width);
 	mvwin(_pWin, y, x);
 	
-	//LOG_WRITE("y [%d] x [%d] height [%d] width [%d], COLS [%d] LINES [%d]", y, x, height, width, COLS, LINES);
+	//LOG("y [%d] x [%d] height [%d] width [%d], COLS [%d] LINES [%d]", y, x, height, width, COLS, LINES);
 
 	DrawFirst();
 	if (!_bNotDrawBox) DrawBox();
@@ -235,7 +235,7 @@ void Form::DrawBox()
 		wmove(_pWin, 1, 1);
 		whline(_pWin, ' ', width-2);
 		mvwprintw(_pWin, 1, (width - scrstrlen(_sTitle))/2, "%s", _sTitle.c_str());
-		LOG_WRITE("Title [%s]", _sTitle.c_str());
+		LOG("Title [%s]", _sTitle.c_str());
 	}
 
 	wnoutrefresh(_pWin);

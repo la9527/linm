@@ -179,7 +179,7 @@ bool	FtpReader::Init(const string& sInitFile)
 	_sIP = sIP; 
 	_sUser = sUser;
 
-	LOG_WRITE("Ftp Connected [%s] [%s]", _sInitTypeName.c_str(), _sCurPath.c_str());
+	LOG("Ftp Connected [%s] [%s]", _sInitTypeName.c_str(), _sCurPath.c_str());
 
 	if (Read(_sCurPath) == false)
 	{
@@ -292,7 +292,7 @@ bool	FtpReader::Read(const string &sPath)
 	}
 	
 	string sListFp = "/tmp/" + _sUser + "@" + _sIP;
-	LOG_WRITE("Read List File [%s] [%s]", sListFp.c_str(), sPathReal.c_str());
+	LOG("Read List File [%s] [%s]", sListFp.c_str(), sPathReal.c_str());
 
 	if ((nRt = FtpDir(sListFp.c_str(), sPathReal.c_str(), _pDefaultFtpNet)) == 0)
 	{
@@ -320,7 +320,7 @@ bool	FtpReader::Read(const string &sPath)
 	string sDelFile = "rm -rf /tmp/" + addslash(sListFp) + " > /dev/null 2> /dev/null";
 	system( sDelFile.c_str() );
 
-	LOG_WRITE("CmdExeArg vLineArgData size [%d]", vLineArgData.size());
+	LOG("CmdExeArg vLineArgData size [%d]", vLineArgData.size());
 
 	vector<File*>	tTmpList;
 
@@ -334,7 +334,7 @@ bool	FtpReader::Read(const string &sPath)
 			vector<string>&	tStr = vLineArgData[n];
 			sLine = sLine + "[" + tStr[c] + "]";
 		}
-		LOG_WRITE("Data [%s]", sLine.c_str());
+		LOG("Data [%s]", sLine.c_str());
 		if (LineFormatRead(vLineArgData[n], pFileInfo) == SUCCESS)
 			tTmpList.push_back(pFileInfo);
 		else
@@ -401,7 +401,7 @@ bool	FtpReader::Rename(File* pFile, const string& sRename)
 {
 	if (pFile == NULL) 
 	{
-		LOG_WRITE("Rename pFile is NULL !!!");
+		LOG("Rename pFile is NULL !!!");
 		return false;
 	}
 
@@ -481,7 +481,7 @@ bool  FtpReader::View(const File* pFileOriginal, File* pFileChange)
 	sSourceName = pFileOriginal->sFullName;
 	sTargetName = _sTmpDir + ChgCurLocale(pFileOriginal->sName);
 
-	LOG_WRITE("SFtpReader::View [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
+	LOG("SFtpReader::View [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
 	
 	if ((nRt = FtpAccess(	sSourceName.c_str(),
 					FTPLIB_FILE_READ, 
@@ -611,7 +611,7 @@ bool	FtpReader::Copy(	Selection& tSelection,
 
 	string sSourcePath = tSelection.GetSelectPath();
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
 	tProgress.Start();
 
 	// 파일 복사
@@ -676,7 +676,7 @@ bool	FtpReader::Copy(	Selection& tSelection,
 			continue;
 		}
 
-		LOG_WRITE("FtpReader Copy sTargetName 1 [%s] [%s] [%s] [%d]", 
+		LOG("FtpReader Copy sTargetName 1 [%s] [%s] [%s] [%d]",
 					sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str(), pFile->uSize);
 		
 		String	sCount, sCount2;
@@ -705,12 +705,12 @@ askagain_ftp_copy:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						break;
 					
 					case 1: // skip
@@ -852,7 +852,7 @@ halt_ftp_copy:
 	if (pSelection)
 		pSelection->SetSelectPath(sTargetPathTmp2);
 
-	LOG_WRITE("FtpReader Copy End");
+	LOG("FtpReader Copy End");
 	return true;
 }
 
@@ -913,7 +913,7 @@ bool	FtpReader::Remove(Selection&	tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vFile[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("File Remove [%s]", sTargetName.c_str());
+		LOG("File Remove [%s]", sTargetName.c_str());
 
 		if (FtpDelete(sTargetName.c_str(), _pDefaultFtpNet) == 0)
 		{
@@ -950,7 +950,7 @@ bool	FtpReader::Remove(Selection&	tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vDirs[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("Dir Remove [%s]", sTargetName.c_str());
+		LOG("Dir Remove [%s]", sTargetName.c_str());
 		if (FtpRmdir(sTargetName.c_str(), _pDefaultFtpNet) == 0)
 		{
 			tProgress.End();
@@ -1014,7 +1014,7 @@ bool	FtpReader::Paste(Selection& tSelection)
 
 	string sSourcePath = tSelection.GetSelectPath();
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s]", _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s]", _sCurPath.c_str(), sTargetPathTmp2.c_str());
 
 	if ( vFiles.size() == 0 ) return false;
 
@@ -1067,7 +1067,7 @@ bool	FtpReader::Paste(Selection& tSelection)
 		sTargetName = sTargetPathTmp2 + pFile->sFullName.substr(sSourcePath.size());
 		sTargetName = KorCodeChg(sTargetName, _eEncode);
 
-		LOG_WRITE("SFtpReader::Paste [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
+		LOG("SFtpReader::Paste [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
 
 		if (stat(sSourceName.c_str(), &src_stat)==-1)
 		{
@@ -1080,7 +1080,7 @@ bool	FtpReader::Paste(Selection& tSelection)
 			break;
 		}
 
-		LOG_WRITE("SFtpReader Paste sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
+		LOG("SFtpReader Paste sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
 		
 		// 파일 리스트가 디렉토리 라면
 		if (pFile->bDir) continue;
@@ -1120,12 +1120,12 @@ askagain_ftp_paste:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						break;
 					
 					case 1: // skip

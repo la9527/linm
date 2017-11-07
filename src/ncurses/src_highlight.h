@@ -39,7 +39,7 @@
 class StyleFormatter: public srchilite::Formatter
 {
 protected:
-	std::vector<MLS::SyntexData>*	_pListSyntex;
+	std::vector<MLS::SyntaxData>*	_pListSyntax;
 	
 	int getColorNumber( const std::string& strColorData );
 	
@@ -53,7 +53,7 @@ public:
 public:
     StyleFormatter(const std::string &elem_ = "normal");
 
-	void setSyntexDataList( std::vector<MLS::SyntexData>* pListSyntex );
+	void setSyntaxDataList( std::vector<MLS::SyntaxData>* pListSyntax );
 	
     virtual void format(const std::string &s,
             const srchilite::FormatterParams *params = 0);
@@ -66,13 +66,13 @@ typedef std::map<std::string, StyleFormatterPtr> StyleFormatterMap;
 class StyleFormatterFactory: public srchilite::FormatterFactory 
 {
 protected:
-	std::vector<MLS::SyntexData>		_vListSyntex;
+	std::vector<MLS::SyntaxData>		_vListSyntax;
 
 public:
     StyleFormatterMap 			formatterMap;
 	
-	void	clearSyntexList();
-    const 	std::vector<MLS::SyntexData>& getSyntexList();
+	void	clearSyntaxList();
+    const 	std::vector<MLS::SyntaxData>& getSyntaxList();
 
     bool hasFormatter(const string &key) const 
     {

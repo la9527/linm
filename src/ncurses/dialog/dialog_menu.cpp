@@ -46,7 +46,7 @@ void MenuCategory::AddItem(	const string &n,
 					bool b)
 {
 	MenuItem	tMenuItem(n, c, b);
-	LOG_WRITE("Menu AddItem Cmd [%s] Key [%s] [%d]", c.c_str(), g_tKeyCfg.CmdToKeyName( c, _eViewType ).c_str(), _eViewType);
+	LOG("Menu AddItem Cmd [%s] Key [%s] [%d]", c.c_str(), g_tKeyCfg.CmdToKeyName( c, _eViewType ).c_str(), _eViewType);
 	tMenuItem.SetCtlKey( g_tKeyCfg.CmdToKeyName( c, _eViewType ) );
 	tMenuItem.x = 0; tMenuItem.y = _vItem.size()+1;
 	tMenuItem.height = 1; tMenuItem.width = width;
@@ -240,7 +240,7 @@ void Menu::DrawFirst()
 	for (int t=0; t<(int)_vItem.size(); t++)	
 	{
 		mvwprintw(_pWin, y, _vItem[t].x, " %s ", _vItem[t].GetName().c_str());
-		LOG_WRITE("MENU :: %-11s", _vItem[t].GetName().c_str());
+		LOG("MENU :: %-11s", _vItem[t].GetName().c_str());
 	}
 
 	// main menu are first char is yellow. (for division)

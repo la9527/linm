@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Byoungyoung, La                                 *
- *   la9527@yahoo.co.kr                                                    *
+ *   la9527@daum.net                                                    *
  ***************************************************************************/
 
 #include "define.h"
@@ -72,9 +72,9 @@ void Editor::New(const string &sFile) {
     }
     _vDoInfo.clear();
 #ifdef __CYGWIN_C__
-    _vText.push_back(LineSyntex(" "));
+    _vText.push_back(LineSyntax(" "));
 #else
-    _vText.push_back(LineSyntex(L" "));
+    _vText.push_back(LineSyntax(L" "));
 #endif
 
 }
@@ -159,7 +159,7 @@ bool Editor::Load(const string &sFile, bool bReadOnly) {
     } while (!in.eof());
     in.close();
 
-    LOG_WRITE("US [%d] EUCKR [%d] UTF8 [%d]", nUS, nKO_EUCKR, nKO_UTF8);
+    LOG("US [%d] EUCKR [%d] UTF8 [%d]", nUS, nKO_EUCKR, nKO_UTF8);
     if (nKO_EUCKR > nKO_UTF8)
         _eEncode = KO_EUCKR;
     else if (nKO_EUCKR < nKO_UTF8)
@@ -180,9 +180,9 @@ bool Editor::Load(const string &sFile, bool bReadOnly) {
         if (line == "") {
             if (in2.eof()) break;
 #ifdef __CYGWIN_C__
-            _vText.push_back(LineSyntex(""));
+            _vText.push_back(LineSyntax(""));
 #else
-            _vText.push_back(LineSyntex(L""));
+            _vText.push_back(LineSyntax(L""));
 #endif
             continue;
         }
@@ -211,15 +211,15 @@ bool Editor::Load(const string &sFile, bool bReadOnly) {
         if (sConvert2.size() != sConvert.size()) bDosMode = true;
         wConv = strtowstr(sConvert2);
         if (sConvert2.size() != 0 && wConv.size() == 0) bNotSave = true;
-        _vText.push_back(LineSyntex(wConv));
+        _vText.push_back(LineSyntax(wConv));
     } while (!in2.eof());
     in2.close();
 
     if (_vText.size() == 0) {
 #ifdef __CYGWIN_C__
-        _vText.push_back(LineSyntex(""));
+        _vText.push_back(LineSyntax(""));
 #else
-        _vText.push_back(LineSyntex(L""));
+        _vText.push_back(LineSyntax(L""));
 #endif
     }
 
@@ -345,7 +345,7 @@ void Editor::ScreenMemSave(int nLine, int nCulumn) {
         }
     }
 
-    LOG_WRITE("_FirstLine [%d] [%d]", _nCurLine, _nFirstLine);
+    LOG("_FirstLine [%d] [%d]", _nCurLine, _nFirstLine);
 
     for (;;) {
         int nViewLine = _nFirstLine;
@@ -357,21 +357,21 @@ void Editor::ScreenMemSave(int nLine, int nCulumn) {
         LineInfo tLineInfo;
         bool bNext = false;
 
-        vector<SyntexData> vSyntexData;
-        SyntexData tNextSyntexAdd;
-        int nLastSyntexVectorPos = 0;
-        bool bBefSyntexDataExist = false;
+        vector<SyntaxData> vOrgSyntaxData;
+        SyntaxData tNextSyntaxAdd;
+        int nLastSyntaxVectorPos = 0;
+        bool bBefSyntaxDataExist = false;
 
         for (int t = 0; t < nLine; t++) {
             if (!tStrLineToken.NextChk()) {
                 if (nViewLine >= (int) _vText.size()) break;
                 sLineWStr = _vText[nViewLine].wLine;
-                vSyntexData = _vText[nViewLine].vSyntexData;
-                LOG_WRITE("ViewLine Syntex [%d] [%d]", nViewLine, (int) _vText[nViewLine].vSyntexData.size());
+                vOrgSyntaxData = _vText[nViewLine].vSyntaxData;
+                // LOG("ViewLine Syntax [%d] [%d]", nViewLine, (int) _vText[nViewLine].vSyntaxData.size());
                 tStrLineToken.SetWString(sLineWStr, nCulumn);
                 nViewLine++;
-                nLastSyntexVectorPos = 0;
-                bBefSyntexDataExist = false;
+                nLastSyntaxVectorPos = 0;
+                bBefSyntaxDataExist = false;
             }
 
             if (tStrLineToken.LineSize() - 1 == tStrLineToken.GetCurNum())
@@ -386,65 +386,38 @@ void Editor::ScreenMemSave(int nLine, int nCulumn) {
             tLineInfo.sWString = sViewWStr;
             tLineInfo.bNext = bNext;
             tLineInfo.nNextLineNum = tStrLineToken.GetCurNum();
-            tLineInfo.vSyntexData.clear();
+            tLineInfo.vSyntaxData.clear();
 
-            // Syntex Token.
-            int nCurNum = tLineInfo.nNextLineNum * nCulumn;
-            if (nLastSyntexVectorPos < vSyntexData.size()) {
-                for (int n = nLastSyntexVectorPos; n < vSyntexData.size(); n++) {
-                    SyntexData tSyntexData = vSyntexData[n];
-                    if (nCurNum == 0 || nCurNum >= tSyntexData.nStart) {
-                        if (bBefSyntexDataExist) {
-                            bBefSyntexDataExist = false;
-                            nLastSyntexVectorPos = 0;
-                            LOG_WRITE("tNextSyntexAdd [%d] [%s]", tNextSyntexAdd.nStart,
-                                      (const char *) tNextSyntexAdd.strString.c_str());
-                            tLineInfo.vSyntexData.push_back(tNextSyntexAdd);
-                            continue;
-                        }
+            int nLineBeginPos = tLineInfo.nNextLineNum * nCulumn;
+            int nLineEndPos = (tLineInfo.nNextLineNum * nCulumn) + nCulumn;
 
-                        int nNextCulumn = nCurNum + nCulumn;
-                        int nLastWordPosition = tSyntexData.nStart + scrstrlen(tSyntexData.strString);
-                        LOG_WRITE("nLastSyntexVectorPos [%d] nCurNum [%d] [%d] [%d]", nLastSyntexVectorPos, nCurNum,
-                                  nNextCulumn, nLastWordPosition);
+            auto includePosition = [](int min, int max, int pos) -> bool {
+                return pos >= min && pos < max;
+            };
 
-                        if (nLastWordPosition <= nNextCulumn) {
-                            SyntexData tNewSyntexData = tSyntexData;
-                            tNewSyntexData.nStart = tNewSyntexData.nStart - nCurNum;
-                            LOG_WRITE("tSyntexData [%d] [%s]", tNewSyntexData.nStart,
-                                      (const char *) tNewSyntexData.strString.c_str());
-                            tLineInfo.vSyntexData.push_back(tSyntexData);
-                            bBefSyntexDataExist = false;
-                        } else if (nLastWordPosition > nNextCulumn) {
-                            SyntexData tNewSyntexData = tSyntexData;
-                            int nClopWidth = nNextCulumn - tSyntexData.nStart;
-                            int nStrLength = scrstrlen(tSyntexData.strString);
+            // Syntax Token.
+            for (SyntaxData tSyntaxData : vOrgSyntaxData) {
+                int nScreenEndPos = tSyntaxData.nScreenPos + scrstrlen(tSyntaxData.strString);
+                if ( includePosition( nLineBeginPos, nLineEndPos, tSyntaxData.nScreenPos ) &&
+                     includePosition( nLineBeginPos, nLineEndPos, nScreenEndPos ) ) {
+                    tSyntaxData.nScreenPos = tSyntaxData.nScreenPos - nLineBeginPos;
+                    tLineInfo.vSyntaxData.push_back(tSyntaxData);
+                } else {
+                    if ( includePosition(tSyntaxData.nScreenPos, nScreenEndPos, nLineBeginPos )) {
+                        // 겹친 텍스트 인 경우 ( 텍스트 뒷 부분 자름 )
+                        int nClopWidth = nLineBeginPos - tSyntaxData.nScreenPos;
+                        tSyntaxData.nScreenPos = 0;
 
-                            tNewSyntexData.nStart = tSyntexData.nStart - nCurNum;
-                            tNewSyntexData.strString = scrstrncpy(tNewSyntexData.strString, 0, nClopWidth);
-                            LOG_WRITE("tSyntexData2 [%d] [%s]", tNewSyntexData.nStart,
-                                      (const char *) tNewSyntexData.strString.c_str());
-                            tLineInfo.vSyntexData.push_back(tSyntexData);
-
-                            tNextSyntexAdd = tSyntexData;
-                            tNextSyntexAdd.nStart = nNextCulumn;
-                            tNextSyntexAdd.strString = scrstrncpy(tSyntexData.strString, nClopWidth,
-                                                                  nStrLength - nClopWidth);
-
-                            nLastSyntexVectorPos = n;
-                            bBefSyntexDataExist = true;
-                            break;
-                        }
-                    }
-
-                    if (n == vSyntexData.size() - 1) {
-                        nLastSyntexVectorPos = 0;
-                        bBefSyntexDataExist = false;
+                        tSyntaxData.strString = scrstrncpy(tSyntaxData.strString, nClopWidth,
+                                                      scrstrlen(tSyntaxData.strString) - nClopWidth);
+                        tLineInfo.vSyntaxData.push_back(tSyntaxData);
+                    } else if (includePosition(tSyntaxData.nScreenPos, nScreenEndPos, nLineEndPos)) {
+                        // 겹친 텍스트 인 경우 ( 뒷부분 )
+                        int nClopWidth = nLineEndPos - tSyntaxData.nScreenPos;
+                        tSyntaxData.strString = scrstrncpy(tSyntaxData.strString, 0, nClopWidth);
+                        tLineInfo.vSyntaxData.push_back(tSyntaxData);
                     }
                 }
-            } else {
-                nLastSyntexVectorPos = 0;
-                bBefSyntexDataExist = false;
             }
             _vViewString.push_back(tLineInfo);
             tStrLineToken.Next();
@@ -463,7 +436,6 @@ void Editor::ScreenMemSave(int nLine, int nCulumn) {
         }
         break;
     }
-    return;
 }
 
 void Editor::InputData(const string &sKrStr) {
@@ -548,9 +520,9 @@ void Editor::Key_Del() {
 
     if (_vText.size() == 0) {
 #ifdef __CYGWIN_C__
-        _vText.push_back(LineSyntex(""));
+        _vText.push_back(LineSyntax(""));
 #else
-        _vText.push_back(LineSyntex(L""));
+        _vText.push_back(LineSyntax(L""));
 #endif
     }
 }
@@ -678,7 +650,7 @@ void Editor::Key_Enter() {
         // data save for undo
         _vDoInfo.push_back(new DoInfo(_nCurLine, _nCurCulumn, 2, sLine));
 
-        _vText.push_back(LineSyntex(strtowstr(p1)));
+        _vText.push_back(LineSyntax(strtowstr(p1)));
         ScreenMemSave(_nLine, _nCulumn);
     }
     _nCurCulumn = p1.size();

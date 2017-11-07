@@ -1,7 +1,7 @@
 Source: linm
 Section: utils
 Priority: optional
-Maintainer: la9527 <la9527@yahoo.co.kr>
+Maintainer: la9527 <la9527@daum.net>
 Build-Depends: debhelper (>= 4.0.0), autotools-dev, libncurses5-dev, libncursesw5-dev, libssl-dev, libsmbclient-dev (>= 3.0.0)
 Standards-Version: 3.6.2
 

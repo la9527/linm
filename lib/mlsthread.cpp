@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Byoungyoung, La                                 *
- *   la9527@yahoo.co.kr                                                    *
+ *   la9527@daum.net                                                    *
  ***************************************************************************/
 
 /// @file	mlsthread.cpp
@@ -22,7 +22,7 @@ MlsThread(bool bThreadOn)
     m_pArg	= NULL;
 	m_tRun	= PTHREAD_START;
 
-	LOG_WRITE("Thread::Create");
+	LOG("Thread::Create");
 	#ifdef PTHREAD_ENABLE
 	if ( m_bMlsThreadOn )
 	{
@@ -44,7 +44,7 @@ MlsThread::
 	#ifdef PTHREAD_ENABLE
 	if ( m_bMlsThreadOn )
 		pthread_attr_destroy(&m_tAttr);
-    LOG_WRITE("Thread::Destory");
+    LOG("Thread::Destory");
     #endif
 }
 
@@ -115,7 +115,7 @@ End(void)
  	if (m_bType == JOIN)
     {
 		status = pthread_join(m_tHandle, &pJoinData);
-		LOG_WRITE("Thread::End - JOIN");
+		LOG("Thread::End - JOIN");
 
 		if (status != SUCCESS)
 		{
@@ -140,7 +140,7 @@ Cancel(void)
 
 	if (nRt == ESRCH)
 	{
-		LOG_WRITE("Thread::Cancel - no thread could be found");
+		LOG("Thread::Cancel - no thread could be found");
 	}
 	
 	if (nRt)
@@ -180,14 +180,14 @@ MlsThread::
 EntryPoint(void*	pThis)
 {
 	MlsThread*	pThread	= (MlsThread*)pThis;
-	LOG_WRITE("Thread::Execute Start :: ID :: %d", pthread_self());
+	LOG("Thread::Execute Start :: ID :: %d", pthread_self());
 
 	// Run 을 실행. Run은 Excute 실행(virtual 함수)
 	void* 	pReturnArg = NULL;
 #ifdef PTHREAD_ENABLE
 	pReturnArg = pThread->Run((void*)(*pThread));
 
-	LOG_WRITE("Thread::Execute End :: ID :: %d", pthread_self());
+	LOG("Thread::Execute End :: ID :: %d", pthread_self());
 	pthread_exit(pReturnArg);
 #endif
 	return	NULL;
@@ -210,7 +210,7 @@ Run(void*	pArg)
     	{
    			throw Exception("pthread_detach Error");
     	}
-		LOG_WRITE("Thread::Run - Detached ID :: %d", pthread_self());
+		LOG("Thread::Run - Detached ID :: %d", pthread_self());
     }
 
 	m_tRun	= PTHREAD_RUNNING;
@@ -226,7 +226,7 @@ void*
 MlsThread::
 Execute(void*	pArg)
 {
-	LOG_WRITE("Execute function");
+	LOG("Execute function");
     return NULL;
 }
 

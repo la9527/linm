@@ -158,7 +158,7 @@ public:
 			{
 				if (pFileBox->AreaChk(nY, nX))
 				{
-					LOG_WRITE("MouseEvent Y [%d] X [%d]", Y, X);
+					LOG("MouseEvent Y [%d] X [%d]", Y, X);
 					if (bstate & BUTTON1_CLICKED) 
 					{
 						int nCur = -1;
@@ -188,58 +188,58 @@ public:
 					#if ( NCURSES_MOUSE_VERSION > 1 )
 					
 					if ( bstate & BUTTON2_PRESSED )
-						LOG_WRITE("BUTTON2_PRESSED !!!");
+						LOG("BUTTON2_PRESSED !!!");
 					if ( bstate & BUTTON2_RELEASED )
-						LOG_WRITE("BUTTON2_RELEASED !!!");
+						LOG("BUTTON2_RELEASED !!!");
 					if ( bstate & BUTTON2_DOUBLE_CLICKED )
-						LOG_WRITE("BUTTON2_DOUBLE_CLICKED !!!");
+						LOG("BUTTON2_DOUBLE_CLICKED !!!");
 					if ( bstate & BUTTON2_TRIPLE_CLICKED )
-						LOG_WRITE("BUTTON2_TRIPLE_CLICKED !!!");
+						LOG("BUTTON2_TRIPLE_CLICKED !!!");
 
 					if ( bstate & BUTTON3_PRESSED )
-						LOG_WRITE("BUTTON3_PRESSED !!!");
+						LOG("BUTTON3_PRESSED !!!");
 					if ( bstate & BUTTON3_RELEASED )
-						LOG_WRITE("BUTTON3_RELEASED !!!");
+						LOG("BUTTON3_RELEASED !!!");
 					if ( bstate & BUTTON3_DOUBLE_CLICKED )
-						LOG_WRITE("BUTTON3_DOUBLE_CLICKED !!!");
+						LOG("BUTTON3_DOUBLE_CLICKED !!!");
 					if ( bstate & BUTTON3_TRIPLE_CLICKED )
-						LOG_WRITE("BUTTON3_TRIPLE_CLICKED !!!");
+						LOG("BUTTON3_TRIPLE_CLICKED !!!");
 
 					if ( bstate & BUTTON4_CLICKED & REPORT_MOUSE_POSITION)
-						LOG_WRITE("BUTTON4_CLICKED !!!");
+						LOG("BUTTON4_CLICKED !!!");
 					if ( bstate & BUTTON4_PRESSED & REPORT_MOUSE_POSITION)
-						LOG_WRITE("BUTTON4_PRESSED !!!");
+						LOG("BUTTON4_PRESSED !!!");
 					if ( bstate & BUTTON4_RELEASED & REPORT_MOUSE_POSITION)
-						LOG_WRITE("BUTTON4_RELEASED !!!");
+						LOG("BUTTON4_RELEASED !!!");
 					if ( bstate & BUTTON4_DOUBLE_CLICKED & REPORT_MOUSE_POSITION)
-						LOG_WRITE("BUTTON4_DOUBLE_CLICKED !!!");
+						LOG("BUTTON4_DOUBLE_CLICKED !!!");
 					if ( bstate & BUTTON4_TRIPLE_CLICKED & REPORT_MOUSE_POSITION)
-						LOG_WRITE("BUTTON4_TRIPLE_CLICKED !!!");
+						LOG("BUTTON4_TRIPLE_CLICKED !!!");
 	
 					if ( bstate & BUTTON5_CLICKED )
-						LOG_WRITE("BUTTON5_CLICKED !!!");
+						LOG("BUTTON5_CLICKED !!!");
 					if ( bstate & BUTTON5_PRESSED )
-						LOG_WRITE("BUTTON5_PRESSED !!!");
+						LOG("BUTTON5_PRESSED !!!");
 					if ( bstate & BUTTON5_RELEASED )
-						LOG_WRITE("BUTTON5_RELEASED !!!");
+						LOG("BUTTON5_RELEASED !!!");
 					if ( bstate & BUTTON5_DOUBLE_CLICKED )
-						LOG_WRITE("BUTTON5_DOUBLE_CLICKED !!!");
+						LOG("BUTTON5_DOUBLE_CLICKED !!!");
 					if ( bstate & BUTTON5_TRIPLE_CLICKED )
-						LOG_WRITE("BUTTON5_TRIPLE_CLICKED !!!");
+						LOG("BUTTON5_TRIPLE_CLICKED !!!");
 					
 					if (bstate & BUTTON4_TRIPLE_CLICKED)
 					{
-						LOG_WRITE("Wheel Up !!!");
+						LOG("Wheel Up !!!");
 						Key_Up();
 					}
 					
 					if (bstate & BUTTON5_TRIPLE_CLICKED & BUTTON_CTRL )
 					{
-						LOG_WRITE("Wheel Down !!!");
+						LOG("Wheel Down !!!");
 						Key_Down();
 					}
 					
-					LOG_WRITE("NCURSES_MOUSE_VERSION %x %x", bstate, BUTTON5_TRIPLE_CLICKED * BUTTON_CTRL);
+					LOG("NCURSES_MOUSE_VERSION %x %x", bstate, BUTTON5_TRIPLE_CLICKED * BUTTON_CTRL);
 					
 					#endif
 					break;

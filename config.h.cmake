@@ -355,6 +355,9 @@ STACK_DIRECTION = 0 => direction of growth unknown */
 /* sftp use setting */
 #cmakedefine __LINM_SFTP_USE__
 
+/* source highlight setting */
+#cmakedefine __LINM_SOURCE_HIGHLIGHT_USE__
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #cmakedefine const
 
@@ -384,3 +387,39 @@ doesn't define it. */
 
 /* Define to unsigned long or unsigned long long if <stdint.h> and <inttypes.h> don't define. */
 #cmakedefine uintmax_t
+
+/* libfswatch library setting. */
+#cmakedefine01 HAVE_SYS_INOTIFY_H
+#cmakedefine01 HAVE_SYS_EVENT_H
+#cmakedefine01 HAVE_PORT_H
+#cmakedefine01 HAVE_FSEVENTS_FILE_EVENTS
+#cmakedefine01 HAVE_STRUCT_STAT_ST_MTIMESPEC
+#cmakedefine01 HAVE_CFLOCALECOPYCURRENT
+#cmakedefine01 HAVE_FSEVENTS_FILE_EVENTS
+#cmakedefine01 HAVE_CXX_ATOMIC
+#cmakedefine01 HAVE_CXX_MUTEX
+#cmakedefine01 HAVE_CORESERVICES_CORESERVICES_H
+
+/* Define to 1 if `st_mtime' is a member of `struct stat'. */
+#cmakedefine01 HAVE_STRUCT_STAT_ST_MTIME
+
+/* Define to 1 if `st_mtimespec' is a member of `struct stat'. */
+#cmakedefine01 HAVE_STRUCT_STAT_ST_MTIMESPEC
+
+/* Define if the thread_local storage specified is available. */
+#define HAVE_CXX_THREAD_LOCAL 1
+
+/* Define if the file events are supported by OS X FSEvents API. */
+#define HAVE_FSEVENTS_FILE_EVENTS 1
+
+/* Define to 1 if you have the <sys/event.h> header file. */
+#define HAVE_SYS_EVENT_H 1
+
+/* Define to 1 if you have the <unordered_map> header file. */
+#define HAVE_UNORDERED_MAP 1
+
+/* Define to 1 if you have the <unordered_set> header file. */
+#define HAVE_UNORDERED_SET 1
+
+
+

@@ -23,9 +23,9 @@
 
 /* coded by revival / 2006/05/06 */
 #ifdef __DEBUGMODE__
-#define LOG_WRITE(x...) g_Log.WriteLog(__FILE__, __LINE__), g_Log.Write(x)
+#define LOG(x...) g_Log.WriteLog(__FILE__, __LINE__), g_Log.Write(x)
 #else
-#define LOG_WRITE(x...)
+#define LOG(x...)
 #endif
 /* end of revival */
 

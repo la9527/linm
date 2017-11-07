@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linm\n"
-"Report-Msgid-Bugs-To: la9527@yahoo.co.kr\n"
+"Report-Msgid-Bugs-To: la9527@daum.net\n"
 "POT-Creation-Date: 2008-10-21 15:27+0900\n"
 "PO-Revision-Date: \n"
 "Last-Translator: dmitriy <demidrol@dgap.mipt.ru>\n"

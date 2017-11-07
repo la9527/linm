@@ -8,46 +8,57 @@
 #include "strutil.h"
 #include "file.h"
 
+#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+#include <srchilite/highlightstate.h>
+#endif
+
 using namespace std;
 
 using namespace MLSUTIL;
 
 namespace MLS {
 
-    class SyntexData {
+    class SyntaxData {
     public:
         bool bold, italic, underline, fixed, not_fixed;
         int nColor;
         int nBgColor;
         int nStart;
+        int nScreenPos;
         std::string strString;
 
-        SyntexData() :
+        SyntaxData() :
                 bold(false), italic(false), underline(false),
-                fixed(false), not_fixed(false), nColor(7), nBgColor(-1), nStart(0) {}
+                fixed(false), not_fixed(false), nColor(7), nBgColor(-1), nStart(0), nScreenPos(0) {}
 
-        SyntexData(const std::string &str, int fontColor = 7, int bgColor = -1) :
+        SyntaxData(const std::string &str, int fontColor = 7, int bgColor = -1) :
                 bold(false), italic(false), underline(false),
-                fixed(false), not_fixed(false), nColor(fontColor), nBgColor(bgColor), nStart(0), strString(str) {}
+                fixed(false), not_fixed(false), nColor(fontColor), nBgColor(bgColor), nStart(0), nScreenPos(0), strString(str) {}
 
-        bool operator==(const SyntexData &a) {
+        bool operator==(const SyntaxData &a) {
             if (nColor != a.nColor) return false;
             if (strString != a.strString) return false;
             if (nColor != a.nColor) return false;
             if (nStart != a.nStart) return false;
+            if (nScreenPos != a.nScreenPos) return false;
             return true;
         }
     };
 
-    struct LineSyntex {
+    struct LineSyntax {
         wstring wLine;
-        vector<SyntexData> vSyntexData;  /// Syntex Info.
-
-        LineSyntex(const wstring &wstr) :
+        vector<SyntaxData> vSyntaxData;  /// Syntax Info.
+        LineSyntax(const wstring &wstr) :
                 wLine(wstr) {}
 
-        LineSyntex(const wstring &wstr, const vector<SyntexData> &vStx) :
-                wLine(wstr), vSyntexData(vStx) {}  /// Syntex Info.
+        LineSyntax(const wstring &wstr, const vector<SyntaxData> &vStx) :
+                wLine(wstr), vSyntaxData(vStx) {}  /// Syntax Info.
+
+#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+        srchilite::HighlightStatePtr   statePtr;
+        LineSyntax(const wstring &wstr, const vector<SyntaxData> &vStx, srchilite::HighlightStatePtr statePtr) :
+                wLine(wstr), vSyntaxData(vStx), statePtr( statePtr ) {}  /// Syntax Info.
+#endif
     };
 
     struct LineInfo {
@@ -56,7 +67,7 @@ namespace MLS {
         int nNextLineNum;    /// if over the one line, line number.
         bool bNext;            /// Is this line over the one line?
         wstring sWString;        /// wstring
-        vector<SyntexData> vSyntexData;    /// Syntex Info.
+        vector<SyntaxData> vSyntaxData;    /// Syntax Info.
     };
 
     struct EditSelect {
@@ -117,7 +128,7 @@ namespace MLS {
         int _nFindPosY;
 
         vector<LineInfo> _vViewString;
-        vector<LineSyntex> _vText;            /// wstring, syntex vector
+        vector<LineSyntax> _vText;            /// wstring, syntex vector
         vector<DoInfo *> _vDoInfo;        /// vector for Undo
 
         /// Function List

@@ -169,7 +169,7 @@ namespace MLSUTIL
 			{
 				case EINVAL:
 					/* Incomplete text, do not report an error */
-					LOG_WRITE("code_convert error EINVAL");
+					LOG("code_convert error EINVAL");
 					have_error = 1;
 					break;
 	
@@ -188,11 +188,11 @@ namespace MLSUTIL
 	
 				case EILSEQ:
 					have_error = 1;
-					LOG_WRITE("code_convert error EILSEQ");
+					LOG("code_convert error EILSEQ");
 					break;
 	
 				default:
-					LOG_WRITE("code_convert error default");
+					LOG("code_convert error default");
 					have_error = 1;
 					break;
 			}

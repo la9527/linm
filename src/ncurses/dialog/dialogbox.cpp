@@ -38,7 +38,7 @@ void Curses_MsgBox::SetMsg(const string& str)
 
 void Curses_MsgBox::Draw()
 {
-	LOG_WRITE("Form height [%d] width [%d]", height, width);
+	LOG("Form height [%d] width [%d]", height, width);
 	_tButton.SetForm((Form*)this);
 	_tLabel.SetForm((Form*)this);
 
@@ -59,7 +59,7 @@ bool Curses_MsgBox::MouseEvent(int Y, int X, mmask_t bstate)
 	{
 		_tButton.SetFocus(true);
 		_bExit = true;
-		LOG_WRITE("Mouse Event True !!!");
+		LOG("Mouse Event True !!!");
 		return true;
 	}
 	return false;
@@ -104,7 +104,7 @@ void	Curses_YNBox::Resize()
 
 void	Curses_YNBox::Draw()
 {
-	LOG_WRITE("Form height [%d] width [%d]", height, width);
+	LOG("Form height [%d] width [%d]", height, width);
 	
 	_tButtonOk.SetForm((Form*)this);
 	_tButtonCancel.SetForm((Form*)this);
@@ -159,7 +159,7 @@ bool	Curses_YNBox::MouseEvent(int Y, int X, mmask_t bstate)
 
 void	Curses_YNBox::Execute(KeyInfo&	tKeyInfo)
 {
-	LOG_WRITE("Key [%d]", (int)tKeyInfo);
+	LOG("Key [%d]", (int)tKeyInfo);
 
 	switch((int)tKeyInfo)
 	{
@@ -338,7 +338,7 @@ void	Curses_SelectBox::Execute(KeyInfo&	tKeyInfo)
 			break;
 		case KEY_ENTER:
 		case 13:
-			LOG_WRITE("Key ENTER [%d]", (int)tKeyInfo);
+			LOG("Key ENTER [%d]", (int)tKeyInfo);
 			_bExit = true;
 			break;
 		case KEY_PPAGE:
@@ -659,7 +659,7 @@ Curses_TextBox(const string& sTitle): Form()
 	_tTextBox = TextBox(1, 1, 10, 40);
 	fontcolor = g_tColorCfg.GetColorEntry("Help").font;
 	backcolor = g_tColorCfg.GetColorEntry("Help").back;
-	LOG_WRITE("TextBox Color [%d][%d]", fontcolor, backcolor);
+	LOG("TextBox Color [%d][%d]", fontcolor, backcolor);
 	_tButton.backcolor = backcolor; _tButton.fontcolor = fontcolor;
 	_tTextBox.backcolor = backcolor; _tTextBox.fontcolor = fontcolor;
 	_bESC = false;
@@ -736,7 +736,7 @@ bool	Curses_TextBox::MouseEvent(int Y, int X, mmask_t bstate)
 	{
 		_tButton.SetFocus(true);
 		_bExit = true;
-		LOG_WRITE("MouseEvent :: Button Click");
+		LOG("MouseEvent :: Button Click");
 		return true;
 	}
 	return false;

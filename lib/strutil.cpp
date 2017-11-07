@@ -355,7 +355,7 @@ namespace	MLSUTIL
 			
 			if (mbstowcs(w, s.c_str(), s.size()) == (size_t)(-1))
 			{
-				LOG_WRITE("mbstowcs func err [%s] [%d] [%s]",
+				LOG("mbstowcs func err [%s] [%d] [%s]",
 							s.c_str(), errno, strerror(errno));
 				delete []w;
 				return L"";
@@ -382,7 +382,7 @@ namespace	MLSUTIL
 				memset(&mbchar, 0, sizeof(mbchar));
 				if (wctomb((char*)&mbchar, s[n]) == -1)
 				{
-					LOG_WRITE("wcstombs func err [%d] num[%d] [%d] [%d] [%s]",
+					LOG("wcstombs func err [%d] num[%d] [%d] [%d] [%s]",
 						(int)s[n], n, errno, strerror(errno));
 				}
 				str.append(mbchar);
@@ -413,7 +413,7 @@ namespace	MLSUTIL
 				{
 					if ((nWidth = mk_wcwidth(wc[n])) == -1)
 					{
-						LOG_WRITE("krstrlen :: wcwidth func err [%d] ['%s'::%d] [%d] [%d] [%s]",
+						LOG("krstrlen :: wcwidth func err [%d] ['%s'::%d] [%d] [%d] [%s]",
 							n, sSrc.c_str(), sSrc.size(), errno, strerror(errno));
 						nWidth = 0;
 						continue;
@@ -444,7 +444,7 @@ namespace	MLSUTIL
 				if (wstr[n] >= (wchar_t)0x100)
 				{
 					if ((nWidth = mk_wcwidth(wstr[n])) == -1) {
-						LOG_WRITE("wstrlen err [%d] [%d]", (int)wstr[n], n);
+						LOG("wstrlen err [%d] [%d]", (int)wstr[n], n);
 						nWidth = 0;
 						continue;
 					}
@@ -486,7 +486,7 @@ namespace	MLSUTIL
 				{
 					if ((nWidth = mk_wcwidth(wsrc[n])) == -1)
 					{
-						LOG_WRITE("krstrncpy wcwidth func err [%d] [%s] [%d] [%d] [%s]",
+						LOG("krstrncpy wcwidth func err [%d] [%s] [%d] [%d] [%s]",
 							n, sSrc.c_str(), errno, strerror(errno));
 						nWidth = 1;
 						continue;
@@ -504,7 +504,7 @@ namespace	MLSUTIL
 					memset(&mbchar, 0, sizeof(mbchar));
 					if (wctomb((char*)&mbchar, wsrc[n]) == -1)
 					{
-						LOG_WRITE("krstrncpy wcstombs func err [%d] num[%d] [%d] [%d] [%s]",
+						LOG("krstrncpy wcstombs func err [%d] num[%d] [%d] [%d] [%s]",
 							(int)wsrc[n], n, errno, strerror(errno));
 					}
 					else

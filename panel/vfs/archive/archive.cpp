@@ -1,6 +1,6 @@
 /* *************************************************************************
  *   Copyright (C) 2004 by Byoungyoung, La                                 *
- *   la9527@yahoo.co.kr                                                    *
+ *   la9527@daum.net                                                    *
  *                                                                         *
  ************************************************************************* */
 
@@ -75,7 +75,7 @@ int Archive::CommandExecute(const string& sCommand)
 	FILE*	pfFile = NULL;
 	_tErrorInfo.clear();
 
-	LOG_WRITE("Command Execute [%s]", sCommand.c_str());
+	LOG("Command Execute [%s]", sCommand.c_str());
 	
 	string sCmd = sCommand;
 	sCmd.append(" 2> /dev/null");
@@ -87,7 +87,7 @@ int Archive::CommandExecute(const string& sCommand)
 		// 줄단위로 데이터 읽음.
 		while (fgets(cLine, sizeof(cLine), pfFile))
 		{
-			LOG_WRITE("Command Error :: [%s]", cLine);
+			LOG("Command Error :: [%s]", cLine);
 		}
 		pclose(pfFile);
 	}
@@ -261,7 +261,7 @@ int Archive::ReadLine_TarGZ( vector<string>&	vLineToken, File* pFileInfo )
 	// Consider process tar header. It is not real solution.
 	// cf) http://www.gnu.org/software/tar/manual/html_node/tar_134.html
 
-	LOG_WRITE("LineFormatRead - TARGZ");
+	LOG("LineFormatRead - TARGZ");
 	
 	// 파일 정보 채움.
 	#ifdef __FreeBSD__
@@ -277,7 +277,7 @@ int Archive::ReadLine_TarGZ( vector<string>&	vLineToken, File* pFileInfo )
 	#else
 	if (vLineToken.size() >= 6)
 	{ 
-		LOG_WRITE("LineFormatRead - TARGZ");
+		LOG("LineFormatRead - TARGZ");
 		pFileInfo->sDate = vLineToken[3].substr(2, 8);
 		pFileInfo->sTime = vLineToken[4].substr(0, 5);
 
@@ -622,7 +622,7 @@ int Archive::ReadLine_ISO( vector<string>&	vLineToken, File* pFileInfo )
 	// / 넣어주지 않으면 이중으로 생김. (tar.gz 과 호환성 맞춤 )
 	if ( pFileInfo->bDir ) return ERROR;
 
-	LOG_WRITE("[Name] [%s]", pFileInfo->sFullName.c_str());
+	LOG("[Name] [%s]", pFileInfo->sFullName.c_str());
 	return SUCCESS;
 }
 
@@ -683,7 +683,7 @@ int Archive::ReadLine_RAR( vector<string>&	vLineToken, File* pFileInfo )
 	if ( pFileInfo->bDir ) 
 		pFileInfo->sFullName = pFileInfo->sFullName + "/";
 
-	LOG_WRITE( "[%s]", pFileInfo->sAttr.c_str() );
+	LOG( "[%s]", pFileInfo->sAttr.c_str() );
 	return SUCCESS;
 }
 
@@ -756,12 +756,12 @@ int Archive::FileListRead(void)
 		return ERROR;
 	}
 
-	LOG_WRITE("FileListRead [%s]", _sFilename.c_str());
+	LOG("FileListRead [%s]", _sFilename.c_str());
 	
 	// 파일 확장자 체크
 	if ((_eZipType = GetZipType(_sFilename)) == ERROR) 
 	{
-		LOG_WRITE("GetZipType Error !!!");
+		LOG("GetZipType Error !!!");
 		return ERROR;
 	}
 	
@@ -792,11 +792,11 @@ int Archive::FileListRead(void)
 			pFile->sTmp = pFile->sFullName = _sFilename.substr(0, _sFilename.rfind("."));
 			_tFileList.push_back(pFile);
 		}
-		LOG_WRITE("BZ SUCCESS !!! [%s]", _sFilename.c_str());
+		LOG("BZ SUCCESS !!! [%s]", _sFilename.c_str());
 		return SUCCESS;
 	}
 
-	LOG_WRITE("FileListRead 2 [%s]", _sFilename.c_str());
+	LOG("FileListRead 2 [%s]", _sFilename.c_str());
 
 	// . 압축 파일에 해당하는 명령어를 알아낸다.
 	switch(_eZipType)
@@ -835,7 +835,7 @@ int Archive::FileListRead(void)
 			return ERROR;
 	}
 	
-	LOG_WRITE("COMMAND Data :: [%s]", sCommand.c_str());
+	LOG("COMMAND Data :: [%s]", sCommand.c_str());
 	sCommand = sCommand + " 2> /dev/null";
 	
 	// -rw-r--r-- root/root       730 2004-01-12 23:15:53 project/smstest/smstest.kdevelop.pcs
@@ -848,7 +848,7 @@ int Archive::FileListRead(void)
 
 	if (access(_sFullFilename.c_str(), R_OK) == -1)
 	{
-		LOG_WRITE("Error", strerror(errno));
+		LOG("Error", strerror(errno));
 		return ERROR;
 	}
 
@@ -859,7 +859,7 @@ int Archive::FileListRead(void)
 
 	if (CmdShell::CmdExeArg(sCommand, 0, vLineArgData) == ERROR) return ERROR;
 
-	LOG_WRITE("CmdExeArg vLineArgData size [%d] [%d]", vLineArgData.size(), _eZipType);
+	LOG("CmdExeArg vLineArgData size [%d] [%d]", vLineArgData.size(), _eZipType);
 
 	File*	pFileInfo = NULL;
 
@@ -873,11 +873,11 @@ int Archive::FileListRead(void)
 			vector<string>&	tStr = vLineArgData[n];
 			sLine = sLine + "[" + tStr[c] + "]";
 		}
-		//LOG_WRITE("Cmd %s", sLine.c_str());
+		//LOG("Cmd %s", sLine.c_str());
 
 		if (LineFormatRead(vLineArgData[n], pFileInfo, _eZipType) == SUCCESS)
 		{
-			LOG_WRITE( "List %s", sLine.c_str() );
+			LOG( "List %s", sLine.c_str() );
 			pFileInfo->sName = ChgCurLocale( pFileInfo->sName );
 			_tFileList.push_back(pFileInfo);
 		}
@@ -986,7 +986,7 @@ int Archive::FileListCheck_DirInsert(void)
 		pFile->sFullName = sTmpFullName;
 		pFile->sTmp = sTmpFullName;
 		_tFileList.push_back(pFile);
-		LOG_WRITE("NULL Dir [%s] [%s] [%s]", vNullDir[nCount_2].c_str(), sTmpFullName.c_str(), sTmpFilename.c_str());
+		LOG("NULL Dir [%s] [%s] [%s]", vNullDir[nCount_2].c_str(), sTmpFullName.c_str(), sTmpFilename.c_str());
 	}
 
 	// 종료를 위한 내용 추가
@@ -1024,7 +1024,7 @@ int Archive::GetDir_Files(const string& s_Dir, vector<File*>* pRe_Dir)
 		{
 			pFile = _tFileList[nCount];
 
-			LOG_WRITE("LIST :: [%s]", pFile->sFullName.c_str());
+			LOG("LIST :: [%s]", pFile->sFullName.c_str());
 			
 			tSizeType = pFile->sFullName.find("/");
 			
@@ -1073,7 +1073,7 @@ int Archive::GetDir_Files(const string& s_Dir, vector<File*>* pRe_Dir)
 	
 	if (tDir_Files.size() == 0) 
 	{
-		LOG_WRITE("tDir_files size :: 0 :: ERROR :: %d", _tFileList.size());
+		LOG("tDir_files size :: 0 :: ERROR :: %d", _tFileList.size());
 		return ERROR;
 	}
 	
@@ -1171,7 +1171,7 @@ int	Archive::FileControl(const string& sFullName, int nAppendDel, const string& 
 	}
 
 	string	sTarFilename = GetTarFileName(_sFullFilename);
-	LOG_WRITE("TARFileNAME [%s]", sTarFilename.c_str());
+	LOG("TARFileNAME [%s]", sTarFilename.c_str());
 	
 	// 우선 파일이 있는지 확인. 없으면 만듦. :: 있으면 true
 	if (IsFileCreate(sTarFilename) == true)
@@ -1557,7 +1557,7 @@ int Archive::Uncompress(const File* pFile, const string& sTargetDir)
 	string	sFileName = addslash(pFile->sTmp);
 	string	sZipFileName = addslash(_sFullFilename);
 
-	LOG_WRITE("Uncompress [%s] [%s] [%s]", _sFullFilename.c_str(), sTargetDir.c_str(), sFileName.c_str());
+	LOG("Uncompress [%s] [%s] [%s]", _sFullFilename.c_str(), sTargetDir.c_str(), sFileName.c_str());
 	
 	// 우선 파일이 있는지 확인. 있으면 압축을 푼다.
 	if (IsFileCreate(_sFullFilename) == false)
@@ -1654,7 +1654,7 @@ int Archive::Uncompress(vector<MLS::File*>& t_FileList, const string& sTargetDir
 	
 	if ((_eZipType = GetZipType(_sFullFilename)) == ERROR) return ERROR;
 	
-	LOG_WRITE("Uncompress [%s]", sTargetDir.c_str());
+	LOG("Uncompress [%s]", sTargetDir.c_str());
 
 	string	sFileName;
 	string	sZipFileName = addslash(_sFullFilename);
@@ -1820,7 +1820,7 @@ int Archive::Uncompress(vector<string>& _tFileList, const string& sTargetDir)
 					sCommand = sInTarget +  "unrar x -y " + addslash(_sFullFilename) + " " + addslash(sFullFileName);
 					break;
 				default:
-					LOG_WRITE("ERROR FILEINFO");
+					LOG("ERROR FILEINFO");
 					break;
 			}
 			

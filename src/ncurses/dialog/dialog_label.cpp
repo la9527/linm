@@ -96,7 +96,7 @@ void Label::Draw()
 		Resize();
 	}
 
-	LOG_WRITE("Label Draw width [%d] [%d]", width, _pForm->width);
+	LOG("Label Draw width [%d] [%d]", width, _pForm->width);
 
 	StrLineToken	tLineToken(strtowstr(_sMsg), width);
 
@@ -132,7 +132,7 @@ void Label::Draw()
 			viewX = 0;
 
 		mvwprintw(pWin, y+n, x+viewX, (char*)sViewStr.c_str());
-		LOG_WRITE("y [%d] viewX [%d] [%s]", y+n, viewX, sViewStr.c_str());
+		LOG("y [%d] viewX [%d] [%s]", y+n, viewX, sViewStr.c_str());
 	}
 	wattroff(pWin, A_BOLD);
 	wnoutrefresh(pWin);

@@ -42,8 +42,8 @@ class NCurses_Editor:public Editor, public Form
 	// Highlight section.
 	string 			_sDefStyle;
 	string 			_sDefHighLightPath;
-	string          _strSyntexLang;
-#ifdef __LINM_SOURCE_HIGHLIGHT_USE__    
+	string          _strSyntaxLang;
+#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
 	srchilite::RegexRuleFactory 	_tRuleFactory;
     srchilite::LangDefManager* 		_pLangDefManager;
 	srchilite::SourceHighlighter*  	_pHighlighter;
@@ -52,23 +52,24 @@ class NCurses_Editor:public Editor, public Form
     srchilite::FormatterManager* 	_pFormatterManager;
 	srchilite::FormatterParams 		_tFormatParams;
 #endif // __LINM_SOURCE_HIGHLIGHT_USE__
-	bool                            _bSyntexOn;
+	bool                            _bSyntaxOn;
 
 protected:
-	bool	SyntexInit( const std::string& strSyntexLang = "cpp.lang");
-    bool    GetLineSyntexData( const wstring& wLine, std::vector<SyntexData>& vSyntexData );
-    
+#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+	bool	SyntaxInit( const std::string& strSyntaxLang = "cpp.lang");
+    bool    GetLineSyntaxData( const wstring& wLine, std::vector<SyntaxData>& vSyntaxData, srchilite::HighlightStatePtr& statePtr );
+#endif
 	void	PostLoad();
 	void    PostUpdateLines( int nLineNum, int nHeight = 1 );
 	
-	void	DrawSyntexText( const wstring& str, 
-	                        const std::vector<SyntexData>& vSyntexData, 
+	void	DrawSyntaxText( const wstring& str,
+	                        std::vector<SyntaxData>& vSyntaxData,
 	                        int nY, int nN, bool bRevertColor );
 	void	SelectionDraw(  const wstring& sViewWStr, 
-	                        const std::vector<SyntexData>& vSyntexData, 
+	                        std::vector<SyntaxData>& vSyntaxData,
 	                        int nY, int nN, int x1, int x2);
 	void 	LineDraw(	const wstring&	sViewStr,
-	                    const std::vector<SyntexData>& vSyntexData, 
+	                    std::vector<SyntaxData>& vSyntaxData,
 						int nY, 
 						int nN, 
 						int nLineNum,   // current line offset

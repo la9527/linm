@@ -228,7 +228,7 @@ void signal_action(int sig)
 	CursesDestroy();
 
 # if (__GNUC__ * 1000 + __GNUC_MINOR__) >= 3000
-	LOG_WRITE( "Signal [%d] [%s]", sig, strsignal(sig));
+	LOG( "Signal [%d] [%s]", sig, strsignal(sig));
 	printf("Signal [%d] [%s]\n", sig, strsignal(sig));
 # else
 	printf("Signal [%d]\n", sig);

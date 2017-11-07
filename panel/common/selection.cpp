@@ -57,7 +57,7 @@ int Selection::ExpandDir(Reader* pReader, bool bCtlBreak)
 {
 	if (!pReader)
 	{
-		LOG_WRITE("ExtendDir Error");
+		LOG("ExtendDir Error");
 		return ERROR;
 	}
 
@@ -74,7 +74,7 @@ int Selection::ExpandDir(Reader* pReader, bool bCtlBreak)
 		
 	pReader->SetErrMsgShow(false);
 	
-	LOG_WRITE("ExpandDir First Dirsize [%d]", vDirs.size());
+	LOG("ExpandDir First Dirsize [%d]", vDirs.size());
 
 	string	sDirName;
 
@@ -136,7 +136,7 @@ int Selection::ExpandDir(Reader* pReader, bool bCtlBreak)
 			}
 			else
 			{
-				LOG_WRITE("ExpandDir Insert File [%s] [%s]", pFile->sName.c_str(), pFile->sFullName.c_str());
+				LOG("ExpandDir Insert File [%s] [%s]", pFile->sName.c_str(), pFile->sFullName.c_str());
 				_vFile.push_back(pFile);
 			}
 		}

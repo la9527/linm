@@ -276,7 +276,7 @@ bool DirReader::GetInfo(File &tFile)
 		tFile.sLinkName = cLinkPath;
 	
 	tFile.sName = ChgCurLocale( _pEntry->d_name );
-	LOG_WRITE(" DirReader::GetInfo [%s] [%s]", tFile.sName.c_str(), _pEntry->d_name );
+	LOG(" DirReader::GetInfo [%s] [%s]", tFile.sName.c_str(), _pEntry->d_name );
 	
 	if (tFile.sName == "." || tFile.sName == "..")
 		tFile.sFullName = GetRealPath(_pEntry->d_name);
@@ -381,11 +381,11 @@ bool	DirReader::Copy(Selection&	tSelection, const string& sTargetPath, Selection
 
 	String	sCount, sCount2;
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
 
 	tProgress.Start();
 
-	LOG_WRITE("Test tProgress Exit code [%d]", tProgress.isExit() ? 1 : 0 );
+	LOG("Test tProgress Exit code [%d]", tProgress.isExit() ? 1 : 0 );
 
 	// 파일 복사
 	for (int n=0; n<(int)vFiles.size(); n++)
@@ -419,7 +419,7 @@ bool	DirReader::Copy(Selection&	tSelection, const string& sTargetPath, Selection
 			break;
 		}
 
-		LOG_WRITE("Copy sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
+		LOG("Copy sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
 		
 		mode_t permission = src_stat.st_mode;
 
@@ -446,12 +446,12 @@ askagain:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						bOverwrite = true;
 						break;
 					
@@ -645,7 +645,7 @@ halt:
 	if (pSelection)
 		pSelection->SetSelectPath(sTargetPathTmp2);
 
-	LOG_WRITE("DirReader Copy End");
+	LOG("DirReader Copy End");
 	return bReturn;
 }
 
@@ -716,7 +716,7 @@ bool	DirReader::Move(Selection&	tSelection, const string& sTargetPath, Selection
 		sSourceName = pFile->sFullName;
 		sTargetName = sTargetPathTmp + pFile->sFullName.substr(sSourcePath.size());
 		sTargetName = ChgCurLocale( sTargetName ); // EUCKR, UTF8 상관 없이 파일 적용 복사
-		LOG_WRITE("sSourceName [%d] [%s] [%s]", t, sSourceName.c_str(), sTargetName.c_str());
+		LOG("sSourceName [%d] [%s] [%s]", t, sSourceName.c_str(), sTargetName.c_str());
 
 		if (stat(sSourceName.c_str(), &src_stat)==-1)
 		{
@@ -873,7 +873,7 @@ bool	DirReader::Remove(Selection&	tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vFile[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("File Remove [%s]", sTargetName.c_str());
+		LOG("File Remove [%s]", sTargetName.c_str());
 
 		if ( pFile->bLink )
 		{
@@ -928,7 +928,7 @@ bool	DirReader::Remove(Selection&	tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vDirs[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("Dir Remove [%s]", sTargetName.c_str());
+		LOG("Dir Remove [%s]", sTargetName.c_str());
 		if (rmdir(sTargetName.c_str())==-1)
 		{
 			if (!bIgnore)

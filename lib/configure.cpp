@@ -1,8 +1,5 @@
 #include "define.h"
 #include "configure.h"
-#include <fstream>
-#include "strutil.h"
-#include <algorithm>
 
 using namespace std;
 
@@ -78,7 +75,7 @@ namespace MLSUTIL {
 
             unlink(bakfile.c_str());
             if (rename(_sFilename.c_str(), bakfile.c_str()) == -1) {
-                LOG_WRITE("BackFile rename failure !!! - %s [%d][%s]",
+                LOG("BackFile rename failure !!! - %s [%d][%s]",
                           bakfile.c_str(), errno, strerror(errno));
                 return false;
             }
@@ -92,7 +89,7 @@ namespace MLSUTIL {
         ofstream out(srcfile.c_str());
 
         if (!out) {
-            LOG_WRITE("file write failure !!! - %s", srcfile.c_str());
+            LOG("file write failure !!! - %s", srcfile.c_str());
             return false;
         }
 
@@ -192,7 +189,7 @@ namespace MLSUTIL {
 
             out << tEntry.var.c_str() << " = " << tEntry.val.c_str() << endl;
 
-            LOG_WRITE("Section [%s] [%s] [%s]", tEntry.section.c_str(), tEntry.var.c_str(), tEntry.val.c_str());
+            LOG("Section [%s] [%s] [%s]", tEntry.section.c_str(), tEntry.var.c_str(), tEntry.val.c_str());
         }
 
         if (in) in.close();
@@ -218,7 +215,7 @@ namespace MLSUTIL {
             name = section + "." + var;
             j = sectionlist.find(Tolower(name));
             if (j == sectionlist.end()) {
-                LOG_WRITE("not find config var [%s] section [%s] ", var.c_str(), section.c_str());
+                LOG("not find config var [%s] section [%s] ", var.c_str(), section.c_str());
                 return def;
             }
         } else {
@@ -228,7 +225,7 @@ namespace MLSUTIL {
                     if (i->first.find('.') != string::npos)
                         if (i->first.substr(i->first.find('.') + 1) == Tolower(var))
                             return i->second.val;
-                LOG_WRITE("not find config var [%s]", var.c_str());
+                LOG("not find config var [%s]", var.c_str());
                 return def;
             }
         }
@@ -251,7 +248,7 @@ namespace MLSUTIL {
 
         MapType::iterator i = _EnvMap.find(v);
 
-        LOG_WRITE("SetValue :: [%s] [%s] [%s]", section.c_str(), var.c_str(), val.c_str());
+        LOG("SetValue :: [%s] [%s] [%s]", section.c_str(), var.c_str(), val.c_str());
 
         if (i == _EnvMap.end())
             _EnvMap.insert(MapType::value_type(v, Entry(var, val, section, bSave)));

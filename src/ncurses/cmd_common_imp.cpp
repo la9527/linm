@@ -15,8 +15,8 @@ void	CmdCommonImp::About()
 	vAbout.push_back( "" );
 	vAbout.push_back( ChgEngKor("Author : ",
 								"작성자  : " ) );
-	vAbout.push_back( ChgEngKor("  Project Manager : Byoungyoung, La (la9527@yahoo.co.kr)",
-					            "  프로젝트관리자   : 라병영 (la9527@yahoo.co.kr)") );
+	vAbout.push_back( ChgEngKor("  Project Manager : Byoungyoung, La (la9527@daum.net)",
+					            "  프로젝트관리자   : 라병영 (la9527@daum.net)") );
 	vAbout.push_back( ChgEngKor("  Develper        : IOKLO (leesjung@nownuri.net)",
 								"  개발자           : IOKLO  (leesjung@nownuri.net)") );
 	vAbout.push_back( ChgEngKor("  Develper        : Sangkoung, Bae (baesg@cntek.co.kr)",
@@ -68,7 +68,7 @@ void	CmdCommonImp::Help()
 			if ( !sKeyName.empty() && sKeyName != i->second)
 			{
 				sView = g_tKeyCfg.GetHelp( i->first->sValue, i->first->eType );
-				LOG_WRITE("Key List :: [%s]", sView.c_str());	
+				LOG("Key List :: [%s]", sView.c_str());
 				
 				sMsg.Printf("    %-10s : %s", sKeyName.c_str(), _(sView.c_str()));
 				vMsgData.push_back(sMsg.c_str());
@@ -195,10 +195,10 @@ void	CmdCommonImp::ReloadConfigChange( bool bCursesRefresh )
 		g_tColorCfg.Clear();
 		g_tKeyCfg.Clear();
 		
-		LOG_WRITE("sCfgHome :: %s", sCfgHome.c_str());
-		LOG_WRITE("sDefault :: %s", sDefault.c_str());
-		LOG_WRITE("sColor :: %s", sColor.c_str());
-		LOG_WRITE("sKeySet :: %s", sKeySet.c_str());
+		LOG("sCfgHome :: %s", sCfgHome.c_str());
+		LOG("sDefault :: %s", sDefault.c_str());
+		LOG("sColor :: %s", sColor.c_str());
+		LOG("sKeySet :: %s", sKeySet.c_str());
 
 		g_tCfg.Load(sDefault.c_str());
 		g_tColorCfg.Load(sColor.c_str());

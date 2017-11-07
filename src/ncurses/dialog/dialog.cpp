@@ -48,7 +48,7 @@ void Position::Resize()
 	if (_pForm->height < y+height) height = _pForm->height-y;
 
 	/*
-	LOG_WRITE("Position y [%d] x [%d] h [%d] w [%d] Form-H [%d] Form-W [%d]", 
+	LOG("Position y [%d] x [%d] h [%d] w [%d] Form-H [%d] Form-W [%d]",
 				y, x, height, width, _pForm->height, _pForm->width);
 	*/
 }

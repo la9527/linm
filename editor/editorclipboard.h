@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Byoungyoung, La                                 *
- *   la9527@yahoo.co.kr                                                    *
+ *   la9527@daum.net                                                    *
  *                                                                         *
  ***************************************************************************/
 
@@ -67,10 +67,10 @@ namespace MLS {
         }
 
     public:
-        int nLine;        /// line position
-        int nCulumn;    /// culumn poistion
-        vector<wstring> vData;        /// line data
-        int nDelSize;    ///	delete size. if nDelSize is 0, not insert lines.
+        int nLine;
+        int nCulumn;
+        vector<wstring> vData;
+        int nDelSize;
     };
 
 };

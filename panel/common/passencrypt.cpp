@@ -241,7 +241,7 @@ bool	PasswdCrypt::Encrypt(const string& sDecode, string& sRtEncode)
 	}
 	catch(Exception& ex)
 	{
-		LOG_WRITE("Encrypt Error [%s]", (char*)ex);
+		LOG("Encrypt Error [%s]", (char*)ex);
 		return false;
 	}
 	return true;
@@ -290,7 +290,7 @@ bool PasswdCrypt::Decrypt(const string& sEncode, string& sRtDecode)
 	}
 	catch(Exception& ex)
 	{
-		LOG_WRITE("Decrypt Error [%s]", (char*)ex);
+		LOG("Decrypt Error [%s]", (char*)ex);
 		return false;
 	}
 

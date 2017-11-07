@@ -169,27 +169,27 @@ void	SFtpReader::GetMethods()
     sLang_cs = libssh2_session_methods(pSession, LIBSSH2_METHOD_LANG_CS);
     sLang_sc = libssh2_session_methods(pSession, LIBSSH2_METHOD_LANG_SC);
 
-	LOG_WRITE("Kex        :: [%s]",  sKex );
-	LOG_WRITE("sHostkey   :: [%s]",  sHostkey);
-	LOG_WRITE("sCrypt_cs  :: [%s]",  sCrypt_cs );
-	LOG_WRITE("sCrypt_sc  :: [%s]",  sCrypt_sc );
-	LOG_WRITE("sMac_cs    :: [%s]",  sMac_cs );
-	LOG_WRITE("sMac_sc    :: [%s]",  sMac_sc );
-	LOG_WRITE("sComp_cs   :: [%s]",  sComp_cs );
-	LOG_WRITE("sComp_sc   :: [%s]",  sComp_sc );
-	LOG_WRITE("sLang_cs   :: [%s]",  sLang_cs );
-	LOG_WRITE("sLang_sc   :: [%s]",  sLang_sc );
+	LOG("Kex        :: [%s]",  sKex );
+	LOG("sHostkey   :: [%s]",  sHostkey);
+	LOG("sCrypt_cs  :: [%s]",  sCrypt_cs );
+	LOG("sCrypt_sc  :: [%s]",  sCrypt_sc );
+	LOG("sMac_cs    :: [%s]",  sMac_cs );
+	LOG("sMac_sc    :: [%s]",  sMac_sc );
+	LOG("sComp_cs   :: [%s]",  sComp_cs );
+	LOG("sComp_sc   :: [%s]",  sComp_sc );
+	LOG("sLang_cs   :: [%s]",  sLang_cs );
+	LOG("sLang_sc   :: [%s]",  sLang_sc );
 }
 
 bool	SFtpReader::SetMethod(int nMethod, const string& str)
 {
 	if (libssh2_session_method_pref( (LIBSSH2_SESSION*)_pSession, nMethod, (char*)str.c_str() ) == -1)
 	{
-		LOG_WRITE("SetMethod Error :: [%s]", GetLastErrMsg().c_str());
+		LOG("SetMethod Error :: [%s]", GetLastErrMsg().c_str());
 		return false;
 	}
 
-	LOG_WRITE( "libssh2_session_method_pref [%s]", (const char*)str.c_str() );
+	LOG( "libssh2_session_method_pref [%s]", (const char*)str.c_str() );
 	return true;
 }
 
@@ -278,8 +278,8 @@ bool SFtpReader::Init(const string& sInitFile)
 		if (InputBox(sMsg.c_str(), sUser) == ERROR) return false;
 	}
 
-	LOG_WRITE("sInitFile [%s]", sInitFile.c_str());
-	LOG_WRITE("sPrivateKey [%s] sPublicKey [%s]", sPrivateKey.c_str(), sPublicKey.c_str());
+	LOG("sInitFile [%s]", sInitFile.c_str());
+	LOG("sPrivateKey [%s] sPublicKey [%s]", sPrivateKey.c_str(), sPublicKey.c_str());
 	
 	void*	pWait = NULL;
 
@@ -327,7 +327,7 @@ bool SFtpReader::Init(const string& sInitFile)
 			if (sPublicKey.substr(0, 1) == "~")
 				sPublicKey = g_tCfg.GetValue("Static", "Home") + sPublicKey.substr(1);
 
-			LOG_WRITE("%s :: %s :: %s ::", sPrivateKey.c_str(), sPublicKey.c_str(), sUser.c_str());
+			LOG("%s :: %s :: %s ::", sPrivateKey.c_str(), sPublicKey.c_str(), sUser.c_str());
 	
 			/* Or by public key */
 			if (libssh2_userauth_publickey_fromfile(	(LIBSSH2_SESSION*)_pSession, 
@@ -337,7 +337,7 @@ bool SFtpReader::Init(const string& sInitFile)
 														"pasphrase") == 0)
 			{
 				nKeyAuth = 2;
-				LOG_WRITE("libssh2_userauth_publickey_fromfile SUCCESS");
+				LOG("libssh2_userauth_publickey_fromfile SUCCESS");
 			}
 			else
 				nSockNum = SessionStartup(sIP);
@@ -361,7 +361,7 @@ bool SFtpReader::Init(const string& sInitFile)
 													sUser.c_str(), sPasswd.c_str());
 			if (nRt == -1)
 			{
-				LOG_WRITE("UserAuth Password error. [%s]", GetLastErrMsg().c_str());
+				LOG("UserAuth Password error. [%s]", GetLastErrMsg().c_str());
 				throw Exception(_("Authentication by password failed."));
 			}
 		}
@@ -420,7 +420,7 @@ bool SFtpReader::Init(const string& sInitFile)
 		if (!_pFileAttr) 
 			_pFileAttr = (void*)new LIBSSH2_SFTP_ATTRIBUTES;
 
-		LOG_WRITE("SFtp Connected [%s] [%s]", _sInitTypeName.c_str(), _sCurPath.c_str());
+		LOG("SFtp Connected [%s] [%s]", _sInitTypeName.c_str(), _sCurPath.c_str());
 
 		_bConnected = true;
 		_eEncode = US;
@@ -510,7 +510,7 @@ string SFtpReader::GetRealPath(const string& str) const
 
 	if (sPath.size() == 0) sPath = GetPwd();
 
-	LOG_WRITE("GetRealPath One :: [%s]", str.c_str());
+	LOG("GetRealPath One :: [%s]", str.c_str());
 	
 	// ~ 인지 먼저 판단.
 	if (sPath[0]=='~')
@@ -537,7 +537,7 @@ string SFtpReader::GetRealPath(const string& str) const
 			{
 				string::size_type p = _sCurPath.rfind('/', _sCurPath.size()-2);
 				sPath = _sCurPath.substr(0, p+1);
-				LOG_WRITE("GetRealPath :: [%s] [%s]", _sCurPath.c_str(), sPath.c_str());
+				LOG("GetRealPath :: [%s] [%s]", _sCurPath.c_str(), sPath.c_str());
 			}			
 			/// .... /(root)dir이면 절대경로에 / 를 넣음
 			else sPath = _sCurPath;
@@ -567,7 +567,7 @@ string	SFtpReader::GetPwd() const
 			throw Exception("libssh2_sftp_realpath fail.");
 		}
 		cRealPath[ nRt ] = 0;
-		LOG_WRITE("Real Path GetPwd :: %s", cRealPath);
+		LOG("Real Path GetPwd :: %s", cRealPath);
 	}
 	catch(Exception& ex)
 	{
@@ -615,7 +615,7 @@ bool	SFtpReader::GetInfo(File &tFile)
 			int  nRt = 0;
 			memset(&cLinkPath, 0, sizeof(cLinkPath));
 
-			LOG_WRITE("Link File :: _sTmpFileName [%s]", _sTmpFileName.c_str());
+			LOG("Link File :: _sTmpFileName [%s]", _sTmpFileName.c_str());
 			if ((nRt = libssh2_sftp_readlink(	(LIBSSH2_SFTP*)_pSessionSFtp, 
 										tFile.sFullName.c_str(),
              							cLinkPath, FILENAME_MAX)) > 0 )
@@ -646,7 +646,7 @@ bool	SFtpReader::GetInfo(File &tFile)
 				bLink = true;	
 			}
 			else
-				LOG_WRITE("File Reading Failure (Link 1) [%s]", _sTmpFileName.c_str());
+				LOG("File Reading Failure (Link 1) [%s]", _sTmpFileName.c_str());
 		}
 		else
 		{
@@ -708,7 +708,7 @@ bool	SFtpReader::GetInfo(File &tFile)
 		}
 		
 		/*
-		LOG_WRITE("%10s %6s %6s %10d %s", tFile.sAttr.c_str(), 
+		LOG("%10s %6s %6s %10d %s", tFile.sAttr.c_str(),
 											tFile.sDate.c_str(), 
 											tFile.sTime.c_str(), 
 											tFile.uSize, 
@@ -775,7 +775,7 @@ bool	SFtpReader::Read(const string& sDir)
 		if (_sCurPath.substr(_sCurPath.size()-1, 1) != "/") 
 			_sCurPath = _sCurPath + '/';
 
-		LOG_WRITE("SFtp Read :: %s", _sCurPath.c_str());
+		LOG("SFtp Read :: %s", _sCurPath.c_str());
 		//cout << "SFtp Read :: " << _sCurPath << endl;
 	}
 	catch(Exception& ex)
@@ -802,7 +802,7 @@ bool	SFtpReader::Rename(File* pFile, const string& sRename)
 {
 	if (pFile == NULL) 
 	{
-		LOG_WRITE("Rename pFile is NULL !!!");
+		LOG("Rename pFile is NULL !!!");
 		return false;
 	}
 
@@ -819,7 +819,7 @@ bool	SFtpReader::Rename(File* pFile, const string& sRename)
 	
 	sRenameName = _sCurPath + sRenameName;
 
-	LOG_WRITE("Rename - [%s] [%s]", pFile->sFullName.c_str(), sRenameName.c_str());
+	LOG("Rename - [%s] [%s]", pFile->sFullName.c_str(), sRenameName.c_str());
 
 	if ( libssh2_sftp_rename_ex((LIBSSH2_SFTP*)_pSessionSFtp, 
 								(char*)pFile->sFullName.c_str(), 
@@ -923,7 +923,7 @@ bool SFtpReader::Copy(	Selection& tSelection, 		// remote
 
 	string sSourcePath = tSelection.GetSelectPath();
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
 
 	// 파일 복사
 	for (int n=0; n<(int)vFiles.size(); n++)
@@ -952,7 +952,7 @@ bool SFtpReader::Copy(	Selection& tSelection, 		// remote
 			continue;
 		}
 
-		LOG_WRITE("SFtpReader Copy sTargetName 1 [%s] [%s] [%s] [%d]", 
+		LOG("SFtpReader Copy sTargetName 1 [%s] [%s] [%s] [%d]",
 					sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str(), tAttr.filesize);
 		
 		String	sCount, sCount2;
@@ -980,12 +980,12 @@ askagain_sftp_copy:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						bOverwrite = true;
 						break;
 					
@@ -1166,7 +1166,7 @@ halt_sftp_copy:
 	if (pSelection)
 		pSelection->SetSelectPath(sTargetPathTmp2);
 
-	LOG_WRITE("DirReader Copy End");
+	LOG("DirReader Copy End");
 	return true;
 }
 
@@ -1195,7 +1195,7 @@ bool	SFtpReader::Paste(Selection& tSelection)
 	
 	string sSourcePath = tSelection.GetSelectPath();
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s]", _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s]", _sCurPath.c_str(), sTargetPathTmp2.c_str());
 
 	EncodeChk(vFiles, false);
 
@@ -1242,7 +1242,7 @@ bool	SFtpReader::Paste(Selection& tSelection)
 		sTargetName = sTargetPathTmp2 + pFile->sFullName.substr(sSourcePath.size());
 		sTargetName = KorCodeChg(sTargetName, _eEncode);
 
-		LOG_WRITE("SFtpReader::Paste [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
+		LOG("SFtpReader::Paste [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
 
 		if (stat(sSourceName.c_str(), &src_stat)==-1)
 		{
@@ -1255,7 +1255,7 @@ bool	SFtpReader::Paste(Selection& tSelection)
 			break;
 		}
 
-		LOG_WRITE("SFtpReader Paste sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
+		LOG("SFtpReader Paste sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
 		
 		mode_t permission = src_stat.st_mode;
 
@@ -1289,12 +1289,12 @@ askagain_sftp_paste:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						break;
 					
 					case 1: // skip
@@ -1385,7 +1385,7 @@ askagain_sftp_paste:
 
 		FILE*	fp = fopen(sSourceName.c_str(), "rb");
 		
-		LOG_WRITE("TEST1");
+		LOG("TEST1");
 
 		if ( fp )
 		{
@@ -1521,7 +1521,7 @@ bool SFtpReader::Remove(MLS::Selection& tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vFile[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("sftp file remove [%s]", sTargetName.c_str());
+		LOG("sftp file remove [%s]", sTargetName.c_str());
 		
 		if (libssh2_sftp_unlink((LIBSSH2_SFTP*)_pSessionSFtp, (char*)sTargetName.c_str())==-1)
 		{
@@ -1563,7 +1563,7 @@ bool SFtpReader::Remove(MLS::Selection& tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vDirs[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("sftp dir remove [%s]", sTargetName.c_str());
+		LOG("sftp dir remove [%s]", sTargetName.c_str());
 		if (libssh2_sftp_rmdir((LIBSSH2_SFTP*)_pSessionSFtp, (char*)sTargetName.c_str())==-1)
 		{
 			String	sMsg; string sErrMsg = GetLastErrMsg();
@@ -1619,7 +1619,7 @@ bool  SFtpReader::View(const File* pFileOriginal, File* pFileChange)
 	sSourceName = pFileOriginal->sFullName;
 	sTargetName = _sTmpDir + pFileOriginal->sName;
 
-	LOG_WRITE("SFtpReader::View [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
+	LOG("SFtpReader::View [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
 
 	if (libssh2_sftp_stat((LIBSSH2_SFTP*)_pSessionSFtp, (char*)sSourceName.c_str(), &tAttr) == -1)
 	{
@@ -1630,7 +1630,7 @@ bool  SFtpReader::View(const File* pFileOriginal, File* pFileChange)
 		return false;
 	}
 
-	LOG_WRITE("SFtpReader View sTargetName 1 [%s] [%s] [%s] [%d]", 
+	LOG("SFtpReader View sTargetName 1 [%s] [%s] [%s] [%d]",
 				sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str(), tAttr.filesize);
 	
 	ullong	uFileSize = pFileOriginal->uSize;

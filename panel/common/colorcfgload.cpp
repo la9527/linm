@@ -110,7 +110,7 @@ namespace MLS
 		int		fcol = 0, bcol = 0;
 		string::size_type p = val.find(',');
 
-		LOG_WRITE("Parsing sSection [%s] var [%s] val [%s]", section.c_str(), var.c_str(), val.c_str());
+		LOG("Parsing sSection [%s] var [%s] val [%s]", section.c_str(), var.c_str(), val.c_str());
 
 		try
 		{
@@ -127,7 +127,7 @@ namespace MLS
 		}
 		catch(Exception& ex)
 		{
-			LOG_WRITE("Color File Loading Exception : %s", (char*)ex);
+			LOG("Color File Loading Exception : %s", (char*)ex);
 			return false;
 		}
 		
@@ -145,7 +145,7 @@ namespace MLS
 			{
 				if (st.Get().empty()) continue;
 				_mapName[Tolower(st.Get())] = cur;
-				LOG_WRITE("_mapName [%s [%d:%d]]", Tolower(st.Get()).c_str(), cur.font, cur.back);	
+				LOG("_mapName [%s [%d:%d]]", Tolower(st.Get()).c_str(), cur.font, cur.back);
 			}
 		}
 		else if (var.substr(0, 3) == "ext")
@@ -156,13 +156,13 @@ namespace MLS
 			{
 				if (st.Get().empty()) continue;
 				_mapExt[st.Get()] = cur;
-				LOG_WRITE("_mapExt [%s [%d:%d]]", st.Get().c_str(), cur.font, cur.back);
+				LOG("_mapExt [%s [%d:%d]]", st.Get().c_str(), cur.font, cur.back);
 			}
 		}	
 		else
 		{
 			_mapColor[Tolower(var)] = cur;
-			LOG_WRITE("_mapColor [%s [%d:%d]]", var.c_str(), cur.font, cur.back);
+			LOG("_mapColor [%s [%d:%d]]", var.c_str(), cur.font, cur.back);
 			if (Tolower(var) == "default") 
 				_DefaultColor = cur;
 		}

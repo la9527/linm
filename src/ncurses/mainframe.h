@@ -117,7 +117,7 @@ public:
 
 	~MainFrame()
 	{
-		LOG_WRITE("MainFrame Success Exit ...");
+		LOG("MainFrame Success Exit ...");
 	}
 
 	void	SaveConfig();
@@ -209,6 +209,8 @@ public:
 	ClipBoard*  GetClip()		{ return &_tClipboard; }
 
 	void	Reload();
+
+	void 	fsWatchUpdate();
 
 // Mcd Copy
 protected:

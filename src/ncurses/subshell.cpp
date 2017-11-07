@@ -126,14 +126,14 @@ int SubShell::PtyOpenSlave(const string& sPtyName)
     int nPtySlave = open (sPtyName.c_str(), O_RDWR);
 
     if (nPtySlave == -1) {
-	    LOG_WRITE( "open (%s, O_RDWR): %s", sPtyName.c_str(), strerror(errno));
+	    LOG( "open (%s, O_RDWR): %s", sPtyName.c_str(), strerror(errno));
 	    return ERROR;
     }
 #if !defined(__osf__) && !defined(__linux__)
 #if defined (I_FIND) && defined (I_PUSH)
     if (!ioctl (nPtySlave, I_FIND, "ptem"))
     if (ioctl (nPtySlave, I_PUSH, "ptem") == -1) {
-    	LOG_WRITE( "ioctl (%d, I_PUSH, \"ptem\") failed: %s",, sPtyName.c_str(), strerror(errno));
+    	LOG( "ioctl (%d, I_PUSH, \"ptem\") failed: %s",, sPtyName.c_str(), strerror(errno));
         close (nPtySlave);
         return ERROR;
     }
@@ -141,7 +141,7 @@ int SubShell::PtyOpenSlave(const string& sPtyName)
     if (!ioctl (nPtySlave, I_FIND, "ldterm"))
 	    if (ioctl (nPtySlave, I_PUSH, "ldterm") == -1) 
 	    {
-	    	LOG_WRITE("ioctl (%d, I_PUSH, \"ldterm\") failed: %s", nPtySlave, strerror(errno));
+	    	LOG("ioctl (%d, I_PUSH, \"ldterm\") failed: %s", nPtySlave, strerror(errno));
 	        close (nPtySlave);
 	        return ERROR;
 	    }
@@ -149,7 +149,7 @@ int SubShell::PtyOpenSlave(const string& sPtyName)
     if (!ioctl (nPtySlave, I_FIND, "ttcompat"))
 	    if (ioctl (nPtySlave, I_PUSH, "ttcompat") == -1) 
 	    {
-	    	LOG_WRITE("ioctl (%d, I_PUSH, \"ttcompat\") failed: %s", nPtySlave, strerror(errno));
+	    	LOG("ioctl (%d, I_PUSH, \"ttcompat\") failed: %s", nPtySlave, strerror(errno));
 	        close (nPtySlave);
 	        return ERROR;
 	    }
@@ -263,7 +263,7 @@ void	SubShell::InitSubShellChild(const string& sPtyName, const string& sDir)
 /*  The follow lines is ncurses bug. Will need review.
 	if ( tcgetattr (STDOUT_FILENO, &_ShellMode) )
 	{
-		LOG_WRITE("Cannot get terminal settings: %s\r\n", strerror(errno));
+		LOG("Cannot get terminal settings: %s\r\n", strerror(errno));
 	}
 	_ShellMode.c_lflag |= TOSTOP;
 	if (tcsetattr (nPtySlave, TCSANOW, &_ShellMode))
@@ -285,7 +285,7 @@ void	SubShell::InitSubShellChild(const string& sPtyName, const string& sDir)
     {
 		String	strSid;
 		strSid.Printf("%ld", (long)sidLinM);
-		LOG_WRITE("InitSubShellChild [%s]", strSid.c_str());
+		LOG("InitSubShellChild [%s]", strSid.c_str());
 		setenv ("LINM_SID", strSid.c_str(), 1 );
 		setenv ("MC_SID", strSid.c_str(), 1 );	// Avoid conflict with MC(Midnight Commander).
     }
@@ -337,7 +337,7 @@ int		SubShell::CheckSid (void)
 		return SUCCESS;
 
 	/* The parent LINM is in a different session, it's OK */
-	LOG_WRITE("CheckSid [%d] [%d]", (int)mySid, (int)oldSid);
+	LOG("CheckSid [%d] [%d]", (int)mySid, (int)oldSid);
 	//if (oldSid != mySid)	return ERROR;
 	
 	//printf(_("LinM is already runnning on this terminal. Subshell support will be disabled.\n"));
@@ -386,20 +386,20 @@ int		SubShell::InitSubShell(const string& sDir)
 		_nSubShellPty = PtyOpenMaster(sPtyName);
 		if ( _nSubShellPty == ERROR)
 		{
-			LOG_WRITE("Cannot open master side of pty: %s \n", strerror( errno ));
+			LOG("Cannot open master side of pty: %s \n", strerror( errno ));
 			return ERROR;
 		}
 			
 		nPtySlave = PtyOpenSlave(sPtyName);
 		if ( nPtySlave == ERROR )
 		{
-			LOG_WRITE("Cannot open slave side of pty %s: %s\n", strerror( errno ));
+			LOG("Cannot open slave side of pty %s: %s\n", strerror( errno ));
 			return ERROR;
 		}
 			
 		if (pipe (_nSubshellPipe)) 
 		{
-		    LOG_WRITE("couldn't create pipe");
+		    LOG("couldn't create pipe");
 		    return ERROR;
 		}
 	}
@@ -411,7 +411,7 @@ int		SubShell::InitSubShell(const string& sDir)
 	
 	if ( _nSubShellPid == -1 )
 	{
-		LOG_WRITE("Error.. fork failure !!!");
+		LOG("Error.. fork failure !!!");
 		return ERROR;
 	}
 	
@@ -423,7 +423,7 @@ int		SubShell::InitSubShell(const string& sDir)
     if (nPtySlave != -1) 
 		close (nPtySlave);
 	
-	LOG_WRITE("InitSubShell Fork [%d]", (int)_nSubShellPid);
+	LOG("InitSubShell Fork [%d]", (int)_nSubShellPid);
 
     /* Wait until the subshell has started up and processed the command */
     _eSubShellState = RUNNING_COMMAND;
@@ -483,11 +483,11 @@ int	SubShell::FeedSubShell(int nHow, bool bOnError)
 		{
 		    /* Despite using SA_RESTART, we still have to check for this */
 		    if (errno == EINTR) continue;	/* try all over again */
-		    LOG_WRITE("select (FD_SETSIZE, &read_set...): %s\r\n", strerror( errno ));
+		    LOG("select (FD_SETSIZE, &read_set...): %s\r\n", strerror( errno ));
 		    return ERROR;
 		}
 		
-		//LOG_WRITE("FeedSubShell select !!!");
+		//LOG("FeedSubShell select !!!");
 		
 		if (FD_ISSET (_nSubShellPty, &Read_Set))
 	    /* Read from the subshell, Write to stdout */
@@ -508,7 +508,7 @@ int	SubShell::FeedSubShell(int nHow, bool bOnError)
 	
 		    if (nBytes <= 0) 
 		    {
-				LOG_WRITE("read (subshell_pty...): %s\n", strerror(errno));
+				LOG("read (subshell_pty...): %s\n", strerror(errno));
 				return ERROR;
 		    }
 
@@ -527,7 +527,7 @@ int	SubShell::FeedSubShell(int nHow, bool bOnError)
 				}
 			}
 			
-			//LOG_WRITE("FeedSubShell WRITE [%s] !!!\n", cPtyBuffer);
+			//LOG("FeedSubShell WRITE [%s] !!!\n", cPtyBuffer);
 			if (nHow == VISIBLY)
 				Write (STDOUT_FILENO, cPtyBuffer, nBytes);
 			else
@@ -540,11 +540,11 @@ int	SubShell::FeedSubShell(int nHow, bool bOnError)
 			nBytes = read (_nSubshellPipe[READ], cSubShellCwd, sizeof(cSubShellCwd));
 		    if (nBytes <= 0) 
 		    {
-				LOG_WRITE("read (subshell_pipe[READ]...): %s\r\n", strerror (errno));
+				LOG("read (subshell_pipe[READ]...): %s\r\n", strerror (errno));
 				return ERROR;
 		    }	
 		    cSubShellCwd[nBytes] = 0;
-			//LOG_WRITE("FeedSubShell _nSubshellPipe1[READ] [%s] !!!", cSubShellCwd);
+			//LOG("FeedSubShell _nSubshellPipe1[READ] [%s] !!!", cSubShellCwd);
 		    Synchronize ();
 	
 			_bSubShellReady = true;
@@ -561,7 +561,7 @@ int	SubShell::FeedSubShell(int nHow, bool bOnError)
 			nBytes = read (STDIN_FILENO, cPtyBuffer, sizeof(cPtyBuffer));
 		    if (nBytes <= 0)
 		    {
-				LOG_WRITE("read (STDIN_FILENO, pty_buffer...): %s\r\n", strerror(errno));
+				LOG("read (STDIN_FILENO, pty_buffer...): %s\r\n", strerror(errno));
 				return ERROR;
 		    }
 
@@ -583,7 +583,7 @@ int	SubShell::FeedSubShell(int nHow, bool bOnError)
 		} 
 		else 
 		{
-			LOG_WRITE("select timeout !!!");
+			LOG("select timeout !!!");
 		    return ERROR;
 		}
 	}

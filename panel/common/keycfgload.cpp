@@ -34,7 +34,7 @@ void	KeyCfgLoad::Init()
 
 bool	KeyCfgLoad::Parsing(const string& sSection, const string& sVar, const string& sVal)
 {
-	//LOG_WRITE("Parsing KeyCfgLoad sSection [%s] var [%s] val [%s]", sSection.c_str(), sVar.c_str(), sVal.c_str());
+	//LOG("Parsing KeyCfgLoad sSection [%s] var [%s] val [%s]", sSection.c_str(), sVar.c_str(), sVal.c_str());
 
 	if (sSection == "KeyCodeSetting")
 	{
@@ -134,7 +134,7 @@ string	KeyCfgLoad::GetCommand(const TypeInfo& tType)
 
 	for (i = _mapKeyCmd.begin(); i != _mapKeyCmd.end(); ++i)
 	{
-		//LOG_WRITE("GetCommand [%s] [%s]", i->second.c_str(), i->first->sValue.c_str());
+		//LOG("GetCommand [%s] [%s]", i->second.c_str(), i->first->sValue.c_str());
 		if (tType == *(i->first))
 		{
 			return i->first->sValue;
@@ -152,7 +152,7 @@ string	KeyCfgLoad::GetCommand( const string& sKeyName, const ViewType eType )
 
 	for (i = _mapKeyCmd.begin(); i != _mapKeyCmd.end(); ++i)
 	{
-		//LOG_WRITE("GetCommand 2 [%s] [%s] [%s] ", i->second.c_str(), i->first->sValue.c_str(), sKeyName.c_str());
+		//LOG("GetCommand 2 [%s] [%s] [%s] ", i->second.c_str(), i->first->sValue.c_str(), sKeyName.c_str());
 		if ( i->second == sKeyName )
 		{	
 			if (eType == i->first->eType)
@@ -181,7 +181,7 @@ string	KeyCfgLoad::GetCommand( const KeyInfo& tKeyInfo, const ViewType eType )
 		{
 			bFind = true;
 			sKeyName = (*n).sKeyName;
-			LOG_WRITE( "GetCommand Find... [%s]", sKeyName.c_str() );
+			LOG( "GetCommand Find... [%s]", sKeyName.c_str() );
 			break;
 		}
 	}
@@ -193,7 +193,7 @@ string	KeyCfgLoad::GetCommand( const KeyInfo& tKeyInfo, const ViewType eType )
 		{
 			if ( i->second == sKeyName )
 			{
-				//LOG_WRITE("tKeyInfo GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first->sValue.c_str(), sKeyName.c_str());
+				//LOG("tKeyInfo GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first->sValue.c_str(), sKeyName.c_str());
 				if (eType == i->first->eType)
 					return i->first->sValue;
 				if (i->first->eType == COMMON )
@@ -201,7 +201,7 @@ string	KeyCfgLoad::GetCommand( const KeyInfo& tKeyInfo, const ViewType eType )
 			}
 		}
 		
-		//LOG_WRITE("GetCommand !!! [%s]", sTmpCmd.c_str());
+		//LOG("GetCommand !!! [%s]", sTmpCmd.c_str());
 		return sTmpCmd;
 	}	
 	return "";
@@ -214,7 +214,7 @@ string	KeyCfgLoad::GetHelp(const TypeInfo& tType)
 
 	for (i = _mapKeyHelp.begin(); i != _mapKeyHelp.end(); ++i)
 	{
-		//LOG_WRITE("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
+		//LOG("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
 		if (tType == *(i->first))
 			return i->second;
 		if ( i->first->sValue == tType.sValue && i->first->eType == COMMON )
@@ -234,7 +234,7 @@ string	KeyCfgLoad::GetHelp_Key(const string& sKeyName, const ViewType eType)
 	map<TypeInfo*, string>::iterator i;
 	for (i = _mapKeyHelp.begin(); i != _mapKeyHelp.end(); ++i)
 	{
-		//LOG_WRITE("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
+		//LOG("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
 		if (tTypeInfo == *(i->first))
 			return i->second;
 		if ( i->first->sValue == sCmd && i->first->eType == COMMON )
@@ -267,7 +267,7 @@ string	KeyCfgLoad::GetHelp(const string& sCmd, const ViewType eType)
 
 		for (i = _mapKeyHelp.begin(); i != _mapKeyHelp.end(); ++i)
 		{
-			//LOG_WRITE("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
+			//LOG("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
 			if (tTypeInfo == *(i->first))
 				return ChgCurLocale(i->second);
 			
@@ -284,7 +284,7 @@ string	KeyCfgLoad::GetHelp(const string& sCmd, const ViewType eType)
 	
 	for (i = _mapKeyHelp.begin(); i != _mapKeyHelp.end(); ++i)
 	{
-		//LOG_WRITE("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
+		//LOG("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
 		if (tTypeInfo == *(i->first))
 			return i->second;
 		if ( i->first->sValue == sCmd && i->first->eType == COMMON )
@@ -319,7 +319,7 @@ string	KeyCfgLoad::GetHelp(const KeyInfo& tKeyInfo, const ViewType eType)
 
 		for (i = _mapKeyHelp.begin(); i != _mapKeyHelp.end(); ++i)
 		{
-			//LOG_WRITE("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
+			//LOG("GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first.c_str(), sKeyName.c_str());
 			if ( i->second == sKeyName )
 			{
 				if (eType == i->first->eType)
@@ -351,7 +351,7 @@ string	KeyCfgLoad::CmdToKeyName(const string& sCmd, const ViewType eType)
 	{
 		if ( i->first->sValue == sCmd )
 		{
-			//LOG_WRITE("CmdToKeyName GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first->sValue.c_str(), sCmd.c_str());
+			//LOG("CmdToKeyName GetCommand [%s] [%s] [%s] ", i->second.c_str(), i->first->sValue.c_str(), sCmd.c_str());
 			if (eType == i->first->eType)
 				return i->second;
 

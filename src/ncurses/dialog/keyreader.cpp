@@ -29,7 +29,7 @@ KeyInfo		KeyReader::Read(WINDOW*	pWin, bool bDelay)
 	else
 		nodelay(pWin, TRUE);
 
-	KeyInfoReload();
+	this->KeyInfoReload();
 	
 	vector<int>		vKey;
 	nKey1 = wgetch(pWin);
@@ -60,7 +60,7 @@ KeyInfo		KeyReader::Read(WINDOW*	pWin, bool bDelay)
 	{
 		sView.Append("Key%d [%d] ", n, vKey[n]);
 	}
-	LOG_WRITE(sView.c_str());
+	LOG(sView.c_str());
 
 	KeyInfo		tKeyInfo(vKey);
 	if (vKey.size() == 1 && vKey[0] == 27)
@@ -74,7 +74,7 @@ KeyInfo		KeyReader::Read(WINDOW*	pWin, bool bDelay)
 		tKeyInfo = (int)nKey;
 	}
 
-	//LOG_WRITE("Output KeyNum [%d] KeyListSize [%d]", nKey, vKey.size());
+	//LOG("Output KeyNum [%d] KeyListSize [%d]", nKey, vKey.size());
 	return tKeyInfo;
 }
 

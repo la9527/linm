@@ -12,149 +12,212 @@
 
 namespace MLS {
 
-class CmdPanelImp:public CmdCommonImp, public Configurable
-{
-private:
-	vector<NCurses_Panel*>	_pCurPanel;
+    class CmdPanelImp : public CmdCommonImp, public Configurable {
+    private:
+        vector<NCurses_Panel *> _pCurPanel;
 
-public:
-	CmdPanelImp() : CmdCommonImp()
-	{
-		UpdateConfig();
+    public:
+        CmdPanelImp() : CmdCommonImp() {
+            UpdateConfig();
 
-		// This reader is for copy & paste
-		// only one load this hear.
-		PluginLoader(&g_tReaderCtl);
-	}
+            // This reader is for copy & paste
+            // only one load this hear.
+            PluginLoader(&g_tReaderCtl);
+        }
 
-	~CmdPanelImp() 					{ SaveConfig(); }
+        ~CmdPanelImp() { SaveConfig(); }
 
-	// IConfigurable
-	void UpdateConfig();
-	void SaveConfig();
+        // IConfigurable
+        void UpdateConfig();
 
-	int  	Run(const std::string &, bool = false, bool = false);
-	int		ParseAndRun(const string &p, bool = false);
+        void SaveConfig();
 
-	void	GoRoot();
-	void	GoHome();
-	void	GoParent();
+        int Run(const std::string &, bool = false, bool = false);
 
-	void	Key_Enter();
-	void	Key_Left();
-	void	Key_Right();
-	void	Key_Up();
-	void	Key_Down();
-	void	Key_Home();
-	void	Key_End();
-	void	Key_PageUp();
-	void	Key_PageDown();
-	void	Key_Ins()			{ ClipPaste(); }
-	void	Key_Del()			{ Remove(); }
-	void	Key_BS()			{ GoParent(); }
-	void	Key_Select()		{ _pPanel->Key_Select();	}
+        int ParseAndRun(const string &p, bool = false);
 
-	void	SelectAll()		{ _pPanel->SelectAll();		}
-	void	SelectInvert() 	{ _pPanel->SelectInvert();	}
+        void GoRoot();
 
-	void	Key_ESC();
-	void	Mcd();
+        void GoHome();
 
-	void	ClearRefresh();
-	void	Refresh();
+        void GoParent();
 
-	void	ArchiveFileView();
-	void	ArchiveFileMake();
+        void Key_Enter();
 
-	void	RemoteConnProps();
-	void	RemoteConnect();
-	void	RemoteClose();
+        void Key_Left();
 
-	void	Editor();
-	void	ExtEditor();
-	void	Menu();
-	void	EditorChoice(bool bReadOnly, const string& sEditorCmd = "", File* pFile = NULL);
+        void Key_Right();
 
-	void	Quit();	
-	void	Split();
-	void	NextWindow();
-	void	SplitViewSync();
-	void	ViewSync();
+        void Key_Up();
 
-	void	Remove();
-	void	ClipCopy();
-	void	ClipPaste();
-	void	ClipCut();
+        void Key_Down();
 
-	void	Rename();
-	void	Mkdir();
+        void Key_Home();
 
-	void	Shell();
+        void Key_End();
 
-	void	McdSubDirOneSearch()	{	_pMcd->SubDirOneSearch();	}
-	void	McdSubDirAllSearch()	{	_pMcd->SubDirAllSearch();	}
-	void	McdSubDirClear() 		{	_pMcd->SubDirClear(); }
+        void Key_PageUp();
 
-	void	HiddenFileView();
-	void	FileOwnerView();
+        void Key_PageDown();
 
-	// sort
-    void    SortChange();
-    void    SortAscDescend();
-    void	SortNone();
-    void	SortName();
-	void	SortExt();
-	void	SortSize();
-	void	SortTime();
-	void	SortColor();
-	void	ColumnAuto();
-	void	Column1();
-	void	Column2();
-	void	Column3();
-	void	Column4();
+        void Key_Ins() { ClipPaste(); }
 
-	void	SettingChange();
+        void Key_Del() { Remove(); }
 
-	void	DefaultCfgFileChg();
-	void	ColorCfgFileChg();
-	void	KeyCfgFileChg();
+        void Key_BS() { GoParent(); }
 
-	void	Copy();
-	void	Move();
-	void	MountList();
-	void	SizeInfo();
+        void Key_Select() { _pPanel->Key_Select(); }
 
-	void	Forward();
-	void	Back();
+        void SelectAll() { _pPanel->SelectAll(); }
 
-	void	NewFile();
-	void	TouchFile();
-	
-	void	FileCompress(int nType, const string& sName = "");
-	void	Extract();
+        void SelectInvert() { _pPanel->SelectInvert(); }
 
-	void	TargzCompress() 	{ FileCompress(0); }
-	void	Tarbz2Compress()   { FileCompress(1); }
-	void	ZipCompress()    	{ FileCompress(2); }
+        void Key_ESC();
 
-	void	Execute();
-	void	QCD();
-	void	Chmod();
-	void	ViewClip();
+        void Mcd();
 
-	void	SyncDirectory();
-	
-	void	ConsoleMode();
-	void	Chown();
-	void	Chgrp();
+        void ClearRefresh();
 
-	void	Diff();
-	void	FileFind();
+        void Refresh();
 
-protected:
-	void	CutPaste();
-	void	CopyPaste();
-}; // class CommandImp
+        void ArchiveFileView();
+
+        void ArchiveFileMake();
+
+        void RemoteConnProps();
+
+        void RemoteConnect();
+
+        void RemoteClose();
+
+        void Editor();
+
+        void ExtEditor();
+
+        void Menu();
+
+        void EditorChoice(bool bReadOnly, const string &sEditorCmd = "", File *pFile = NULL);
+
+        void Quit();
+
+        void Split();
+
+        void NextWindow();
+
+        void SplitViewSync();
+
+        void ViewSync();
+
+        void Remove();
+
+        void ClipCopy();
+
+        void ClipPaste();
+
+        void ClipCut();
+
+        void Rename();
+
+        void Mkdir();
+
+        void Shell();
+
+        void McdSubDirOneSearch() { _pMcd->SubDirOneSearch(); }
+
+        void McdSubDirAllSearch() { _pMcd->SubDirAllSearch(); }
+
+        void McdSubDirClear() { _pMcd->SubDirClear(); }
+
+        void HiddenFileView();
+
+        void FileOwnerView();
+
+        // sort
+        void SortChange();
+
+        void SortAscDescend();
+
+        void SortNone();
+
+        void SortName();
+
+        void SortExt();
+
+        void SortSize();
+
+        void SortTime();
+
+        void SortColor();
+
+        void ColumnAuto();
+
+        void Column1();
+
+        void Column2();
+
+        void Column3();
+
+        void Column4();
+
+        void SettingChange();
+
+        void DefaultCfgFileChg();
+
+        void ColorCfgFileChg();
+
+        void KeyCfgFileChg();
+
+        void Copy();
+
+        void Move();
+
+        void MountList();
+
+        void SizeInfo();
+
+        void Forward();
+
+        void Back();
+
+        void NewFile();
+
+        void TouchFile();
+
+        void FileCompress(int nType, const string &sName = "");
+
+        void Extract();
+
+        void TargzCompress() { FileCompress(0); }
+
+        void Tarbz2Compress() { FileCompress(1); }
+
+        void ZipCompress() { FileCompress(2); }
+
+        void Execute();
+
+        void QCD();
+
+        void Chmod();
+
+        void ViewClip();
+
+        void SyncDirectory();
+
+        void ConsoleMode();
+
+        void Chown();
+
+        void Chgrp();
+
+        void Diff();
+
+        void FileFind();
+
+    protected:
+        void CutPaste();
+
+        void CopyPaste();
+    }; // class CommandImp
 
 }; // namespace
 

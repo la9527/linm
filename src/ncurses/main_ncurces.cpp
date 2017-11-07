@@ -34,6 +34,7 @@
 #include "mainframe.h"
 #include "mlsdialog.h"
 #include "subshell.h"
+#include "FSWatchDetect.h"
 
 using namespace MLSUTIL;
 using namespace MLS;
@@ -45,7 +46,7 @@ ENCODING	_nLangSet = AUTO;       ///< language setting
 LINECODE	_nLineSet = ACSLINE;	///< LINE MODE
 bool		_bTitleChange = true;
 
-vector<string> _vCfgFile, _vColFile, _vKeyFile, _vEditorKeyFile, _vSyntexCfgFile;
+vector<string> _vCfgFile, _vColFile, _vKeyFile, _vEditorKeyFile, _vSyntaxCfgFile;
 
 }
 
@@ -214,9 +215,9 @@ bool	Load_KeyFile()
 	int t;
 	const char *succMsg = "[\033[01;36m SUCCESS \033[0m]";
 	const char *failMsg = "[\033[01;31m  FAIL   \033[0m]";
-	string	sKeyCfgPath, sCfgSyntexExtPath;
+	string	sKeyCfgPath, sCfgSyntaxExtPath;
 	sKeyCfgPath = sKeyCfgPath + __LINM_CFGPATH__ + "/keyset.cfg";
-    sCfgSyntexExtPath = sCfgSyntexExtPath + __LINM_CFGPATH__ + "/syntexset.cfg";
+    sCfgSyntaxExtPath = sCfgSyntaxExtPath + __LINM_CFGPATH__ + "/syntexset.cfg";
     
 	{// read the Key Binding file.
 		if (g_tCfg.GetValue("Default", "KeySetFile") != "")
@@ -262,27 +263,27 @@ bool	Load_KeyFile()
 	}
 	
 	{  // Load to syntex configure file.
-	    g_tSyntexExtCfg.Init();
+	    g_tSyntaxExtCfg.Init();
 	    
-	    if ( g_tCfg.GetValue("Default", "SyntexCfgFile") != "")
-			_vSyntexCfgFile.push_back( g_tCfg.GetValue("Static", "CfgHome") + g_tCfg.GetValue("Default", "SyntexCfgFile") );
-		_vSyntexCfgFile.push_back( sCfgSyntexExtPath );
+	    if ( g_tCfg.GetValue("Default", "SyntaxCfgFile") != "")
+			_vSyntaxCfgFile.push_back( g_tCfg.GetValue("Static", "CfgHome") + g_tCfg.GetValue("Default", "SyntaxCfgFile") );
+		_vSyntaxCfgFile.push_back( sCfgSyntaxExtPath );
 		
-		for (t=0; t<(int)_vSyntexCfgFile.size(); t++)
+		for (t=0; t<(int)_vSyntaxCfgFile.size(); t++)
 		{
-			string syntexFile = _vSyntexCfgFile[t];
-			if (g_tSyntexExtCfg.Load(syntexFile.c_str()))
+			string syntexFile = _vSyntaxCfgFile[t];
+			if (g_tSyntaxExtCfg.Load(syntexFile.c_str()))
 			{
-				g_tCfg.SetStaticValue("SyntexCfgFile", syntexFile);
+				g_tCfg.SetStaticValue("SyntaxCfgFile", syntexFile);
 #ifdef __DEBUGMODE__
 				String sMsg;
 				sMsg.AppendBlank(60, "Loading syntex %s", syntexFile.c_str());
 				cout << sMsg.c_str();
 				cout << succMsg << endl;
 #endif
-				if (syntexFile == sCfgSyntexExtPath)
+				if (syntexFile == sCfgSyntaxExtPath)
 				{
-					string sCmd = "cp " + sCfgSyntexExtPath + " " + g_tCfg.GetValue("Static", "Home") + ".linm";
+					string sCmd = "cp " + sCfgSyntaxExtPath + " " + g_tCfg.GetValue("Static", "Home") + ".linm";
 					system(sCmd.c_str());
 				}
 				break;
@@ -548,7 +549,7 @@ int main(int argc, char *argv[])
 		cout << "Exception Error !!! -" << endl;
 	}
 #endif
-	LOG_WRITE("Main Success Exit ...");
+	LOG("Main Success Exit ...");
 
 	if (g_tCfg.GetValue("Static", "TmpDir") != "")
 	{
@@ -563,7 +564,7 @@ int main(int argc, char *argv[])
 	}
 
 	if ( _bTitleChange )
-	{	
+	{
 		// terminal title change.
 		printf("%c]0;%c", '\033', '\007');
 	}

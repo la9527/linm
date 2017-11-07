@@ -115,7 +115,7 @@ bool	SMBReader::Init(const string& sInitFile)
 
 	SMBCCTX * pContext = 0;
 
-	LOG_WRITE("SMBReader::Init :: %s", sInitFile.c_str());
+	LOG("SMBReader::Init :: %s", sInitFile.c_str());
 
 	Destroy();
 
@@ -174,7 +174,7 @@ bool	SMBReader::Init(const string& sInitFile)
 	
 	_sInitTypeName = _sInitFile;
 	_sViewPath = _sCurPath = _sHome;
-	LOG_WRITE("SMBReader::Init Success :: %s", sInitFile.c_str());
+	LOG("SMBReader::Init Success :: %s", sInitFile.c_str());
 	return true;
 }
 
@@ -208,10 +208,10 @@ string MLS::SMBReader::GetViewPath() const
 
 		string::size_type f1 = strTmp1.rfind("/");
 		sPath = strTmp1.substr( 0, f1 ) + strTmp2;
-		LOG_WRITE("MLS::SMBReader::GetViewPath [%s]", strTmp1.substr( 0, f1 ).c_str(), sPath.c_str() );
+		LOG("MLS::SMBReader::GetViewPath [%s]", strTmp1.substr( 0, f1 ).c_str(), sPath.c_str() );
 	}
 
-	LOG_WRITE("MLS::SMBReader::GetViewPath [%s]", sPath.c_str() );
+	LOG("MLS::SMBReader::GetViewPath [%s]", sPath.c_str() );
 	return ChgCurLocale( sPath );
 }
 
@@ -260,7 +260,7 @@ string MLS::SMBReader::GetRealPath( const string & str ) const
 	}
 
 	if (sPath.substr(sPath.size()-1, 1) != "/") sPath += '/';
-	LOG_WRITE("SMBReader::GetRealPath :: [%s]", sPath.c_str());
+	LOG("SMBReader::GetRealPath :: [%s]", sPath.c_str());
 	return sPath;
 }
 
@@ -279,7 +279,7 @@ bool	SMBReader::Read( const string& sPath )
 
 	strPath = GetRealPath(  sPath );
 
-	LOG_WRITE("smbc_opendir :: [smb:/%s]", strPath.c_str() );
+	LOG("smbc_opendir :: [smb:/%s]", strPath.c_str() );
 
 	void*	pWait = MsgWaitBox(_("Samba connect"), _("Please wait !!!"));
 
@@ -314,7 +314,7 @@ SmbAuthCheck:
 
 	MsgWaitEnd(pWait);
 
-	LOG_WRITE("smbc_opendir :: [smb:/%s] success !!!", strPath.c_str() );
+	LOG("smbc_opendir :: [smb:/%s] success !!!", strPath.c_str() );
 	_sViewPath = _sCurPath = strPath;
 	return true;
 }
@@ -328,7 +328,7 @@ bool	SMBReader::Next()
 	if ( !_pDirent )
 	{
 		if ( errno != EBADF )
-			LOG_WRITE("SMBReader::Next :: smbc_readdir [%s]", strerror( errno ) );
+			LOG("SMBReader::Next :: smbc_readdir [%s]", strerror( errno ) );
 		return false;
 	}
 	return true;
@@ -342,7 +342,7 @@ bool	SMBReader::GetInfo( MLS::File& tFile )
 
 	if ( !pDirent ) return false;
 
-	LOG_WRITE("GetInfo Name [%s]", pDirent->name );
+	LOG("GetInfo Name [%s]", pDirent->name );
 
 	switch( pDirent->smbc_type )
 	{
@@ -528,7 +528,7 @@ bool SMBReader::Copy(	Selection& tSelection, 		// remote
 
 	string sSourcePath = tSelection.GetSelectPath();
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s] [%s]", sTargetPath.c_str(), _sCurPath.c_str(), sTargetPathTmp2.c_str());
 
 	// 파일 복사
 	for (int n=0; n<(int)vFiles.size(); n++)
@@ -557,7 +557,7 @@ bool SMBReader::Copy(	Selection& tSelection, 		// remote
 			continue;
 		}
 
-		LOG_WRITE("SMBReader Copy sTargetName 1 [%s] [%s] [%s] [%d]", 
+		LOG("SMBReader Copy sTargetName 1 [%s] [%s] [%s] [%d]",
 					sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str(), sStat.st_size);
 		
 		String	sCount, sCount2;
@@ -585,12 +585,12 @@ askagain_samba_copy:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						bOverwrite = true;
 						break;
 					
@@ -799,7 +799,7 @@ bool	SMBReader::Paste(Selection& tSelection)
 	
 	string sSourcePath = tSelection.GetSelectPath();
 	
-	LOG_WRITE("Copy sTargetPath [%s] [%s]", _sCurPath.c_str(), sTargetPathTmp2.c_str());
+	LOG("Copy sTargetPath [%s] [%s]", _sCurPath.c_str(), sTargetPathTmp2.c_str());
 
 	EncodeChk(vFiles, false);
 
@@ -846,7 +846,7 @@ bool	SMBReader::Paste(Selection& tSelection)
 		sTargetName = sTargetPathTmp2 + pFile->sFullName.substr(sSourcePath.size());
 		sTargetName = KorCodeChg(sTargetName, _eEncode);
 
-		LOG_WRITE("SMBReader::Paste [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
+		LOG("SMBReader::Paste [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
 
 		if (stat(sSourceName.c_str(), &src_stat)==-1)
 		{
@@ -859,7 +859,7 @@ bool	SMBReader::Paste(Selection& tSelection)
 			break;
 		}
 
-		LOG_WRITE("SMBReader Paste sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
+		LOG("SMBReader Paste sTargetName 1 [%s] [%s] [%s]", sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str());
 		
 		mode_t permission = src_stat.st_mode;
 
@@ -892,12 +892,12 @@ askagain_samba_paste:
 				nSelect = SelectBox((_("File exists : ") + pFile->sName).c_str(), q, 0);
 				tProgress.Start();
 
-				LOG_WRITE("Selection [%d]", nSelect);
+				LOG("Selection [%d]", nSelect);
 				
 				switch(nSelect)
 				{
 					case 0:	// overwrite
-						LOG_WRITE("OverWrite");
+						LOG("OverWrite");
 						break;
 					
 					case 1: // skip
@@ -1120,7 +1120,7 @@ bool SMBReader::Remove(MLS::Selection& tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vFile[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("samba file remove [%s]", sTargetName.c_str());
+		LOG("samba file remove [%s]", sTargetName.c_str());
 		
 		if (smbc_unlink( ("smb:/"+sTargetName).c_str() ) < 0 )
 		{
@@ -1162,7 +1162,7 @@ bool SMBReader::Remove(MLS::Selection& tSelection, bool bMsgShow, bool bIgnore)
 	{
 		File*	pFile = vDirs[n];
 		sTargetName = pFile->sFullName;
-		LOG_WRITE("samba dir remove [%s]", sTargetName.c_str());
+		LOG("samba dir remove [%s]", sTargetName.c_str());
 		if (smbc_rmdir( ("smb:/"+sTargetName).c_str() ) < 0 )
 		{
 			String	sMsg; string sErrMsg = strerror( errno );
@@ -1217,7 +1217,7 @@ bool  SMBReader::View(const File* pFileOriginal, File* pFileChange)
 	sSourceName = pFileOriginal->sFullName;
 	sTargetName = _sTmpDir + pFileOriginal->sName;
 
-	LOG_WRITE("SMBReader::View [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
+	LOG("SMBReader::View [%s] [%s]", sSourceName.c_str(), sTargetName.c_str());
 
 	struct stat		sStat;
 	if ( smbc_stat( ("smb:/"+sSourceName).c_str(), &sStat) < 0 ) // success 
@@ -1229,7 +1229,7 @@ bool  SMBReader::View(const File* pFileOriginal, File* pFileChange)
 		return false;
 	}
 
-	LOG_WRITE("SMBReader View sTargetName 1 [%s] [%s] [%s] [%d]", 
+	LOG("SMBReader View sTargetName 1 [%s] [%s] [%s] [%d]",
 				sSourceName.c_str(), sTargetName.c_str(), _sCurPath.c_str(), sStat.st_size);
 	
 	ullong	uFileSize = pFileOriginal->uSize;
@@ -1328,7 +1328,7 @@ bool	SMBReader::Rename(File* pFile, const string& sRename)
 {
 	if (pFile == NULL) 
 	{
-		LOG_WRITE("Rename pFile is NULL !!!");
+		LOG("Rename pFile is NULL !!!");
 		return false;
 	}
 
@@ -1345,7 +1345,7 @@ bool	SMBReader::Rename(File* pFile, const string& sRename)
 	
 	sRenameName = _sCurPath + sRenameName;
 
-	LOG_WRITE("Rename - [%s] [%s]", pFile->sFullName.c_str(), sRenameName.c_str());
+	LOG("Rename - [%s] [%s]", pFile->sFullName.c_str(), sRenameName.c_str());
 
 	if ( smbc_rename(	("smb:/"+pFile->sFullName).c_str(), 
 						("smb:/"+sRenameName).c_str() ) < 0 )

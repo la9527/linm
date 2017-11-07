@@ -519,7 +519,7 @@ void CmdPanelImp::EditorChoice(bool bReadOnly, const string& sEditorCmd, File* p
 	}
 	else
 	{
-		LOG_WRITE("ParseAndRun !!! [%s]", sEditorCmd.c_str());
+		LOG("ParseAndRun !!! [%s]", sEditorCmd.c_str());
 	
 		if (sEditorCmd.empty())
 			ParseAndRun("vi " + addslash(tFile.sFullName));
@@ -603,7 +603,7 @@ void CmdPanelImp::Menu()
 	g_tMainFrame.Refresh(false);
 	if (tMlsMenu.GetCurCmd().size() != 0)
 	{
-		LOG_WRITE("Menu Run [%s]", tMlsMenu.GetCurCmd().c_str());
+		LOG("Menu Run [%s]", tMlsMenu.GetCurCmd().c_str());
 		g_tMainFrame.GetCommand()->Execute(tMlsMenu.GetCurCmd());
 	}
 }
@@ -656,7 +656,7 @@ void CmdPanelImp::ArchiveFileView()
 
 	File* pFile = _pPanel->GetCurFile();
 
-	LOG_WRITE("ArchiveFileView [%s]", pFile->sFullName.c_str());
+	LOG("ArchiveFileView [%s]", pFile->sFullName.c_str());
 	if (pFile->sType.substr(0, 7) == "archive")
 		MsgBox(_("Error"), "Archive file view failure !!!");
 	else
@@ -769,7 +769,7 @@ void CmdPanelImp::ClipCopy()
 	else
 		g_tMainFrame.GetClip()->Set(CLIP_COPY);
 
-	LOG_WRITE("ClipCopy [%s]", _pPanel->GetReader()->GetPath().c_str());
+	LOG("ClipCopy [%s]", _pPanel->GetReader()->GetPath().c_str());
 }
 
 void CmdPanelImp::ClipCut()
@@ -785,7 +785,7 @@ void CmdPanelImp::ClipCut()
 	else
 		g_tMainFrame.GetClip()->Set(CLIP_CUT);
 
-	LOG_WRITE("ClipCut [%s]", _pPanel->GetReader()->GetPath().c_str());
+	LOG("ClipCut [%s]", _pPanel->GetReader()->GetPath().c_str());
 }
 
 void CmdPanelImp::ClipPaste()
@@ -813,7 +813,7 @@ void	CmdPanelImp::CopyPaste()
 
 	Selection	tSelectionCopy;
 
-	LOG_WRITE("ClipPaste Copy Start 1 - [%d] [%s] [%s] !!!", 
+	LOG("ClipPaste Copy Start 1 - [%d] [%s] [%s] !!!",
 						_tMainSelection.GetSize(),
 						_tMainSelection[0]->sType.c_str(), 
 						_pPanel->GetReader()->GetInitType().c_str());
@@ -825,9 +825,9 @@ void	CmdPanelImp::CopyPaste()
 		_tMainSelection.ExpandDir(_tMainSelection.GetReader(), false);
 
 		// copy from the files to the temp directory.
-		LOG_WRITE("ClipPaste Copy Start !!!");
+		LOG("ClipPaste Copy Start !!!");
 		_pPanel->GetReader()->Copy(_tMainSelection);
-		LOG_WRITE("ClipPaste Copy End !!!");
+		LOG("ClipPaste Copy End !!!");
 	}
 	else
 	{
@@ -858,7 +858,7 @@ void	CmdPanelImp::CopyPaste()
 					return;
 				}
 
-				LOG_WRITE("g_tReaderCtl USE [%p] [%s]", pReader, sInitName.c_str());
+				LOG("g_tReaderCtl USE [%p] [%s]", pReader, sInitName.c_str());
 
 				bUseGlobalReaderCtl = true;	
 				if (p == string::npos)
@@ -866,16 +866,16 @@ void	CmdPanelImp::CopyPaste()
 				else
 					sInitName = _tMainSelection[0]->sType.substr(p+3);
 
-				LOG_WRITE("g_tReaderCtl USE [%p] [%s]", pReader, sInitName.c_str());
+				LOG("g_tReaderCtl USE [%p] [%s]", pReader, sInitName.c_str());
 
-				LOG_WRITE("%s", pReader->GetReaderName().c_str());
+				LOG("%s", pReader->GetReaderName().c_str());
 				pReader->Init(sInitName);
 				
 				if (pReader->GetConnected() == false) 
 				{
 					pReader->Destroy();
 				}
-				LOG_WRITE("g_tReaderCtl Init [%p] [%s]", pReader, sInitName.c_str());
+				LOG("g_tReaderCtl Init [%p] [%s]", pReader, sInitName.c_str());
 			}
 		}
 
@@ -909,18 +909,18 @@ void	CmdPanelImp::CopyPaste()
 							g_tCfg.GetValue("Static", "TmpCopyDir"),
 							 &tSelectionCopy) )
 		{
-			LOG_WRITE("File Copy Complite !!!");
+			LOG("File Copy Complite !!!");
 		
 			if (_pPanel->GetReader()->GetInitType() == "file://")
 			{
-				LOG_WRITE("File Copy Move !!!");
+				LOG("File Copy Move !!!");
 
 				// if init type is 'file', move to files.
 				_pPanel->GetReader()->Move(tSelectionCopy);
 			}
 			else
 			{
-				LOG_WRITE("File Copy TmpDir Remove !!!");
+				LOG("File Copy TmpDir Remove !!!");
 
 				// if init type is not 'file', copy from the temp directory to the paste directoy and then,
 				// temp directoy is remove.
@@ -941,7 +941,7 @@ void 	CmdPanelImp::CutPaste()
 
 	if (_tMainSelection.GetSize() <= 0) return;
 	
-	LOG_WRITE("ClipPaste CLIP_CUT Start - [%d] [%s] [%s] !!!", 
+	LOG("ClipPaste CLIP_CUT Start - [%d] [%s] [%s] !!!",
 						_tMainSelection.GetSize(),
 						_tMainSelection[0]->sType.c_str(),
 						_pPanel->GetReader()->GetInitType().c_str());
@@ -1115,14 +1115,14 @@ void CmdPanelImp::GoParent()
 
 void CmdPanelImp::HiddenFileView()
 {
-	LOG_WRITE("_pPanel->GetHiddenView() [%s]", _pPanel->GetHiddenView() ? "TRUE" : "FALSE");
+	LOG("_pPanel->GetHiddenView() [%s]", _pPanel->GetHiddenView() ? "TRUE" : "FALSE");
 	_pPanel->SetHiddenView();
 	Refresh();
 }
 
 void CmdPanelImp::FileOwnerView()
 {
-	LOG_WRITE("_pPanel->GetHiddenView() [%s]", _pPanel->GetHiddenView() ? "TRUE" : "FALSE");
+	LOG("_pPanel->GetHiddenView() [%s]", _pPanel->GetHiddenView() ? "TRUE" : "FALSE");
 	_pPanel->SetViewOwner( !_pPanel->GetViewOwner() );
 	Refresh();
 }
@@ -1320,7 +1320,7 @@ void 	CmdPanelImp::NewFile()
 	else
 		sFilename = g_tCfg.GetValue("Static", "TmpDir") + sFilename;
 
-	LOG_WRITE("NewFile !!! [%s]", sFilename.c_str());
+	LOG("NewFile !!! [%s]", sFilename.c_str());
 
 	bool bUseEditor = g_tCfg.GetBool("Default", "Use_LinM_Editor" );
 
@@ -1517,7 +1517,7 @@ void	CmdPanelImp::Extract()
 		return;
 	}
 
-	LOG_WRITE("Extract !!!");
+	LOG("Extract !!!");
 
 	File 	tFile;
 	if (_pPanel->GetReader()->View(_pPanel->GetCurFile(), &tFile) == false) return;
@@ -1538,7 +1538,7 @@ void	CmdPanelImp::Extract()
 		if (nFileinfo == ERROR)
 		{
 			q.push_back(_("Cancel"));
-			LOG_WRITE("Extract() !!!");
+			LOG("Extract() !!!");
 			int nSelect = SelectBox(sMsg.c_str(), q, 0);
 			if (nSelect == -1) return;
 			
@@ -2179,7 +2179,7 @@ void	CmdPanelImp::Diff()
 					tFile1.sFullName + " " + 
 					tFile2.sFullName + " > " + tFileTmp.sFullName;
 
-		LOG_WRITE("Diff [%s]", sCommand.c_str());
+		LOG("Diff [%s]", sCommand.c_str());
 
 		system( sCommand.c_str() );
 

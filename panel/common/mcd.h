@@ -134,12 +134,12 @@ protected:
 				if (pNode->nRow <= nFindRow)
 				{
 					tTmpDirList_Under.push_back(pNode);
-					LOG_WRITE("pNode Under [%d] [%d]", nFindRow, pNode->nRow);
+					LOG("pNode Under [%d] [%d]", nFindRow, pNode->nRow);
 				}
 				if (pNode->nRow > nFindRow)
 				{
 					tTmpDirList_Over.push_back(pNode);
-					LOG_WRITE("pNode Over [%d] [%d]", nFindRow, pNode->nRow);
+					LOG("pNode Over [%d] [%d]", nFindRow, pNode->nRow);
 				}
 			}
 		}

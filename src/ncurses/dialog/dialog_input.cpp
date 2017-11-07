@@ -81,7 +81,7 @@ int Input::DataInput(KeyInfo& tKeyInfoBef)
 
 		nBefKey = ERR;
 
-		LOG_WRITE("InputBox Key [%d]", (int)tKeyInfo);
+		LOG("InputBox Key [%d]", (int)tKeyInfo);
 
 		switch((int)tKeyInfo)
 		{
@@ -171,7 +171,7 @@ int Input::DataInput(KeyInfo& tKeyInfoBef)
 						_sWStr = _sWStr.substr(0, _nCur-1) + wstr + _sWStr.substr(_nCur-1);
 					else
 						_sWStr = _sWStr + wstr;
-					LOG_WRITE("Input Box Write [%s] [%s]", ((string)tKeyInfo).c_str(), wstrtostr(_sWStr).c_str());
+					LOG("Input Box Write [%s] [%s]", ((string)tKeyInfo).c_str(), wstrtostr(_sWStr).c_str());
 				}
 				else
 				{

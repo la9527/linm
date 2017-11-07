@@ -112,7 +112,7 @@ void CmdEditorImp::Menu()
 	g_tMainFrame.Refresh(false);
 	if (tEditorMenu.GetCurCmd().size() != 0)
 	{
-		LOG_WRITE("Menu Run [%s]", tEditorMenu.GetCurCmd().c_str());
+		LOG("Menu Run [%s]", tEditorMenu.GetCurCmd().c_str());
 		g_tMainFrame.GetCommand()->Execute(tEditorMenu.GetCurCmd());
 	}
 }
@@ -266,7 +266,7 @@ void	CmdEditorImp::FileSaveAs()
 		string	sTmpFile = pFile->sFullName;
 
 		pFile->sFullName = _pEditor->GetFileName();
-		LOG_WRITE("%s", pFile->sFullName.c_str());
+		LOG("%s", pFile->sFullName.c_str());
 
 		Selection	tSelection;
 		tSelection.Add( pFile );

@@ -83,7 +83,7 @@ public:
 	
 	void	setListPosition( int nOwner, int nGroup )
 	{
-		LOG_WRITE("Set Position :: nOwner [%d] nGroup [%d]", nOwner, nGroup);
+		LOG("Set Position :: nOwner [%d] nGroup [%d]", nOwner, nGroup);
 		_tOwnerBox.SetCur( nOwner );
 		_tGroupBox.SetCur( nGroup );
 	}
@@ -174,7 +174,7 @@ protected:
 	{
 		int key = (int)tKeyInfo;
 
-		LOG_WRITE("SearchProcess Key :: [%d]", key );
+		LOG("SearchProcess Key :: [%d]", key );
 		if (32 < key && key <=126)
 		{
 			if ( _nSelect == 0 )
@@ -184,7 +184,7 @@ protected:
 					string str = _vOwner[n];
 					if ( str[0] == (char)key )
 					{
-						LOG_WRITE("SearchProcess Owner str :: [%s]", str.c_str() );
+						LOG("SearchProcess Owner str :: [%s]", str.c_str() );
 						_tOwnerBox.SetCur( n );
 						return;
 					}
@@ -197,7 +197,7 @@ protected:
 					string str = _vGroup[n];
 					if ( str[0] == (char)key )
 					{
-						LOG_WRITE("SearchProcess Group str :: [%s]", str.c_str() );
+						LOG("SearchProcess Group str :: [%s]", str.c_str() );
 						_tGroupBox.SetCur( n );
 						return;
 					}

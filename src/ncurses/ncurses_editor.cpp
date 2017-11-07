@@ -45,11 +45,11 @@ void	NCurses_Editor::Init()
 	_tColorEditInfoA = g_tColorCfg.GetColorEntry("EditInfoA");
 	_tLine = g_tColorCfg.GetColorEntry("Line");
 
-	_sDefStyle = g_tSyntexExtCfg.GetValue("HighLight", "DefaultStyle", "default.style" );
-	string strName = g_tSyntexExtCfg.GetValue("HighLight", "ConfigPath", 
+	_sDefStyle = g_tSyntaxExtCfg.GetValue("HighLight", "DefaultStyle", "default.style" );
+	string strName = g_tSyntaxExtCfg.GetValue("HighLight", "ConfigPath",
 						"/usr/local/share/source-highlight;/usr/share/source-highlight" );
 
-	LOG_WRITE( "HIGHLIGHT :: [%s] [%s]", _sDefStyle.c_str(), strName.c_str() );
+	LOG( "HIGHLIGHT :: [%s] [%s]", _sDefStyle.c_str(), strName.c_str() );
 	
 	StringToken st(strName, ";");
 	while(st.Next())
@@ -62,7 +62,7 @@ void	NCurses_Editor::Init()
 		else
 			sCheckStyleFile = sPath + "/" + _sDefStyle;
 
-		LOG_WRITE( "HIGHLIGHT :: [%s]", sCheckStyleFile.c_str() );
+		LOG( "HIGHLIGHT :: [%s]", sCheckStyleFile.c_str() );
 
 		if ( access( sCheckStyleFile.c_str(), R_OK ) == 0 )
 		{
@@ -71,7 +71,7 @@ void	NCurses_Editor::Init()
 		}
 	}
 
-	LOG_WRITE( "HIGHLIGHT :: PATH [%s]", _sDefHighLightPath.c_str() );
+	LOG( "HIGHLIGHT :: PATH [%s]", _sDefHighLightPath.c_str() );
 #ifdef __LINM_SOURCE_HIGHLIGHT_USE__
 	_pLangDefManager = 0; 
 	_pHighlighter = 0;
@@ -79,152 +79,129 @@ void	NCurses_Editor::Init()
 #endif // __LINM_SOURCE_HIGHLIGHT_USE__
 }
 
-bool NCurses_Editor::GetLineSyntexData( const wstring& wLine, std::vector<SyntexData>& vSyntexData )
-{
 #ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+bool NCurses_Editor::GetLineSyntaxData( const wstring& wLine, std::vector<SyntaxData>& vSyntaxData, srchilite::HighlightStatePtr& statePtr )
+{
     string	sTab;
 	sTab.append(1, (char)TABCONVCHAR);
 
-    vSyntexData.clear();
+    vSyntaxData.clear();
     
 	if ( !_pHighlighter ) return false;
 	    
 	string sViewStr = MLSUTIL::Replace(wstrtostr(wLine), sTab.c_str(), " "); // Tab -> Space
 	if ( sViewStr.size() == 0 ) return false;
 	
-	_tFactory.clearSyntexList();
+	_tFactory.clearSyntaxList();
 	_tFormatParams.start = 0;
 
 	try 
 	{
-	    //LOG_WRITE( "GetLineSyntexData [%s]", sViewStr.c_str() );
+	    //LOG( "GetLineSyntaxData [%s]", sViewStr.c_str() );
 		_pHighlighter->highlightParagraph( sViewStr );
+
+		statePtr = _pHighlighter->getCurrentState();
 	} catch (const srchilite::HighlightBuilderException &e) {
-        LOG_WRITE( "%s", e.what() );
-		_tFactory.clearSyntexList();
+        LOG( "%s", e.what() );
+		_tFactory.clearSyntaxList();
 		return false;
     } catch (const srchilite::ParserException &e) {
-        LOG_WRITE( "%s", e.what() );
-		_tFactory.clearSyntexList();
+        LOG( "%s", e.what() );
+		_tFactory.clearSyntaxList();
 		return false;
     } catch (const srchilite::IOException &e ) {
-        LOG_WRITE( "%s", e.what() );
-		_tFactory.clearSyntexList();
+        LOG( "%s", e.what() );
+		_tFactory.clearSyntaxList();
 		return false;
     } catch (const std::exception &e) {
-        LOG_WRITE( "%s", e.what() );
-		_tFactory.clearSyntexList();
+        LOG( "%s", e.what() );
+		_tFactory.clearSyntaxList();
 		return false;
     }
-	
-    vSyntexData = _tFactory.getSyntexList();
+
+	vSyntaxData = _tFactory.getSyntaxList();
+
+	for( SyntaxData& tData : vSyntaxData ) {
+		string::size_type type = sViewStr.find(tData.strString, tData.nStart);
+		if ( type != string::npos ) {
+			int nScrLen = scrstrlen(sViewStr.substr(0, type));
+			if ( nScrLen != tData.nStart ) {
+				LOG( "SYNTAX SYNC - [%s] -> [%d] : [%d]", sViewStr.c_str(), tData.nStart, nScrLen );
+				tData.nScreenPos = nScrLen;
+			} else {
+				tData.nScreenPos = tData.nStart;
+			}
+		}
+	}
     return true;
-#else
-    return false;
-#endif
 }
+#endif // __LINM_SOURCE_HIGHLIGHT_USE__
 
 void	NCurses_Editor::PostLoad()
 {
-    LOG_WRITE( "NCurses_Editor::PostLoad()" );
-    _bSyntexOn = false;
-	
+    LOG( "NCurses_Editor::PostLoad()" );
+    _bSyntaxOn = false;
+
+#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
 	if ( _tFile.Ext().length() > 0 )
 	{
-        string  strSyntexFileName;
-        if ( g_tSyntexExtCfg.getExtSyntex( _tFile.Ext(), strSyntexFileName ) )
+        string  strSyntaxFileName;
+        if ( g_tSyntaxExtCfg.getExtSyntax( _tFile.Ext(), strSyntaxFileName ) )
         {
-            if ( SyntexInit( strSyntexFileName ) )
-                _bSyntexOn = true;
+            if ( SyntaxInit( strSyntaxFileName ) ) {
+                _bSyntaxOn = true;
+            }
         }
 	}
-	
-    if ( !_bSyntexOn )
+#endif
+    if ( !_bSyntaxOn )
     {
         string  sName =_tFile.sName;
         string::size_type p = sName.rfind(".");
 		if (p != string::npos && p !=0 )
 		    sName = sName.substr(0, p+1);
 
-        string  strSyntexFileName;
-        if ( g_tSyntexExtCfg.getNameSyntex( sName, strSyntexFileName ) )
-           if ( SyntexInit( strSyntexFileName ) )
-               _bSyntexOn = true;
+        string  strSyntaxFileName;
+        if ( g_tSyntaxExtCfg.getNameSyntax( sName, strSyntaxFileName ) ) {
+            if ( SyntaxInit(strSyntaxFileName) ) {
+                _bSyntaxOn = true;
+            }
+        }
     }
-    LOG_WRITE( "NCurses_Editor::PostLoad() :: _bSyntexOn : %s", 
-				_bSyntexOn ? "true" : "false" );
-				
-    if ( _bSyntexOn )
+    LOG( "NCurses_Editor::PostLoad() :: _bSyntaxOn : %s", _bSyntaxOn ? "true" : "false" );
+
+#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+    if ( _bSyntaxOn )
     {
+		_pHighlighter->clearStateStack();
+
         for ( int n = 0; n < _vText.size(); n++ )
-            GetLineSyntexData( _vText[n].wLine, _vText[n].vSyntexData );
+            GetLineSyntaxData( _vText[n].wLine, _vText[n].vSyntaxData, _vText[n].statePtr );
     }
+#endif
 }
 
 void	NCurses_Editor::PostUpdateLines( int nLineNum, int nHeight )
 {
 #ifdef __LINM_SOURCE_HIGHLIGHT_USE__
-    // FIXME...
-    if ( nLineNum > 0 )
+    LOG( "PostUpdateLines !!! - %d", nLineNum );
+	for ( int n = 0; n < 20; n++ )
     {
-        int nChkLine = nLineNum;
-        int nChkNum = 0;
-        for ( int n = nChkLine; n >= 0; n--)
-        {
-            const vector<SyntexData>& vSyntex = _vText[n].vSyntexData;
-            
-            if ( vSyntex.size() == 0 && _vText[n].wLine.size() > 0 ) 
-            {
-                nLineNum = n;
-                nHeight = (nLineNum - n) + nHeight + 1;
-                break;
-            }
-            
-            if ( nChkNum > 200 || n == 0 )
-            {
-                nLineNum = n;
-                nHeight = (nLineNum - n) + nHeight + 1;
-            }
-                
-            nChkNum++;
-        }
-    }
-    
-    for ( int n = 0; n < 200; n++ )
-    {
-        if ( nLineNum+n < _vText.size() )
-            GetLineSyntexData( _vText[nLineNum+n].wLine, _vText[nLineNum+n].vSyntexData );
-    }
-    
-    /*   
-    int nCheckNum = nLineNum + nHeight;
-    
-    if ( nCheckNum >= _vText.size() )
-        nCheckNum = _vText.size() - 1;
-        
-    int nChkNum = 0;
-    for ( int n = nCheckNum; n < _vText.size(); n++ )
-    {
-        if ( nChkNum > 200 )
-            break;
-        
-        nChkNum = nChkNum + 1;
-        if ( !GetLineSyntexData( _vText[n].wLine, _vText[n].vSyntexData ) )
-            continue;
-    }
-    */
-    
-    if ( _strSyntexLang.size() )
-    {
-        LOG_WRITE( "SyntexInit !!!!!!!!!!!!!!!!!!!!! --------" );
-        SyntexInit( _strSyntexLang );
+		if ( n == 0 && _vText[nLineNum + n].statePtr != nullptr ) {
+			_pHighlighter->setCurrentState( _vText[nLineNum + n].statePtr );
+		}
+        if ( nLineNum+n < _vText.size() ) {
+			GetLineSyntaxData(_vText[nLineNum + n].wLine,
+							  _vText[nLineNum + n].vSyntaxData,
+							  _vText[nLineNum + n].statePtr);
+		}
     }
 #endif // __LINM_SOURCE_HIGHLIGHT_USE__
 }
 
-bool	NCurses_Editor::SyntexInit( const std::string& strSyntexLang )
-{
 #ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+bool	NCurses_Editor::SyntaxInit( const std::string& strSyntaxLang )
+{
 	bool bFail = false;
 
 	try
@@ -235,7 +212,7 @@ bool	NCurses_Editor::SyntexInit( const std::string& strSyntexLang )
 
 			// we highlight C++ code for simplicity
 			_pHighlighter = new srchilite::SourceHighlighter(
-					_pLangDefManager->getHighlightState(_sDefHighLightPath, strSyntexLang) );
+					_pLangDefManager->getHighlightState(_sDefHighLightPath, strSyntaxLang) );
 
 			// the background color for the document (not used here)
 			std::string strDocBgColor;
@@ -261,22 +238,22 @@ bool	NCurses_Editor::SyntexInit( const std::string& strSyntexLang )
 			if ( _pHighlighter ) delete _pHighlighter;
 
 			_pHighlighter = new srchilite::SourceHighlighter(
-				_pLangDefManager->getHighlightState(_sDefHighLightPath, strSyntexLang) );
+				_pLangDefManager->getHighlightState(_sDefHighLightPath, strSyntaxLang) );
 			_pHighlighter->setFormatterManager(_pFormatterManager);
 			_pHighlighter->setFormatterParams(&_tFormatParams);
 		}
 	} 
     catch (const srchilite::HighlightBuilderException &e) {
-        LOG_WRITE( "%s", e.what() );
+        LOG( "%s", e.what() );
 		bFail = true;
     } catch (const srchilite::ParserException &e) {
-        LOG_WRITE( "%s", e.what() );
+        LOG( "%s", e.what() );
 		bFail = true;
 	} catch (const srchilite::IOException &e ) {
-        LOG_WRITE( "%s", e.what() );
+        LOG( "%s", e.what() );
 		bFail = true;
     } catch (const std::exception &e) {
-        LOG_WRITE( "%s", e.what() );
+        LOG( "%s", e.what() );
 		bFail = true;
     }
 
@@ -286,14 +263,11 @@ bool	NCurses_Editor::SyntexInit( const std::string& strSyntexLang )
 		if ( _pHighlighter ) delete _pHighlighter; _pHighlighter = 0;
 		return false;
 	}
-	_strSyntexLang = strSyntexLang;
-    LOG_WRITE( "SyntexInit :: %s :: true", (const char*)strSyntexLang.c_str() );
+	_strSyntaxLang = strSyntaxLang;
+    LOG( "SyntaxInit :: %s :: true", (const char*)strSyntaxLang.c_str() );
     return true;
-#else
-    //LOG_WRITE( "LINM_SOURCE_HIGHLIGHT_USE : false" );
-    return false;
-#endif // __LINM_SOURCE_HIGHLIGHT_USE__
 }
+#endif // __LINM_SOURCE_HIGHLIGHT_USE__
 
 void	NCurses_Editor::BackDrawEtc()
 {
@@ -332,20 +306,20 @@ void	NCurses_Editor::BackDrawEtc()
 	*/
 }
 
-void NCurses_Editor::DrawSyntexText(const wstring& str, 
-                                    const std::vector<SyntexData>& vSyntexData, 
+void NCurses_Editor::DrawSyntaxText(const wstring& str,
+                                    std::vector<SyntaxData>& vSyntaxData,
                                     int nY, int nN, bool bRevertColor )
 {
 	string	sTab;
 	sTab.append(1, (char)TABCONVCHAR);
 
 #ifndef __LINM_SOURCE_HIGHLIGHT_USE__
-	bool	bSyntexOn = false;
+	bool	bSyntaxOn = false;
 #else
-	bool	bSyntexOn = _bSyntexOn;
+	bool	bSyntaxOn = _bSyntaxOn;
 #endif
 	
-	if ( !bSyntexOn )
+	if ( !bSyntaxOn )
 	{
 		string sViewStr = wstrtostr(str);
 		string sViewStr2 = MLSUTIL::Replace(sViewStr, sTab.c_str(), " "); // Tab -> Space
@@ -365,32 +339,26 @@ void NCurses_Editor::DrawSyntexText(const wstring& str,
 		mvwprintw(_pWin, nY, nN, "%s", sViewStr.c_str());
 
 		int nX = nN;
-		for ( int n = 0; n < vSyntexData.size(); n++ )
-		{
+		for ( unsigned long n = 0; n < vSyntaxData.size(); n++ ) {
 			ColorEntry	tColorEdit = _tColorEdit;
-			tColorEdit.font = vSyntexData[n].nColor;
-			//tColorEdit.back = vSyntexData[n].nBgColor;
+			tColorEdit.font = vSyntaxData[n].nColor;
+			//tColorEdit.back = vSyntaxData[n].nBgColor;
 	
 			if ( !bRevertColor )
 				setcol(tColorEdit, _pWin);
 			else
 				setrcol(tColorEdit, _pWin);
-			
-			int nSyntexStart = 0;
-			//if ( vSyntexData[n].nStart != 0 )
-			//	nSyntexStart = scrstrlen( sViewStr.substr(0, vSyntexData[n].nStart) );
-			//mvwprintw(_pWin, nY, nX + nSyntexStart, "%s", vSyntexData[n].strString.c_str());
-			
-			mvwprintw(_pWin, nY, nX + vSyntexData[n].nStart, "%s", vSyntexData[n].strString.c_str());
-			//LOG_WRITE( "%03d [%s] [%d] [%d] Color [%d]", n, vSyntexData[n].strString.c_str(),
-			//                      nY, nX + vSyntexData[n].nStart, tColorEdit.font );
+
+            mvwprintw(_pWin, nY, nX + vSyntaxData[n].nScreenPos, "%s", vSyntaxData[n].strString.c_str());
+			//LOG( "%03d [%s] [%d] [%d] Color [%d]", n, vSyntaxData[n].strString.c_str(),
+			//                      nY, nX + vSyntaxData[n].nStart, tColorEdit.font );
 		}
 #endif
 	}
 }
 
 void NCurses_Editor::SelectionDraw(const wstring& sViewWStr, 
-                                   const std::vector<SyntexData>& vSyntexData, 
+                                   std::vector<SyntaxData>& vSyntaxData,
                                    int nY, int nN, int x1, int x2)
 {
 	string	sViewStr, sViewStr2, sViewStr3;
@@ -408,7 +376,7 @@ void NCurses_Editor::SelectionDraw(const wstring& sViewWStr,
 	sWStr2 = sViewWStr.substr(x1, x2-x1);
 	//sWStr3 = sViewWStr.substr(x2, sViewWStr.size());
 
-	DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+	DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 
 	if (sWStr2.size() != 0)
 	{
@@ -421,7 +389,7 @@ void NCurses_Editor::SelectionDraw(const wstring& sViewWStr,
 }
 
 void NCurses_Editor::LineDraw(	const wstring&	sViewWStr,
-                                const std::vector<SyntexData>& vSyntexData, 
+                                std::vector<SyntaxData>& vSyntaxData,
 						        int nY, 
 						        int nN, 
 						        int nTextNum,
@@ -453,7 +421,7 @@ void NCurses_Editor::LineDraw(	const wstring&	sViewWStr,
 
 	if (_EditMode == EDIT)
 	{
-		DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+		DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 	}
 	else if (_EditMode == SELECT || _EditMode == SHIFT_SELECT)
 	{
@@ -484,21 +452,21 @@ void NCurses_Editor::LineDraw(	const wstring&	sViewWStr,
 		if (tEditSelect.y1 == nTextNum && tEditSelect.y2 == nTextNum)
 		{
 			if (tEditSelect.x1 >= nCurSize && tEditSelect.x2 <= nCurEndSize)
-				SelectionDraw(sViewWStr, vSyntexData, nY, nN, x1, x2);
+				SelectionDraw(sViewWStr, vSyntaxData, nY, nN, x1, x2);
 			else if (tEditSelect.x1 >= nCurSize && tEditSelect.x2 > nCurEndSize)
-				SelectionDraw(sViewWStr, vSyntexData, nY, nN, x1, sViewWStr.size());
+				SelectionDraw(sViewWStr, vSyntaxData, nY, nN, x1, sViewWStr.size());
 			else if (tEditSelect.x1 < nCurSize && tEditSelect.x2 > nCurSize)
-				SelectionDraw(sViewWStr, vSyntexData, nY, nN, 0, x2);
+				SelectionDraw(sViewWStr, vSyntaxData, nY, nN, 0, x2);
 			else if (tEditSelect.x1 < nCurSize && tEditSelect.x2 > nCurEndSize)
-				DrawSyntexText( sViewWStr, vSyntexData, nY, nN, true );
+				DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, true );
 			else
-				DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+				DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 		}
 		else if (tEditSelect.y1 == nTextNum)
 		{
 			if (tEditSelect.x1 >= nCurSize)
 			{
-				SelectionDraw(sViewWStr, vSyntexData, nY, nN, x1, sViewWStr.size());
+				SelectionDraw(sViewWStr, vSyntaxData, nY, nN, x1, sViewWStr.size());
 				
 				string sViewStr = wstrtostr(sViewWStr);
 				string sViewStr2 = MLSUTIL::Replace(sViewStr, sTab.c_str(), " "); // Tab -> Space
@@ -506,18 +474,18 @@ void NCurses_Editor::LineDraw(	const wstring&	sViewWStr,
 				whline(_pWin, ' ', width-nN-scrstrlen(sViewStr2)-nBoxLine);
 			}
 			else if (tEditSelect.x1 < nCurSize)
-				DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+				DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 			else
-				DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+				DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 		}
 		else if (tEditSelect.y2 == nTextNum)
 		{
 			if (tEditSelect.x2 > nCurSize)
-				SelectionDraw(sViewWStr, vSyntexData, nY, nN, 0, x2);
+				SelectionDraw(sViewWStr, vSyntaxData, nY, nN, 0, x2);
 			else if (tEditSelect.x2 > nCurEndSize)
-				DrawSyntexText( sViewWStr, vSyntexData, nY, nN, true );
+				DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, true );
 			else
-				DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+				DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 		}
 		else if (tEditSelect.y1 < nTextNum && tEditSelect.y2 > nTextNum)
 		{
@@ -530,7 +498,7 @@ void NCurses_Editor::LineDraw(	const wstring&	sViewWStr,
 		}
 		else
 		{
-			DrawSyntexText( sViewWStr, vSyntexData, nY, nN, false );
+			DrawSyntaxText( sViewWStr, vSyntaxData, nY, nN, false );
 		}
 	}
 }
@@ -569,7 +537,7 @@ void NCurses_Editor::CurserDraw(int nY, int nN)
 	//setsyx(y+nY+line1, x+nN+cur);
 	
 	wnoutrefresh(_pWin);
-	LOG_WRITE("CURSOR :: [%d] [%d] [%d] [%d]", line1, cur, _nCurCulumn, vLineInfo.size());
+	LOG("CURSOR :: [%d] [%d] [%d] [%d]", line1, cur, _nCurCulumn, vLineInfo.size());
 }
 
 void NCurses_Editor::Draw()
@@ -578,7 +546,7 @@ void NCurses_Editor::Draw()
 
 	if (!_pWin)
 	{
-		LOG_WRITE("NCurses_Editor pWin NULL");
+		LOG("NCurses_Editor pWin NULL");
 		return;
 	}
 
@@ -591,7 +559,7 @@ void NCurses_Editor::Draw()
 	int nViewWidth = 0, nKrStrSize = 0, nBoxLine = 0;
 
 	LineInfo	        tLineInfo;
-	vector<SyntexData>  vSyntexInfo;
+	vector<SyntaxData>  vSyntaxInfo;
 
 	if ( _bFullScreen ) 
 		nBoxLine = 0;
@@ -618,12 +586,9 @@ void NCurses_Editor::Draw()
 		if (_vViewString.size() > t)
 		{
 			tLineInfo = _vViewString[t];
-			vSyntexInfo = _vViewString[t].vSyntexData;
+			vSyntaxInfo = _vViewString[t].vSyntaxData;
 
-			//LOG_WRITE("SyntexInfo :: [%d] :: [%d]", t, (int)vSyntexInfo.size() );
-            //vSyntexInfo = _vText[tLineInfo.nTextLine].vSyntexData;
-            
-			LineDraw(tLineInfo.sWString, vSyntexInfo, nBoxLine+t, nBoxLine, tLineInfo.nTextLine, tLineInfo.nNextLineNum);
+			LineDraw(tLineInfo.sWString, vSyntaxInfo, nBoxLine+t, nBoxLine, tLineInfo.nTextLine, tLineInfo.nNextLineNum);
 		}
 		else
 		{

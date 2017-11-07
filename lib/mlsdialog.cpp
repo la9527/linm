@@ -8,9 +8,9 @@ static MlsProgress*	g_pProgress = NULL;
 
 void	SetDialogProgress( MlsDialog* pDialog, MlsProgress* pProgress )
 {
-	LOG_WRITE("SetDialogProgress Dialog [%p] Progress [%p]", 
+	LOG("SetDialogProgress Dialog [%p] Progress [%p]",
 				pDialog, pProgress );
-	LOG_WRITE("SetDialogProgress g_pDialog [%p] g_pProgress [%p]", 
+	LOG("SetDialogProgress g_pDialog [%p] g_pProgress [%p]",
 				g_pDialog, g_pProgress );
 	g_pDialog = pDialog;
 	g_pProgress= pProgress;
@@ -165,7 +165,7 @@ void CommonProgress::Start(void* pArg)
 		_bStarted = true;
 		_pProgress->_bStarted = true;
 		show();
-		LOG_WRITE("CommonProgress::Start");
+		LOG("CommonProgress::Start");
 		_pProgress->Start(pArg, JOIN);
 	}
 	catch(Exception& ex)
@@ -180,7 +180,7 @@ void CommonProgress::End()
 		_pProgress->_bStarted = false;
 		//_pProgress->Cancel(); // error occurred.
 		_pProgress->End();
-		LOG_WRITE("CommonProgress End ...");
+		LOG("CommonProgress End ...");
 	}
 	catch(Exception& ex)
 	{

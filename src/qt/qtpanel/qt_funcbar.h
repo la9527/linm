@@ -12,7 +12,7 @@ class QHBoxLayout;
 class PanelCmd;
 
 /**
-	@author Byoungyoung, La <la9527@yahoo.co.kr>
+	@author Byoungyoung, La <la9527@daum.net>
 */
 class FuncBar : public QWidget
 {

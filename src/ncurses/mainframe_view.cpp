@@ -404,7 +404,7 @@ int 	ShellCmd::DataInput(KeyInfo& tKeyInfoBef)
 
 		nBefKey = ERR;
 
-		LOG_WRITE("InputBox Key [%d] [%s]", (int)tKeyInfo, ((string)tKeyInfo).c_str());
+		LOG("InputBox Key [%d] [%s]", (int)tKeyInfo, ((string)tKeyInfo).c_str());
 
 		if ((int)tKeyInfo != KEY_TAB)
 			_nTabIndex = 0;
@@ -551,7 +551,7 @@ int 	ShellCmd::DataInput(KeyInfo& tKeyInfoBef)
 				else
 					nCutCur = _nStart;
 		
-				LOG_WRITE("CutCur [%d %d] [%s]", nCutCur, _nCur, wstrtostr(_sWStr).c_str());
+				LOG("CutCur [%d %d] [%s]", nCutCur, _nCur, wstrtostr(_sWStr).c_str());
 				
 				_sWStr.erase(nCutCur, _nCur-nCutCur);
 				
@@ -589,14 +589,14 @@ int 	ShellCmd::DataInput(KeyInfo& tKeyInfoBef)
 			case 8: // OntheSpot Patch (Ctrl+H)
 				if (strtowstr((string)tKeyInfo).size() != 0)
 				{
-					LOG_WRITE("[%d]", _nCur );
+					LOG("[%d]", _nCur );
 					if (!_sWStr.empty() && _nCur) _sWStr.erase(_nCur-1, 1);
 					wstring wstr = strtowstr((string)tKeyInfo);
 					if (_sWStr.size() > _nCur)
 						_sWStr = _sWStr.substr(0, _nCur-1) + wstr + _sWStr.substr(_nCur-1);
 					else
 						_sWStr = _sWStr + strtowstr((string)tKeyInfo);
-					LOG_WRITE("Input Write [%s] [%s]", ((string)tKeyInfo).c_str(), wstrtostr(_sWStr).c_str());
+					LOG("Input Write [%s] [%s]", ((string)tKeyInfo).c_str(), wstrtostr(_sWStr).c_str());
 				}
 				else
 				{

@@ -18,6 +18,7 @@
 
 #include "mainframe.h"
 #include "subshell.h"
+#include "FSWatchDetect.h"
 #include <functional>
 
 using namespace MLSUTIL;
@@ -200,7 +201,7 @@ void MainFrame::DrawInit() {
                 funcDrawChange(_nActive, nullptr);
             } else {
                 funcDrawChange(0, [this]() {
-                SetPosition(&_tDrawPath[0], this, 1, 0, 1, width / 2);
+                    SetPosition(&_tDrawPath[0], this, 1, 0, 1, width / 2);
                 });
                 funcDrawChange(1, [this]() {
                     SetPosition(&_tDrawPath[1], this, 1, _tDrawPath[0].width, 1, width - _tDrawPath[0].width);
@@ -208,7 +209,7 @@ void MainFrame::DrawInit() {
             }
         } else if (_bSplit && _bViewType) {
             funcDrawChange(0, [this]() {
-            SetPosition(&_tDrawPath[0], this, 1, 0, 1, width);
+                SetPosition(&_tDrawPath[0], this, 1, 0, 1, width);
             });
         }
     }
@@ -422,6 +423,33 @@ void MainFrame::Draw() {
         _tShell.SetPanel(_tCommand.GetPanel());
         _tShell.Show();
     }
+
+    fsWatchUpdate();
+}
+
+void MainFrame::fsWatchUpdate() {
+    vector<string> vWatchPaths;
+    if (!_bSplit) {
+        if (_eViewType[_nActive] == PANEL && _tPanel[_nActive].GetReader()->GetInitType() == "file://") {
+            vWatchPaths.push_back(_tPanel[_nActive].GetPath());
+        }
+    } else {
+        if (_eViewType[0] == PANEL && _tPanel[0].GetReader()->GetInitType() == "file://") {
+            vWatchPaths.push_back(_tPanel[0].GetPath());
+        }
+        if (_eViewType[1] == PANEL && _tPanel[1].GetReader()->GetInitType() == "file://") {
+            vWatchPaths.push_back(_tPanel[1].GetPath());
+        }
+    }
+    if ( vWatchPaths.size() > 0 ) {
+        g_tFSWatchDetect.start(vWatchPaths, [this](const vector<string>& paths) {
+            // refresh
+            LOG( "WATCH - REFRESH !!!" );
+            _tCommand.Execute("Cmd_Refresh");
+        });
+    } else {
+        g_tFSWatchDetect.stop();
+    }
 }
 
 void MainFrame::CmdShell(bool bExecute) {
@@ -430,7 +458,7 @@ void MainFrame::CmdShell(bool bExecute) {
 
 void MainFrame::Execute(KeyInfo &tKeyInfo) {
     _tPanel[_nActive]._bChange = true;
-    LOG_WRITE("Key [%d] [%s]", (int) tKeyInfo, tKeyInfo.sKeyName.c_str());
+    LOG("Key [%d] [%s]", (int) tKeyInfo, tKeyInfo.sKeyName.c_str());
 
     if (_bShell) {
         int nKey = _tShell.DataInput(tKeyInfo);
@@ -515,7 +543,7 @@ void MainFrame::Execute(KeyInfo &tKeyInfo) {
                     _tEditor[_nActive].InputData((string) tKeyInfo);
             } else if ((int) tKeyInfo > 27) {
                 _tEditor[_nActive].InputData((string) tKeyInfo);
-                LOG_WRITE("KEY INPUT :: [%s]", ((string) tKeyInfo).c_str());
+                LOG("KEY INPUT :: [%s]", ((string) tKeyInfo).c_str());
             }
         } else {
             string sCmd = g_tKeyCfg.GetRunCmd(tKeyInfo);
@@ -541,10 +569,10 @@ bool MainFrame::MouseEvent(int Y, int X, mmask_t bstate) {
         _bShell = false;
 
     if (Y == 0) {
-        LOG_WRITE("MouseEvent Y [%d] X [%d]", Y, X);
+        LOG("MouseEvent Y [%d] X [%d]", Y, X);
         int nFunc = _tDrawTop.MouseEvent(Y, X, bstate);
         if (nFunc != -1) {
-            LOG_WRITE("Mouse Event FUNC [%d]", nFunc);
+            LOG("Mouse Event FUNC [%d]", nFunc);
             String sKeyStr;
             sKeyStr.Append("F%d", nFunc);
             _tCommand.Execute(g_tKeyCfg.GetCommand(sKeyStr.c_str(), _eViewType[_nActive]));

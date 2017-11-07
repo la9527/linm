@@ -174,16 +174,16 @@ void Mcd::Destroy(Dir *pTree, bool bOrdering)
 	
 	int nDepth = pTree->nDepth;
 
-	LOG_WRITE("_pOrder size [%d] [%d]", _pOrder.size(), nDepth);
+	LOG("_pOrder size [%d] [%d]", _pOrder.size(), nDepth);
 	for (pDirIterator i= _pOrder.begin()+pTree->nIndex+1; i!=_pOrder.end(); i++)
 	{
-		LOG_WRITE("depth [%d] ndepth [%d] 1", (*i)->nDepth, nDepth);
+		LOG("depth [%d] ndepth [%d] 1", (*i)->nDepth, nDepth);
 		if (nDepth >= (*i)->nDepth) break;
-		LOG_WRITE("depth [%d] ndepth [%d] 2", (*i)->nDepth, nDepth);
+		LOG("depth [%d] ndepth [%d] 2", (*i)->nDepth, nDepth);
 		delete *i;
 	}
 
-	LOG_WRITE("_pOrder size [%d] [%d] end", _pOrder.size(), nDepth);
+	LOG("_pOrder size [%d] [%d] end", _pOrder.size(), nDepth);
 
 	pTree->vNode.clear();
 	pTree->bCheck = false;
@@ -225,7 +225,7 @@ Mcd::SetCur(const string &sPath)
 	if (sTmpPath.substr(0, 1) != "/") sTmpPath = "/" + sTmpPath;
 	if (sTmpPath2.substr(0, 1) != "/") sTmpPath2 = "/" + sTmpPath2;
 
-	//LOG_WRITE("MCD::SetCur [%s] [%s]", sPath.c_str(), sTmpPath.substr(sTmpPath2.size()).c_str());
+	//LOG("MCD::SetCur [%s] [%s]", sPath.c_str(), sTmpPath.substr(sTmpPath2.size()).c_str());
 		
 	StringToken tStrToken(sTmpPath.substr(sTmpPath2.size()), "/");
 	
@@ -312,12 +312,12 @@ Mcd::Key_Right()
 	if (!(*_pCur)->vNode.empty()) 
 	{
 		_pCur= _pOrder.begin() + (*_pCur)->vNode.front()->nIndex;
-		LOG_WRITE("Key_Right vNode empty [%s]", (*_pCur)->Path().c_str());
+		LOG("Key_Right vNode empty [%s]", (*_pCur)->Path().c_str());
 	}
 	else
 	{
 		string p = (*_pCur)->Path();
-		LOG_WRITE("Key_Right [%s]", p.c_str());
+		LOG("Key_Right [%s]", p.c_str());
 		Scan(*_pCur, 1);
 		SetCur(p);
 		if ((*_pCur)->vNode.empty()) {
@@ -342,7 +342,7 @@ Mcd::Key_End()
 	while((!(*_pCur)->vNode.empty()))
 	{
 		_pCur= _pOrder.begin() + (*_pCur)->vNode.front()->nIndex;
-		LOG_WRITE("Key_Right vNode empty [%s]", (*_pCur)->Path().c_str());
+		LOG("Key_Right vNode empty [%s]", (*_pCur)->Path().c_str());
 	}
 }
 
@@ -395,7 +395,7 @@ bool Mcd::AddDirectory( const string &sDir )
 	{
 		const string &sToken = st.Get();
 
-		//LOG_WRITE("Token :: [%s]", sToken.c_str());
+		//LOG("Token :: [%s]", sToken.c_str());
 
 		pDirIterator i;
 
@@ -410,7 +410,7 @@ bool Mcd::AddDirectory( const string &sDir )
 
 		if (i == pDir->vNode.end())
 		{// 못찾았을 경우
-			//LOG_WRITE("Not Find...!!! [%s]", sToken.c_str());
+			//LOG("Not Find...!!! [%s]", sToken.c_str());
 			
 			string::size_type p = sDir.find(sToken);
 			string sPath;
@@ -496,14 +496,14 @@ int Mcd::Scan(Dir *pDir, int nDepth)
 		vDir.pop_back();
 
 		// Linked 되어 있으면 그냥 넘긴다.
-		//LOG_WRITE("Node Search [%d]", pTree->tFile.bLink);
+		//LOG("Node Search [%d]", pTree->tFile.bLink);
 
 		//if (pTree->tFile.bLink) continue;
 
-		//LOG_WRITE("Node Search [%s]", pTree->Path().c_str());
+		//LOG("Node Search [%s]", pTree->Path().c_str());
 		if (_pReader->Read(pTree->Path()) == false) 
 		{
-			//LOG_WRITE("Node Search False [%s]", pTree->Path().c_str());
+			//LOG("Node Search False [%s]", pTree->Path().c_str());
 			continue;
 		}
 
@@ -540,7 +540,7 @@ int Mcd::Scan(Dir *pDir, int nDepth)
 				
 				if ( !bNotSave )
 					pTree->vNode.push_back(new Dir(tFile, pTree));
-				//LOG_WRITE("Node Insert [%s]", tFile.sFullName.c_str());
+				//LOG("Node Insert [%s]", tFile.sFullName.c_str());
 			}
 		}
 
@@ -683,7 +683,7 @@ void	Mcd::MountList()
 
 	if (CmdShell::CmdExeArg( "mount", 0, vLineArgData, false) == -1)
 	{
-		LOG_WRITE("CmdExeArg Error !!!");
+		LOG("CmdExeArg Error !!!");
 		return;
 	}
 

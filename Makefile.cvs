@@ -1,11 +1,29 @@
+DEFAULT_BUILD_DIR := ${shell pwd}/cmake-build-output
+DEFAULT_INSTALL_DIR := ${shell pwd}/output
+DEFAULT_SOURCE_DIR := ${shell pwd}
+
 default: all
 
 all: build
 
 build:
-	cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$(shell pwd)/output/install -DDEBUG_MODE:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -G "CodeBlocks - Unix Makefiles" --build $(shell pwd)/cmake-build-debug $(shell pwd)
+	mkdir -p ${DEFAULT_BUILD_DIR}
+	cd ${DEFAULT_BUILD_DIR}; cmake -DCMAKE_BUILD_TYPE=Release ${DEFAULT_SOURCE_DIR}
+
+debug-build:
+	mkdir -p ${DEFAULT_BUILD_DIR}
+	cd ${DEFAULT_BUILD_DIR}; cmake -DCMAKE_BUILD_TYPE=Debug \
+	    -DCMAKE_INSTALL_PREFIX=${DEFAULT_INSTALL_DIR} \
+	    -DDEBUG_MODE:BOOL=ON \
+	    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+	    -G "CodeBlocks - Unix Makefiles" \
+	    ${DEFAULT_SOURCE_DIR}
+
+make:
+	cd ${DEFAULT_BUILD_DIR}; $(MAKE) -f Makefile
 
 clean:
-	cmake --build $(shell pwd)/cmake-build-debug --target clean
-	rm -f CMakeCache.txt
+	cmake --build ${DEFAULT_BUILD_DIR} --target clean
 
+distclean:
+	rm -r ${DEFAULT_BUILD_DIR}

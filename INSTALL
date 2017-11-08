@@ -4,5 +4,15 @@
 
 ### Common requirements
 
-- A C++ Compile
-- [CMake](http://www.cmake.org] >= 2.8.0.
+In order to build linm, you need to install several components:
+
+- A C compiler (C++11)
+- [CMake](http://www.cmake.org) >= 2.8.0.
+
+optional:
+- [libz](http://www.zlib.net) >= 1.2
+- [openssl](http://www.openssl.org) >= 0.9.8
+- [libssh2](http://www.libssh2.org]) >= 1.4.0
+- [source-highlight]( )
+
+

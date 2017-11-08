@@ -122,10 +122,9 @@ CHECK_INCLUDE_FILE (CoreServices/CoreServices.h HAVE_CORESERVICES_CORESERVICES_H
 CHECK_INCLUDE_FILE_CXX (atomic HAVE_CXX_ATOMIC)
 CHECK_INCLUDE_FILE_CXX (mutex HAVE_CXX_MUTEX)
 
-message( STATUS "LIB_SOURCE_FILES: ${LIB_SOURCE_FILES}")
-add_library(libfswatch SHARED ${LIB_SOURCE_FILES})
+add_library(fswatch STATIC ${LIB_SOURCE_FILES})
 
 include_directories( ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/lib )
-target_link_libraries(libfswatch ${CORESERVICES_LIBRARY}  ${LIBICONV} ${LIBINTL})
+#target_link_libraries(fswatch ${CORESERVICES_LIBRARY}  ${LIBICONV} ${LIBINTL})
 
 

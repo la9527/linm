@@ -209,22 +209,30 @@ int		SFtpReader::SessionStartup(const string& sIP)
 
 	string 	sKex = "none", sHostKey = "none", sCrypt_cs = "none", sMac_cs = "none", sComp_cs = "none";
 
-	sKex = g_tCfg.GetValue("SSH", "Method_Kex", 
+	sKex = g_tCfg.GetValue("SSH", "Method_Kex",
 						"diffie-hellman-group1-sha1,"
 						"diffie-hellman-group14-sha1,"
-						"diffie-hellman-group-exchange-sha1");
+						"diffie-hellman-group-exchange-sha1,"
+						"diffie-hellman-group-exchange-sha256");
 	sHostKey = g_tCfg.GetValue("SSH", "Method_HostKey", "ssh-dss,ssh-rsa");
+
 	sCrypt_cs = g_tCfg.GetValue("SSH", "Method_Crypto",
+						"aes256-ctr,"
+						"aes192-ctr,"
+						"aes128-ctr,"
 						"aes256-cbc,"
-						"rijndael-cbc@lysator.liu.se,"
-						"aes192-cbc,"
+			            "aes192-cbc,"
 						"aes128-cbc,"
+						"3des-cbc, "
 						"blowfish-cbc,"
-						"arcfour,"
 						"cast128-cbc,"
-						"3des-cbc,"
+						"arcfour,"
+						"arcfour128,"
 						"none");
-	sMac_cs = g_tCfg.GetValue("SSH", "Method_Mac", 
+
+	sMac_cs = g_tCfg.GetValue("SSH", "Method_Mac",
+						"hmac-sha2-256,"
+						"hmac-sha2-512,"
 						"hmac-sha1,"
 						"hmac-sha1-96,"
 						"hmac-md5,"

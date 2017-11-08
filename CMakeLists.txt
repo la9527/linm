@@ -6,16 +6,18 @@ set(VERSION "0.9.1")
 set(CMAKE_CXX_STANDARD 11)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/output")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+
+message( STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+message( STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
 
 # disallow in-source build
 include(MacroEnsureOutOfSourceBuild)
 macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake /path/to/${PROJECT_NAME} [options]' there.")
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # header or library check.
 
@@ -27,17 +29,17 @@ include(CheckStructHasMember)
 include(CheckIncludeFileCXX)
 
 # Boost library find
-set(Boost_USE_STATIC_LIBS        ON) # only find static libs
-set(Boost_USE_MULTITHREADED      ON)
-find_package(Boost 1.50.0 COMPONENTS program_options signals system)
+# set(Boost_USE_STATIC_LIBS        ON) # only find static libs
+# set(Boost_USE_MULTITHREADED      ON)
+# find_package(Boost 1.50.0 COMPONENTS program_options signals system)
 
-if (NOT Boost_FOUND)
-    message(FATAL_ERROR "'boost' library is not found. please install 'boost' library.(http://www.boost.org/)")
-else()
-    include_directories(${Boost_INCLUDE_DIRS})
-    message( STATUS "BOOST INCLUDE : ${Boost_INCLUDE_DIRS}")
-    message( STATUS "BOOST LIBS : ${Boost_LIBRARIES}")
-endif()
+# if (NOT Boost_FOUND)
+#    message(FATAL_ERROR "'boost' library is not found. please install 'boost' library.(http://www.boost.org/)")
+#else()
+#    include_directories(${Boost_INCLUDE_DIRS})
+#    message( STATUS "BOOST INCLUDE : ${Boost_INCLUDE_DIRS}")
+#    message( STATUS "BOOST LIBS : ${Boost_LIBRARIES}")
+#endif()
 
 CHECK_INCLUDE_FILES(errno.h HAVE_ERRNO_H)
 CHECK_INCLUDE_FILES(fcntl.h HAVE_FCNTL_H)
@@ -323,11 +325,31 @@ add_subdirectory(editor)
 add_subdirectory(src)
 add_subdirectory(sh)
 
+if ( DEBUG_MODE )
+    add_subdirectory(test)
+endif( DEBUG_MODE )
+
 # make config.h
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
+message("============================================")
+message("              Build Status")
+message("")
+if ( DEBUG_MODE )
+    message("- Debug mode : ${DEBUG_MODE}" )
+endif()
+if ( NOT OPENSSL_FOUND AND NOT LIBSSH2_LIBRARIES )
+    message("- Unsupport sftp protocol.")
+endif()
+if( NOT ENABLE_SAMBA )
+    message("- Unsupport samba protocol.")
+endif()
+if( NOT ENABLE_SOURCE_HIGHLIGHT )
+    message("- Unsupport source highlight.")
+endif()
+message("============================================")
 ########### install files ###############
 
 # install(FILES README.md README.ko DESTINATION share )

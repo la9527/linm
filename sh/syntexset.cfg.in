@@ -1,4 +1,4 @@
-#!version 0.9.0
+#!version @LINM_VERSION@
 [Syntax]
 # Extend files for syntex.
 ext[ada;] = ada.lang
@@ -27,6 +27,7 @@ ext[haxe;hax] = hexe.lang
 ext[html;htm;html4;html3;html5] = html.lang
 ext[java] = java.lang
 ext[js] = javascript.lang
+ext[json] = json.lang
 ext[latex;ltx] = latex.lang
 ext[ldap] = ldap.lang
 ext[log] = log.lang
@@ -63,6 +64,7 @@ ext[xml;xsl;xslt] = xml.lang
 ext[xorg] = xorg.lang
 
 # File pre-name setting.
+name[makefile] = makefile.lang
 name[changelog] = changelog.lang
 name[url] = url.lang
 name[todo] = todo.lang
@@ -71,5 +73,3 @@ name[xorg] = xorg.lang
 [HighLight]
 DefaultStyle = default.style
 ConfigPath = /usr/local/share/source-highlight;/usr/share/source-highlight;/opt/local/share/source-highlight
-
-

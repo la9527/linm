@@ -2,6 +2,9 @@
 #include "strutil.h"
 #include "mlslog.h"
 #include "exception.h"
+#include <panel/common/file.h>
+#include <panel/vfs/libssh2/SFtpReader.h>
+#include <lib/mlsdialog.h>
 #include "passencrypt.h"
 
 using namespace MLS;
@@ -20,9 +23,13 @@ int main(int argc, char *argv[])
 	{
 		sDir = argv[1];
 	}
+
+	SetDialogProgress( new MlsDialog(), new MlsProgress() );
 	
 	SFtpReader	tSFtpReader;
-	tSFtpReader.Init("la9527@localhost");
+	if ( tSFtpReader.Init("la9527@localhost") == false ) {
+        printf( "tSFtpReader.Init() - fail." );
+    }
 
 	if (tSFtpReader.Read(sDir) == false) return 0;
 	bool bBreak = false;
@@ -32,7 +39,7 @@ int main(int argc, char *argv[])
 		MLS::File	tFile;
 		tSFtpReader.GetInfo(tFile);
 
-		printf("%10s %6s %6s %10d %s\n", tFile.sAttr.c_str(), 
+		printf("%10s %6s %6s %10lld %s\n", tFile.sAttr.c_str(),
 						tFile.sDate.c_str(), 
 						tFile.sTime.c_str(), 
 						tFile.uSize, 

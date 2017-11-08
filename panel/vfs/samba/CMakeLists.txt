@@ -15,6 +15,4 @@ if( NOT DISABLE_SAMBA AND SMBCLIENT_FOUND )
        SMBReader.cpp
     )
     add_library(linmpluginsmb STATIC ${linmpluginsmb_LIB_SRCS} ${linmpluginsmb_LIB_INCLUDES})
-else()
-    message( WARNING "Unsupported smb connection" )
 endif()

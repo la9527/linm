@@ -32,13 +32,9 @@ MlsMutex::
 ~MlsMutex()
 {
 	#ifdef PTHREAD_ENABLE
-    int	nResult;
-	nResult	= pthread_cond_destroy(	&m_tReady);
-	if(nResult)	throw	Exception("MlsMutexComm::CondDestroy");
-	nResult	= pthread_cond_destroy(	&m_tAvail);
-	if(nResult)	throw	Exception("MlsMutexComm::CondDestroy");
-	nResult	= pthread_mutex_destroy(&m_tMutex);
-	if(nResult)	throw	Exception("MlsMutexComm::MutexDestroy");
+    pthread_cond_destroy(&m_tReady);
+	pthread_cond_destroy(&m_tAvail);
+	pthread_mutex_destroy(&m_tMutex);
 	#endif
 }
 

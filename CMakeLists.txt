@@ -255,7 +255,7 @@ else()
 endif()
 
 ########### find openssl library
-option(ENABLE_SFTP "Enable support for SFTP protocol. (default: ON)" ON)
+option(ENABLE_SFTP "Enable support for SFTP protocol. (default: OFF)" OFF)
 if( ENABLE_SFTP )
     if (EXISTS "/usr/local/opt/openssl")
         set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
@@ -307,6 +307,9 @@ option(ENABLE_SOURCE_HIGHLIGHT "Enable support for source highlight. (default: O
 if( ENABLE_SOURCE_HIGHLIGHT )
     message(STATUS "Option - SOURCE HIGHLIGHT : ON")
     find_library(SOURCEHIGHLIGHT source-highlight)
+
+    find_path(PATH_HIGHLIGHT_H srchilite/highlightstate.h PATHS /usr/local/include )
+    include_directories( ${PATH_HIGHLIGHT_H} )
     if ( SOURCEHIGHLIGHT )
         set(__LINM_SOURCE_HIGHLIGHT_USE__ ON)
     endif( SOURCEHIGHLIGHT )

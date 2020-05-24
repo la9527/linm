@@ -14,7 +14,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifdef HAVE_CONFIG_H
-#  include "libfswatch_config.h"
+#  include "config.h"
 #endif
 
 #ifdef HAVE_WINDOWS

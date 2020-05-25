@@ -153,7 +153,7 @@ void	NCurses_Editor::PostLoad()
             }
         }
 	}
-#endif
+
     if ( !_bSyntaxOn )
     {
         string  sName =_tFile.sName;
@@ -168,9 +168,8 @@ void	NCurses_Editor::PostLoad()
             }
         }
     }
-    LOG( "NCurses_Editor::PostLoad() :: _bSyntaxOn : %s", _bSyntaxOn ? "true" : "false" );
 
-#ifdef __LINM_SOURCE_HIGHLIGHT_USE__
+    LOG( "NCurses_Editor::PostLoad() :: _bSyntaxOn : %s", _bSyntaxOn ? "true" : "false" );
     if ( _bSyntaxOn )
     {
 		_pHighlighter->clearStateStack();

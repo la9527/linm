@@ -17,6 +17,8 @@
 add_definitions(-DHAVE_CONFIG_H)
 
 set(LIB_SOURCE_FILES
+	./gettext.h
+	./gettext_defs.h
         ./c/cevent.cpp
         ./c/cevent.h
         ./c/cfilter.h

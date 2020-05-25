@@ -5,7 +5,7 @@ DEFAULT_SOURCE_DIR := ${shell pwd}
 
 default: all
 
-all: build make
+all: build make install
 
 build:
 	mkdir -p ${DEFAULT_BUILD_DIR}
@@ -22,10 +22,10 @@ debug-build:
 	    ${DEFAULT_SOURCE_DIR}
 
 make:
-	cd ${DEFAULT_BUILD_DIR}; $(MAKE) -f Makefile
+	cd ${DEFAULT_BUILD_DIR}; $(MAKE) 
 
-install:
-	cd ${DEFAULT_BUILD_DIR}; $(MAKE) -f Makefile install
+install: make
+	cd ${DEFAULT_BUILD_DIR}; $(MAKE) install
 
 clean:
 	cmake --build ${DEFAULT_BUILD_DIR} --target clean

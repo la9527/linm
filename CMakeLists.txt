@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 project (linm)
 
 set(PACKAGE "linm")
@@ -185,14 +185,14 @@ endif()
 ########### find intl(gettext) library
 
 find_library(LIBINTL intl)
-find_file(PATH_LIBINTL_H libintl.h PATHS /usr/local/include )
+find_path(PATH_LIBINTL_H libintl.h HINTS "/usr/local/include" )
 if (NOT PATH_LIBINTL_H)
     message(FATAL_ERROR "'libintl.h' is not found. please install 'gettext' library or libc6.(https://www.gnu.org/software/gettext)")
 else()
     include_directories( ${PATH_LIBINTL_H} )
     set(HAVE_GETTEXT "TRUE")
     add_definitions( -DLOCALEDIR=\"${CMAKE_INSTALL_LOCALEDIR}\" )
-    message( STATUS "intl: ${LIBINTL}")
+    message( STATUS "intl: ${LIBINTL} ${PATH_LIBINTL_H}")
 endif()
 
 ########### set configure file
@@ -311,7 +311,7 @@ option(ENABLE_SOURCE_HIGHLIGHT "Enable support for source highlight. (default: O
 if( ENABLE_SOURCE_HIGHLIGHT )
     find_library(SOURCEHIGHLIGHT source-highlight)
 
-    find_file(PATH_HIGHLIGHT_H srchilite/highlightstate.h PATHS /usr/local/include )
+    find_path(PATH_HIGHLIGHT_H srchilite/highlightstate.h PATHS /usr/local/include )
     if ( SOURCEHIGHLIGHT AND PATH_HIGHLIGHT_H )
         include_directories( ${PATH_HIGHLIGHT_H} )
         message(STATUS "Option - SOURCE HIGHLIGHT : ON")

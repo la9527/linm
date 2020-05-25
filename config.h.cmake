@@ -410,10 +410,10 @@ doesn't define it. */
 #define HAVE_CXX_THREAD_LOCAL 1
 
 /* Define if the file events are supported by OS X FSEvents API. */
-#define HAVE_FSEVENTS_FILE_EVENTS 1
+/* #define HAVE_FSEVENTS_FILE_EVENTS 1 */
 
 /* Define to 1 if you have the <sys/event.h> header file. */
-#define HAVE_SYS_EVENT_H 1
+/* #define HAVE_SYS_EVENT_H 1 */
 
 /* Define to 1 if you have the <unordered_map> header file. */
 #define HAVE_UNORDERED_MAP 1

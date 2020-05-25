@@ -5,6 +5,8 @@ set(PACKAGE "linm")
 set(VERSION "0.9.1")
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wp,-w")
+
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
@@ -27,6 +29,8 @@ include(CheckLibraryExists)
 include(CheckTypeSize)
 include(CheckStructHasMember)
 include(CheckIncludeFileCXX)
+
+find_package( Threads )
 
 # Boost library find
 # set(Boost_USE_STATIC_LIBS        ON) # only find static libs
@@ -313,8 +317,9 @@ if( ENABLE_SOURCE_HIGHLIGHT )
         message(STATUS "Option - SOURCE HIGHLIGHT : ON")
         set(__LINM_SOURCE_HIGHLIGHT_USE__ ON)
     else()
+	set(ENABLE_SOURCE_HIGHLIGHT OFF)
         message(STATUS "Option - SOURCE HIGHLIGHT : OFF")
-    endif( SOURCEHIGHLIGHT )
+    endif()
 else()
     message(STATUS "Option - SOURCE HIGHLIGHT : OFF")
 endif()

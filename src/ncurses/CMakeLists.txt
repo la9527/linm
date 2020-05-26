@@ -47,7 +47,15 @@ if ( SOURCEHIGHLIGHT )
 endif( SOURCEHIGHLIGHT )
 
 add_executable(linm ${linm_SRCS} ${linm_INCLUDES})
-target_link_libraries(linm fswatch mlscommon vfsplugin dialog editor panelcommon linmpluginarc linmpluginftp ${NCURSES_LIB} ${CMAKE_THREAD_LIBS_INIT} )
+target_link_libraries(linm fswatch mlscommon vfsplugin dialog editor panelcommon linmpluginarc linmpluginftp ${CMAKE_THREAD_LIBS_INIT} )
+
+if (NCURSESW_LIB)
+	target_link_libraries(linm ${NCURSESW_LIB})
+elseif(NCURSES_LIB)
+	target_link_libraries(linm ${NCURSES_LIB})
+else()
+	target_link_libraries(linm ${CURSES_LIB})
+endif()
 
 if (LIBICONV AND LIBINTL) 
     message(STATUS "Linking : ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${LIBSSH2}")

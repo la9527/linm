@@ -207,6 +207,18 @@ endif(LINM_CFGPATH)
 
 message( STATUS "Option - configure path : '${__LINM_CFGPATH__}'" )
 
+########### set bin path
+
+option(LINM_BINPATH "set binary file install path. (default: '${CMAKE_INSTALL_PREFIX}/bin/linm')")
+
+if(LINM_BINPATH)
+    set(__LINM_BINPATH__ "${LINM_BINPATH}")
+else()
+    set(__LINM_BINPATH__ "${CMAKE_INSTALL_PREFIX}/bin/linm")
+endif(LINM_BINPATH)
+
+message( STATUS "Option - configure path : '${__LINM_CFGPATH__}'" )
+
 ########### set debug mode
 
 option(DEBUG_MODE "Build debugging mode")
@@ -275,7 +287,7 @@ if( ENABLE_SFTP )
 
     include(FindPkgConfig)
     if ( PKG_CONFIG_EXECUTABLE )
-        pkg_check_modules(LIBSSH2 REQUIRED libssh2>1.8)
+        pkg_check_modules(LIBSSH2 REQUIRED libssh2>=1.8)
         find_library(LIBSSH2 ssh2 PATHS ${LIBSSH2_LIBRARY_DIRS})
     else ( PKG_CONFIG_EXECUTABLE )
         find_library(LIBSSH2_LIBRARIES ssh2)
@@ -313,7 +325,7 @@ option(ENABLE_SOURCE_HIGHLIGHT "Enable support for source highlight. (default: O
 if( ENABLE_SOURCE_HIGHLIGHT )
     find_library(SOURCEHIGHLIGHT source-highlight)
 
-    find_path(PATH_HIGHLIGHT_H srchilite/highlightstate.h PATHS /usr/local/include )
+    find_path(PATH_HIGHLIGHT_H srchilite/highlightstate.h PATHS /usr/include )
     if ( SOURCEHIGHLIGHT AND PATH_HIGHLIGHT_H )
         include_directories( ${PATH_HIGHLIGHT_H} )
         message(STATUS "Option - SOURCE HIGHLIGHT : ON")

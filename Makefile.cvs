@@ -1,6 +1,6 @@
 DEFAULT_BUILD_DIR := ${shell pwd}/cmake-build-output
 DEFAULT_DEBUG_INSTALL_DIR := ${shell pwd}/output
-DEFAULT_INSTALL_DIR := /usr/local
+DEFAULT_INSTALL_DIR := /usr
 DEFAULT_SOURCE_DIR := ${shell pwd}
 
 default: all

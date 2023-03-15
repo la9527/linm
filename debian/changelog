@@ -1,3 +1,70 @@
+linm (0.9.1-0ubuntu9~jammy4) jammy; urgency=low
+
+  * Packaging correction for jamy
+
+ -- Kyu-Ung Lee <kyu419@eku.kr>  Sun, 29 Jan 2023 04:28:33 +0900
+
+linm (0.9.1-0ubuntu9~jammy2) jammy; urgency=low
+
+  * Packaging correction for jamy
+
+ -- Kyu-Ung Lee <kyu419@eku.kr>  Sun, 29 Jan 2023 03:58:03 +0900
+
+linm (0.9.1-0ubuntu9~jammy1) jammy; urgency=low
+
+  * Packaging correction for jamy
+
+ -- Kyu-Ung Lee <kyu419@eku.kr>  Sun, 29 Jan 2023 03:32:03 +0900
+
+linm (0.9.1-0ubuntu9~jammy0) jammy; urgency=low
+
+  * Packaging correction for jamy
+  * Disable sftp with build error on PPA - not affected on local build
+
+ -- Kyu-Ung Lee <kyu419@eku.kr>  Sun, 29 Jan 2023 03:13:33 +0900
+
+linm (0.9.1-0ubuntu8~jammy1) jammy; urgency=low
+
+  * Initial Packaging for jammy
+
+ -- Kyu-Ung Lee <kyu419@eku.kr>  Sun, 29 Jan 2023 02:47:45 +0900
+
+linm (0.9.1-0ubuntu5) bionic; urgency=low
+
+  * 0.9.1 update from github
+  * Packaging for Bionic or newer
+  * Enable sftp again
+  * Keep option disable-samba
+
+ -- Kyu-Ung Lee <kyu419@eku.kr>  Sun, 29 Jan 2023 01:59:24 +0900
+
+linm (0.8.1-1-0ubuntu13) bionic; urgency=low
+
+  * for arm packaging test
+  * disable-sftp option for newer release
+  * disable-samba option for newer release
+
+ -- Kyu-Ung Lee <kyu419@revdigit.pe.kr>  Mon, 08 Dec 2018 17:55:00 +0900
+
+linm (0.8.1-1-0ubuntu2) precise; urgency=low
+
+  * Packaging Error corrected
+  * Initial Packaging for precise
+
+ -- Kyu-Ung Lee <kyu419@revdigit.pe.kr>  Fri, 13 May 2016 08:45:19 +0900
+
+linm (0.8.1-1ubuntu1) trusty; urgency=low
+
+  * Initial Packaging for trusty
+  
+ -- Kyu-Ung Lee <kyu419@revdigit.pe.kr>  Sat, 26 Apr 2014 13:45:33 +0900
+
+linm (0.8.1-1ubuntu0) lucid; urgency=low
+
+  * Initial Packaging (LP: #574957)
+  
+ -- Kyu-Ung Lee <kyu419@revdigit.pe.kr>  Wed, 05 May 2010 00:16:33 +0900
+
 linm (0.8.1-1) unstable; urgency=low
   * transparency console support.
   * compress cancel bugfix.
@@ -21,14 +88,14 @@ linm (0.7.12-1) unstable; urgency=low
   * remote copy overwrite message bugfix.
   * FreeBSD, GCC 2.9x compile error fix.
 
- -- Byoung-young La <la9527@daum.net>  Mon, 1 Jan 2007 01:00:43 +0900
+ -- Byoung-young La <la9527@daum.net>  Mon, 1 Jan 2007 01:00:43 +0900 
 
 linm (0.7.11-1) unstable; urgency=low
   * chown command added.
   * file find added. 
   * execute option buildup. 
 
- -- Byoung-young La <la9527@daum.net>  Fri, 8 Seq 2006 01:00:43 +0900
+ -- Byoung-young La <la9527@daum.net>  Fri, 8 Seq 2006 01:00:43 +0900 
 
 linm (0.7.10-1) unstable; urgency=low
   * bugfix and hint update.

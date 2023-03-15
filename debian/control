@@ -1,15 +1,16 @@
 Source: linm
 Section: utils
 Priority: optional
-Maintainer: la9527 <la9527@daum.net>
-Build-Depends: debhelper (>= 4.0.0), autotools-dev, libncurses5-dev, libncursesw5-dev, libssl-dev, libsmbclient-dev (>= 3.0.0)
-Standards-Version: 3.6.2
+Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
+Build-Depends: debhelper (>= 7), autotools-dev, libncurses5-dev, libncursesw5-dev, cmake (>=2.8.0), libsource-highlight-dev, libssl-dev, libssh2-1-dev (>=1.8.0)
+Standards-Version: 3.8.3
+XSBC-Original-Maintainer: Kyu-Ung Lee <kyu419@eku.kr>
 
 Package: linm
 Architecture: any
-Depends: libncurses5 (>= 5.4-1), libncursesw5 (>= 5.4-1), libssl0.9.7 | libssl0.9.8, libstdc++6 (>= 3.4.1), zlib1g (>= 1:1.1.1), libsmbclient (>= 3.0.0)
+Depends: libncurses5 (>= 5.4-1), libncursesw5 (>= 5.4-1), libstdc++6 (>= 3.4.1), zlib1g (>= 1:1.1.1), libsource-highlight4v5, libssl3, libssh2-1 (>=1.8.0)
 Description:
   LinM is a clone of Mdir, the famous file manager from the MS-DOS age.
   LinM inherits the keyboard shorcuts and the screen layout from Mdir
-  to maximize user-friendliness. archive file, sftp, ftp, samba support.
+  to maximize user-friendliness. archive file, sftp, ftp.
 

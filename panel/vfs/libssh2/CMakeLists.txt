@@ -11,7 +11,7 @@ if (NOT DISABLE_SFTP AND OPENSSL_FOUND)
     include_directories(${OPENSSL_INCLUDE_DIR} ${LIBSSH_LIBRARY_INCLUDE_DIRS})
 
     SET(linmpluginsftp_LIB_INCLUDES
-            SFtpReader.H
+            SFtpReader.h
             )
 
     SET(linmpluginsftp_LIB_SRCS
